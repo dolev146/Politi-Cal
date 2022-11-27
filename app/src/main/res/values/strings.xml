@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Politi-Cal</string>
+    <string name="title_activity_search">searchActivity</string>
 </resources>
