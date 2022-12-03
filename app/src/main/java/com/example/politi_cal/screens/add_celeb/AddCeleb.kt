@@ -63,7 +63,6 @@ class AddCeleb : androidx.activity.ComponentActivity() {
             }
         }
     }
-
 }
 
 @OptIn(ExperimentalMaterialApi::class)
