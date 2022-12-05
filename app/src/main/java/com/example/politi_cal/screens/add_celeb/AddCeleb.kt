@@ -14,11 +14,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.firebase.auth.FirebaseAuth
 
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun AddCelebScreen(navController: NavController){
+fun AddCelebScreen(navController: NavController, auth: FirebaseAuth){
     Column(modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(15.dp))

@@ -22,10 +22,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.politi_cal.R
+import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
-fun SwipeScreen(navController: NavController) {
+fun SwipeScreen(navController: NavController, auth: FirebaseAuth) {
     // A surface container using the 'background' color from the theme
     Surface(color = MaterialTheme.colors.background) {
 //        TopBar()

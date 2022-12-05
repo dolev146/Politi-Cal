@@ -13,10 +13,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
-fun UserProfileScreen(navController: NavController) {
+fun UserProfileScreen(navController: NavController, auth: FirebaseAuth) {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -200,12 +201,4 @@ fun UserProfileScreen(navController: NavController) {
         }
 
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    UserProfileScreen(navController =  NavController(
-        context = androidx.compose.ui.platform.LocalContext.current
-    ))
 }

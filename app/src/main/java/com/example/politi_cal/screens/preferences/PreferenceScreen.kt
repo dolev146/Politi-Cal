@@ -13,9 +13,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.politi_cal.Screen
 import com.example.politi_cal.common.dropDownMenu
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
-fun PreferenceScreen(navController: NavController) {
+fun PreferenceScreen(navController: NavController, auth: FirebaseAuth) {
     var gender = listOf<String>("Male" , "Female" , "Prefers not to say", "Other")
     var selectedGender by remember { mutableStateOf("this is the first ") }
     var age = listOf<String>("18-25", "26-32", "33-40", "41-50", "51-60", "61-70", "71-80", "More then 81")

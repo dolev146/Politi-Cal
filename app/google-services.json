@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1019245785378",
+    "project_id": "political-8e43e",
+    "storage_bucket": "political-8e43e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1019245785378:android:c07d4564c0df65234c757b",
+        "android_client_info": {
+          "package_name": "com.example.politi_cal"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1019245785378-kmd8stsat1cn3llm40eghcka4ms2iovd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSKfDZCKmvdksZD5aQgdCl2BdK8hJ5vC0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1019245785378-kmd8stsat1cn3llm40eghcka4ms2iovd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

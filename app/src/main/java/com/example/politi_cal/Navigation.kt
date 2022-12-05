@@ -12,10 +12,11 @@ import com.example.politi_cal.screens.preferences.PreferenceScreen
 import com.example.politi_cal.screens.registration.RegisterScreen
 import com.example.politi_cal.screens.user_profile.UserProfileScreen
 import com.example.politi_cal.screens.voting_screen.SwipeScreen
+import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
-fun Navigation() {
+fun Navigation(auth : FirebaseAuth) {
     val navCotroller = rememberNavController()
     NavHost(navController = navCotroller, startDestination = Screen.LoginScreen.route) {
 //        composable(route = Screen.MainScreen.route) {
@@ -41,12 +42,12 @@ fun Navigation() {
 
 
         composable(route = Screen.RegisterScreen.route) {
-            RegisterScreen(navController = navCotroller)
+            RegisterScreen(navController = navCotroller, auth = auth)
         }
 
         composable(route = Screen.LoginScreen.route) {
 
-            LoginScreen(navController = navCotroller)
+            LoginScreen(navController = navCotroller, auth = auth)
 
         }
 
@@ -54,7 +55,7 @@ fun Navigation() {
             DrawerTopBar(navController = navCotroller , screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
-                PreferenceScreen(navController = navController)
+                PreferenceScreen(navController = navController, auth = auth)
 
             })
 
@@ -66,7 +67,7 @@ fun Navigation() {
             DrawerTopBar(navController = navCotroller , screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
-                SwipeScreen(navController = navController)
+                SwipeScreen(navController = navController, auth = auth)
 
             })
         }
@@ -75,7 +76,7 @@ fun Navigation() {
             DrawerTopBar(navController = navCotroller , screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
-                CelebProfileScreen(navController = navController)
+                CelebProfileScreen(navController = navController, auth = auth)
 
             })
         }
@@ -84,7 +85,7 @@ fun Navigation() {
             DrawerTopBar(navController = navCotroller , screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
-                UserProfileScreen(navController = navController)
+                UserProfileScreen(navController = navController, auth = auth)
 
             })
         }
@@ -93,7 +94,7 @@ fun Navigation() {
             DrawerTopBar(navController = navCotroller , screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
-                AddCelebScreen(navController = navController)
+                AddCelebScreen(navController = navController, auth = auth)
 
             })
         }

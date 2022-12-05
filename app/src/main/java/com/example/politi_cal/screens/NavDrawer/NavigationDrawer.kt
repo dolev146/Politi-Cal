@@ -152,13 +152,3 @@ fun DrawerTopBar(navController: NavController, screen: @Composable (navControlle
 }
 
 
-@Preview (showBackground = true)
-@Composable
-fun DrawerHeaderPreview() {
-    DrawerTopBar(navController = NavController(LocalContext.current) , screen = { navController ->
-        // this is the screen that will be drawn after the drawer
-        // swipe screen
-        SwipeScreen(navController = navController)
-
-    })
-}

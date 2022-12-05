@@ -21,10 +21,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.politi_cal.R
+import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
-fun CelebProfileScreen(navController: NavController) {
+fun CelebProfileScreen(navController: NavController, auth: FirebaseAuth) {
      BlackBackgroundSquare()
     Column(modifier = Modifier.fillMaxSize()) {
 
