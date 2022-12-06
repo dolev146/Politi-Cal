@@ -65,4 +65,6 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.4.3'
 }

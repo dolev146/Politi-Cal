@@ -99,6 +99,15 @@ fun Navigation(auth : FirebaseAuth) {
             })
         }
 
+        composable(route = Screen.AdminAnalyticsScreen.route) {
+            DrawerTopBar(navController = navCotroller , screen = { navController ->
+                // this is the screen that will be drawn after the drawer
+                // swipe screen
+                AddCelebScreen(navController = navController, auth = auth)
+
+            })
+        }
+
     }
 }
 

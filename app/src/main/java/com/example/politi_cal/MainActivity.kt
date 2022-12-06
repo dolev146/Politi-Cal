@@ -23,9 +23,6 @@ class MainActivity : ComponentActivity() {
     companion object {
         val TAG : String = MainActivity::class.java.simpleName
     }
-
-
-
     private val auth by lazy {
         FirebaseAuth.getInstance()
     }
