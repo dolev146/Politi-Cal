@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.politi_cal.screens.NavDrawer.DrawerTopBar
 import com.example.politi_cal.screens.add_celeb.AddCelebScreen
+import com.example.politi_cal.screens.analytics.AdminAnalyticsScreen
 import com.example.politi_cal.screens.celeb_profile.CelebProfileScreen
 import com.example.politi_cal.screens.login.LoginScreen
 import com.example.politi_cal.screens.preferences.PreferenceScreen
@@ -103,7 +104,7 @@ fun Navigation(auth : FirebaseAuth) {
             DrawerTopBar(navController = navCotroller , screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
-                AddCelebScreen(navController = navController, auth = auth)
+                AdminAnalyticsScreen(navController = navController, auth = auth)
 
             })
         }
