@@ -121,6 +121,14 @@ fun DrawerTopBar(navController: NavController, screen: @Composable (navControlle
                     contentDescription = "Go to User profile screen",
                     icon = Icons.Default.Add
                 ),
+
+                MenuItem(
+                    id = "admin analytics",
+                    title = "Admin Analytics",
+                    contentDescription = "Go to Admin Analytics screen",
+                    icon = Icons.Default.MoreVert
+                ),
+
             ), onItemClick = {
                 when (it.id) {
                     "swipe" -> {
@@ -138,9 +146,9 @@ fun DrawerTopBar(navController: NavController, screen: @Composable (navControlle
                     "add celeb" -> {
                         navController.navigate(Screen.AddCelebScreen.route)
                     }
-
-
-
+                    "admin analytics" -> {
+                        navController.navigate(Screen.AdminAnalyticsScreen.route)
+                    }
                 }
             })
 
