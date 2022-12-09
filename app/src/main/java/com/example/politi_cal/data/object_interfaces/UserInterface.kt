@@ -1,4 +1,4 @@
-package com.example.politi_cal.data
+package com.example.politi_cal.data.object_interfaces
 
 import com.example.politi_cal.models.Category
 import com.example.politi_cal.models.User
@@ -53,5 +53,11 @@ interface UserInterface {
     fun addUser(userData: User): Boolean
     fun getUserByUserID(UserID: String): User
     fun updateUser(userData: User): Boolean
+
+    /**
+     * In this function we will delete a user from the DB. We will have to delete all of his
+     * votes from the DB as well.
+     */
+
     fun deleteUser(UserID: String): Boolean
 }

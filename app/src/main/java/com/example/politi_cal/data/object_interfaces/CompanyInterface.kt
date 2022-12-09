@@ -1,4 +1,4 @@
-package com.example.politi_cal.data
+package com.example.politi_cal.data.object_interfaces
 
 /**
  * This interface will be the interface of the Company object.

@@ -1,4 +1,4 @@
-package com.example.politi_cal.data
+package com.example.politi_cal.data.object_interfaces
 
 import com.example.politi_cal.models.Celeb
 
