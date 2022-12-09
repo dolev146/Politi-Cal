@@ -2,6 +2,14 @@ package com.example.politi_cal.models
 
 import com.google.firebase.firestore.Exclude
 
+/**
+ * Roles:
+ * 1 will represent a regular user.
+ * 0 will represent an admin.
+ * The system will automatically assign any registered user with 1 as a role.
+ * Only the admin can change a user role.
+ */
+
 data class User(@Exclude val userID: String = "",
                 val roleID: Int = 1,
                 val favoritePartyID: String,
