@@ -11,7 +11,7 @@ import com.google.firebase.firestore.Exclude
  */
 
 data class User(@Exclude val userID: String = "",
-                val roleID: Int = 1,
+                val roleID: Int = 1, // 0 admin 1 user
                 val favoritePartyID: String,
                 val userName: String,
                 val email: String,
