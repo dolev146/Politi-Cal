@@ -1,5 +1,23 @@
 package com.example.politi_cal.models
 
-data class User(val name: String, val email: String, val password: String) {
-    constructor() : this("", "", "")
+import com.google.firebase.firestore.Exclude
+
+/**
+ * Roles:
+ * 1 will represent a regular user.
+ * 0 will represent an admin.
+ * The system will automatically assign any registered user with 1 as a role.
+ * Only the admin can change a user role.
+ */
+
+data class User(@Exclude val userID: String = "",
+                val roleID: Int = 1, // 0 admin 1 user
+                val favoritePartyID: String,
+                val userName: String,
+                val email: String,
+                val password: String,
+                val registerDate: Long,
+                var userPref: List<String>
+                ) {
+
 }
