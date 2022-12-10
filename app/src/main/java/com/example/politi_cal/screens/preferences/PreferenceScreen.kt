@@ -88,6 +88,10 @@ fun PreferenceScreen(navController: NavController, auth: FirebaseAuth) {
                     labeli = "Select gender",
                     onSelected = { selectedGender = it })
                 dropDownMenu(list = age, labeli = "Select age", onSelected = { selectedAge = it })
+                dropDownMenu(
+                    list = party,
+                    labeli = "Select party",
+                    onSelected = { selectedParty = it })
                 Text(
                     text = "Select your interests",
                     modifier = Modifier.padding(5.dp),
