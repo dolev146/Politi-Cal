@@ -131,23 +131,35 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
 
                 Button(
                     onClick = {
-                        auth.signInWithEmailAndPassword(email, password)
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    Toast.makeText(
-                                        context,
-                                        "Login Successful",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    user = auth.currentUser
-                                    navController.navigate(Screen.SwipeScreen.route)
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Log.w(MainActivity.TAG, "createUserWithEmail:failure", task.exception)
-                                    Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                        if (email.isEmpty() || password.isEmpty()) {
+                            navController.navigate(Screen.SwipeScreen.route)
+                        } else {
+                            auth.signInWithEmailAndPassword(email, password)
+                                .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        Toast.makeText(
+                                            context,
+                                            "Login Successful",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                        user = auth.currentUser
+                                        navController.navigate(Screen.SwipeScreen.route)
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Log.w(
+                                            MainActivity.TAG,
+                                            "createUserWithEmail:failure",
+                                            task.exception
+                                        )
+                                        Toast.makeText(
+                                            context,
+                                            "Authentication failed.",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
 
+                                    }
                                 }
-                            }
+                        }
 //                        navController.navigate(Screen.SwipeScreen.route)
                     },
                     modifier = Modifier
@@ -176,3 +188,4 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
         }
     }
 }
+
