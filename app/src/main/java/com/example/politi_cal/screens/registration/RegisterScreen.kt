@@ -1,7 +1,6 @@
 package com.example.politi_cal.screens.registration
 
 
-import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
@@ -30,12 +29,21 @@ import androidx.navigation.NavController
 import com.example.politi_cal.MainActivity.Companion.TAG
 import com.example.politi_cal.R
 import com.example.politi_cal.Screen
+import com.example.politi_cal.models.User
 import com.example.politi_cal.user
+import com.example.politi_cal.userCollectionRef
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 
 @Composable
 fun RegisterScreen(navController: NavController, auth: FirebaseAuth) {
+
+
     val focusManager = LocalFocusManager.current
 
     var email by remember {
@@ -162,16 +170,19 @@ fun RegisterScreen(navController: NavController, auth: FirebaseAuth) {
                                 if (task.isSuccessful) {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d(TAG, "createUserWithEmail:success")
+                                    Toast.makeText(
+                                        context, "Authentication Success.", Toast.LENGTH_SHORT
+                                    ).show()
                                     user = auth.currentUser
                                     navController.navigate(Screen.PreferenceScreen.route)
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
-//
-                                    Toast.makeText(context, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        context, "User already registered!!!.", Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             }
-
 
 
                     },
@@ -181,6 +192,27 @@ fun RegisterScreen(navController: NavController, auth: FirebaseAuth) {
                     enabled = isPasswordValid && confirmPassword == password,
                 ) {
                     Text(text = "Register")
+                }
+
+                fun saveUser(
+                    user: User
+                    // pass also context
+
+
+                ) = CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        userCollectionRef.add(user).await()
+                        withContext(Dispatchers.Main) {
+                            Log.d(TAG, "User saved")
+
+                        }
+
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+
+                            e.printStackTrace()
+                        }
+                    }
                 }
 
             }
