@@ -3,6 +3,7 @@ package com.example.politi_cal.data.static_collection_interfaces
 import com.example.politi_cal.models.Company
 import com.example.politi_cal.models.Party
 import com.example.politi_cal.models.VoteOption
+import kotlinx.coroutines.Job
 
 /**
  * This interface will contain the queries needed in order to communicate with the VoteOption
@@ -17,8 +18,8 @@ interface VoteOptionDBInterface {
      * map that contains the data we already created.
      */
 
-    fun isPartyExist(option: VoteOption): Boolean
-    fun isPartyExist(option: String): Boolean
+    fun isVoteExist(option: VoteOption): Boolean
+    fun isVoteExist(option: String): Boolean
 
     /**
      * We will use this function to add a new vote option to the DB.
@@ -28,7 +29,7 @@ interface VoteOptionDBInterface {
      *
      */
 
-    fun addVoteOption(option: VoteOption): Boolean
+    fun addVoteOption(option: VoteOption): Job
     fun addVoteOption(option: String): Boolean
 
     /**
@@ -38,8 +39,8 @@ interface VoteOptionDBInterface {
      * If we updated a record we will update the map as well.
      */
 
-    fun updateVoteOption(original_option: VoteOption, new_option: VoteOption)
-    fun updateVoteOption(original_option: String, new_option: String)
+    fun updateVoteOption(original_option: VoteOption, new_option: VoteOption): Job
+    fun updateVoteOption(original_option: String, new_option: String): Job
 
     /**
      * We will use this function in order to delete a vote option from the DB.
@@ -50,8 +51,8 @@ interface VoteOptionDBInterface {
      * If we deleted a vote option we will delete it from the map as well
      */
 
-    fun deleteParty(party: Party):Boolean
-    fun deleteParty(party: String):Boolean
+    fun deleteVoteOption(vote: VoteOption): Job
+    fun deleteVoteOption(vote: String):Job
 
 
 
