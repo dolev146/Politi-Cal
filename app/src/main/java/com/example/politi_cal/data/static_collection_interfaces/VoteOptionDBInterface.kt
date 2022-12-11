@@ -18,8 +18,8 @@ interface VoteOptionDBInterface {
      * map that contains the data we already created.
      */
 
-    fun isVoteExist(option: VoteOption): Boolean
-    fun isVoteExist(option: String): Boolean
+    fun isVoteExist(option: VoteOption): Job
+    fun isVoteExist(option: String): Job
 
     /**
      * We will use this function to add a new vote option to the DB.
@@ -51,7 +51,7 @@ interface VoteOptionDBInterface {
      * If we deleted a vote option we will delete it from the map as well
      */
 
-    fun deleteVoteOption(vote: VoteOption): Job
+    fun deleteVoteOption(vote: VoteOption)
     fun deleteVoteOption(vote: String):Job
 
 
