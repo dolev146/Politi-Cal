@@ -30,7 +30,7 @@ import com.example.politi_cal.MainActivity.Companion.TAG
 import com.example.politi_cal.R
 import com.example.politi_cal.Screen
 import com.example.politi_cal.models.User
-import com.example.politi_cal.user
+
 import com.example.politi_cal.userCollectionRef
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
@@ -164,25 +164,7 @@ fun RegisterScreen(navController: NavController, auth: FirebaseAuth) {
                 Button(
                     onClick = {
 
-                        // register the email and password with firebase auth
-                        auth.createUserWithEmailAndPassword(email, password)
-                            .addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d(TAG, "createUserWithEmail:success")
-                                    Toast.makeText(
-                                        context, "Authentication Success.", Toast.LENGTH_SHORT
-                                    ).show()
-                                    user = auth.currentUser
-                                    navController.navigate(Screen.PreferenceScreen.route)
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                                    Toast.makeText(
-                                        context, "User already registered!!!.", Toast.LENGTH_SHORT
-                                    ).show()
-                                }
-                            }
+                        RegisterUser(auth, email, password = "not relevant",  navController)
 
 
                     },
@@ -222,4 +204,37 @@ fun RegisterScreen(navController: NavController, auth: FirebaseAuth) {
 
     }
 
+}
+
+fun RegisterUser(auth: FirebaseAuth, email: String, password: String  = "not relevant", navController: NavController) {
+
+    // register the email and password with firebase auth
+    if (email.isNotEmpty() && password.isNotEmpty()) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                auth.createUserWithEmailAndPassword(email, password).await()
+                checkLoggedInState(auth, navController)
+                withContext(Dispatchers.Main) {
+                    navController.navigate(Screen.PreferenceScreen.route)
+                }
+
+            }catch (e: Exception){
+                withContext(Dispatchers.Main){
+                    Toast.makeText(navController.context, e.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+
+    }
+}
+
+fun checkLoggedInState(auth: FirebaseAuth,navController: NavController){
+    if(auth.currentUser != null){
+        Log.d(TAG, "User is logged in")
+
+
+    }else{
+        Log.d(TAG, "User is not logged in")
+    }
 }

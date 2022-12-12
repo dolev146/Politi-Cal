@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.politi_cal.Screen
 import com.example.politi_cal.screens.voting_screen.SwipeScreen
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
 @Composable
@@ -72,7 +73,7 @@ fun DrawerBody(
 // the drawer TopBar should get the navController as a parameter ,
 // and the composable screen function that it needs to draw after the drawer
 @Composable
-fun DrawerTopBar(navController: NavController, screen: @Composable (navController: NavController) -> Unit) {
+fun DrawerTopBar(navController: NavController, auth : FirebaseAuth = FirebaseAuth.getInstance()  , screen: @Composable (navController: NavController) -> Unit) {
 
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
@@ -128,6 +129,12 @@ fun DrawerTopBar(navController: NavController, screen: @Composable (navControlle
                     contentDescription = "Go to Admin Analytics screen",
                     icon = Icons.Default.MoreVert
                 ),
+                MenuItem(
+                    id = "logout",
+                    title = "Logout",
+                    contentDescription = "Go to Logout screen",
+                    icon = Icons.Default.ExitToApp
+                ),
 
             ), onItemClick = {
                 when (it.id) {
@@ -148,6 +155,10 @@ fun DrawerTopBar(navController: NavController, screen: @Composable (navControlle
                     }
                     "admin analytics" -> {
                         navController.navigate(Screen.AdminAnalyticsScreen.route)
+                    }
+                    "logout" -> {
+                        auth.signOut()
+                        navController.navigate(Screen.LoginScreen.route)
                     }
                 }
             })
