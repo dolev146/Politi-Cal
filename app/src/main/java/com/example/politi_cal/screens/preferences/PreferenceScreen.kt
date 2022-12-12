@@ -195,7 +195,8 @@ fun PreferenceScreen(navController: NavController, auth: FirebaseAuth) {
                             favoritePartyID = selectedParty,
                             userName = auth.currentUser?.displayName.toString(),
                             registerDate = stringDate.toLong(),
-                            userPref = interests
+                            userPref = interests,
+                            userID = auth.currentUser?.uid.toString(),
                         )
                         // add the user to the database
                         CoroutineScope(Dispatchers.IO).launch {
@@ -228,6 +229,7 @@ fun PreferenceScreen(navController: NavController, auth: FirebaseAuth) {
                     }, modifier = Modifier
                         .padding(16.dp)
                         .fillMaxWidth()
+                , enabled = selectedGender != "" && selectedAge != "" && selectedParty != "" && (checkStateSports.value || checkStateJournalism.value || checkStatePolitics.value || checkStateFamous.value || checkStateAcademic.value)
                 ) {
                     Text(text = "Submit")
                 }

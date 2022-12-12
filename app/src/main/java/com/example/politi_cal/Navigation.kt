@@ -1,9 +1,12 @@
 package com.example.politi_cal
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.politi_cal.MainActivity.Companion.TAG
 import com.example.politi_cal.screens.NavDrawer.DrawerTopBar
 import com.example.politi_cal.screens.add_celeb.AddCelebScreen
 import com.example.politi_cal.screens.analytics.AdminAnalyticsScreen
@@ -14,6 +17,11 @@ import com.example.politi_cal.screens.registration.RegisterScreen
 import com.example.politi_cal.screens.user_profile.UserProfileScreen
 import com.example.politi_cal.screens.voting_screen.SwipeScreen
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 
 @Composable
@@ -56,6 +64,9 @@ fun Navigation(auth : FirebaseAuth, startScreen: String = Screen.LoginScreen.rou
             DrawerTopBar(navController = navCotroller , screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
+                // check if email is in users collection if yes delete his data .
+                Log.d(TAG,auth.currentUser?.email.toString())
+                deleteDataUser(auth)
                 PreferenceScreen(navController = navController, auth = auth)
 
             })
@@ -63,6 +74,8 @@ fun Navigation(auth : FirebaseAuth, startScreen: String = Screen.LoginScreen.rou
 
 
         }
+
+
 
         composable(route = Screen.SwipeScreen.route) {
             DrawerTopBar(navController = navCotroller , screen = { navController ->
@@ -110,6 +123,25 @@ fun Navigation(auth : FirebaseAuth, startScreen: String = Screen.LoginScreen.rou
         }
 
     }
+}
+
+
+private fun deleteDataUser (auth : FirebaseAuth) = CoroutineScope(Dispatchers.IO).launch {
+    val emailFilterDoc = userCollectionRef.whereEqualTo("email", auth.currentUser?.email.toString()).get().await()
+    if (emailFilterDoc.documents.isNotEmpty()) {
+        for (doc in emailFilterDoc) {
+            try {
+                userCollectionRef.document(doc.id).delete().await()
+            }
+            catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(MainActivity(), "Error deleting user data", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        }
+    }
+
 }
 
 

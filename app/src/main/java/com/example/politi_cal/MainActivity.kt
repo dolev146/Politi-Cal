@@ -14,6 +14,7 @@ import com.google.firebase.ktx.Firebase
 
 val db = Firebase.firestore
 val userCollectionRef = db.collection("users")
+val celebCollectionRef = db.collection("celebs")
 
 class MainActivity : ComponentActivity() {
 
