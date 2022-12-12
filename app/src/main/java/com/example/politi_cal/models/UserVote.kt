@@ -4,13 +4,23 @@ import com.example.politi_cal.data.object_interfaces.UserVoteInterface
 import com.google.firebase.firestore.Exclude
 
 data class UserVote(
-    @Exclude val RecordID: String,
-    private val UserID: String,
-    private val CelebID: String,
-    private val CategoryID: String,
-    private val CompanyID: String,
-    private val VoteID: String
+    var RecordID: String,
+    private var UserID: String,
+    private var CelebID: String,
+    private var CategoryID: String,
+    private var CompanyID: String,
+    private var VoteID: String
 ): UserVoteInterface{
+
+    fun init(record: String, user: String, celeb: String, category: String, company: String, vote: String){
+        this.RecordID=record
+        this.UserID=user
+        this.CelebID=celeb
+        this.CategoryID=category
+        this.CompanyID=company
+        this.VoteID=vote
+    }
+
     override fun getRecoredID(): String {
         return this.RecordID
     }

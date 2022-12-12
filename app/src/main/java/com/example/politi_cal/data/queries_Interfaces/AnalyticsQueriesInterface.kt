@@ -1,9 +1,11 @@
 package com.example.politi_cal.data.queries_Interfaces
 
+import com.example.politi_cal.models.CallBack
 import com.example.politi_cal.models.Category
 import com.example.politi_cal.models.Celeb
 import com.example.politi_cal.models.Company
 import com.example.politi_cal.models.VoteOption
+import kotlinx.coroutines.Job
 
 /**
  * This interface will contain the needed queries for the analytics in the app.
@@ -13,7 +15,7 @@ interface AnalyticsQueriesInterface {
     /**
      * This query will get the votes for a given celeb
      */
-    fun getCelebDistribution(celeb: Celeb): Map<VoteOption, Int>
+    fun getCelebDistribution(callBack: CallBack<Celeb, Map<String, Int>>): Job
 
     /**
      * This function will get the votes for a given company.
@@ -27,28 +29,28 @@ interface AnalyticsQueriesInterface {
      * The company disribution will be 50% left and 50% right since 50% of the celebs tagged as
      * left, and the other 50% tagged as right.
      */
-    fun getCompanyDistribution(company: Company): Map<VoteOption, Int>
+    fun getCompanyDistribution(callBack: CallBack<Company, Map<VoteOption, Int>>): Job
 
     /**
      * This function will get the votes for given category
      * Will work the same as company for each company in the category
      */
 
-    fun getCategoryStatistics(category: Category): Map<VoteOption, Int>
+    fun getCategoryStatistics(callBack: CallBack<Category, Map<VoteOption, Int>>): Job
 
     /**
      * This function will get the votes for all of the categories
      * Will work the same as Category for each category
      */
 
-    fun getTotalDistribution(): Map<VoteOption, Int>
+    fun getTotalDistribution(callBack: CallBack<Int, Map<VoteOption, Int>>): Job
 
     /**
      * This query will get get the number of users registered to the app during specific time.
      * It will get the first date and will return how many registered since then
      */
 
-    fun getNumberOfUsersByTime(start: Long): Int
+    fun getNumberOfUsersByTime(callBack: CallBack<Int, Int>): Job
 
     /**
      * This query will get get the number of users registered to the app during specific time.
@@ -56,18 +58,17 @@ interface AnalyticsQueriesInterface {
      * registered since the first date till the last date
      */
 
-    fun getNumberOfUsersByTime(start: Long, end: Long): Int
+    fun getNumberOfUsersByTime(start: Long, end: Long, callBack: CallBack<Int, Int>):Job
 
     /**
      * This function will get the number of users that registered in a specific year
      */
 
-    fun getNumberOfUsersByYear(year: Int): Int
-
+    fun getNumberOfUsersByYear(callBack: CallBack<Int, Int>):Job
     /**
      * This function will get the number of users that registered in a given years and will
      * return a map that contains how many users registered in each month.
      */
 
-    fun getNumberOfUsersByYear_MonthBasedData(year: Int): Map<Int, Int>
+    fun getNumberOfUsersByYear_MonthBasedData(callBack: CallBack<Int, Map<Int, Int>>):Job
 }

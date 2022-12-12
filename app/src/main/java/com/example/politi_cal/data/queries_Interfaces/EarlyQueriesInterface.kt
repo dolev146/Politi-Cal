@@ -1,5 +1,6 @@
 package com.example.politi_cal.data.queries_Interfaces
 
+import com.example.politi_cal.models.CallBack
 import com.example.politi_cal.models.Category
 import com.example.politi_cal.models.Celeb
 import com.example.politi_cal.models.Company
@@ -7,6 +8,7 @@ import com.example.politi_cal.models.Party
 import com.example.politi_cal.models.User
 import com.example.politi_cal.models.UserVote
 import com.example.politi_cal.models.VoteOption
+import kotlinx.coroutines.Job
 
 /**
  * In order to save time and be efficient, we will query the DB on some ocassions in order to get
@@ -38,7 +40,7 @@ interface EarlyQueriesInterface {
      * We will use this in order to set the UI in the user profile screen dynamically
      */
 
-    fun getAllParties(): Map<String, Party>
+    fun getAllParties(callback: CallBack<Int, Map<String, Party>>): Job
 
     /**
      * This function will query the DB and get all of the records from Company collection, turn them
@@ -63,7 +65,7 @@ interface EarlyQueriesInterface {
      * We will use this in order to set the voting options in the UI dynamically
      */
 
-    fun getAllVoteOptions(): Map<String, VoteOption>
+    fun getAllVoteOptions(callback: CallBack<Int, Map<String, VoteOption>>): Job
 
     /**
      * This function will query the DB and get all of the records from Celeb collection,
@@ -88,6 +90,6 @@ interface EarlyQueriesInterface {
      * We will use this in order to know whether a user already vote for a celeb
      */
 
-    fun getUserVotes(): Map<String, UserVote>
+    fun getUserVotes(callback: CallBack<Int, Map<String, UserVote>>): Job
 
 }

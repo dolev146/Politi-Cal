@@ -6,9 +6,12 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.example.politi_cal.DBObjects.AnalyticsQueriesObj
+import com.example.politi_cal.DBObjects.EarlyQueriesObj
 import com.example.politi_cal.DBObjects.UserVoteDBObj
 import com.example.politi_cal.DBObjects.VoteOptionDBObj
 import com.example.politi_cal.models.CallBack
+import com.example.politi_cal.models.Celeb
 import com.example.politi_cal.models.UserVote
 import com.example.politi_cal.models.VoteOption
 import com.example.politi_cal.ui.theme.PolitiCalTheme
@@ -42,19 +45,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PolitiCalTheme {
-                val u = UserVote("", "Ee41G8VlE36dV3BlA9df",
-                    "QQLBE8yKYcqM5kDsPebc",
-                "P5Gt1vfwlPuaXE4rbe4Z", "wWbzw9bKz8ClanToPpB0",
-                "6ito58lCU26sQa2AhH1o")
-                val v = UserVoteDBObj(this)
-//                v.deleteVote(u)
-                v.vote(u)
-//                v.deleteAllVotesByUserID(u)
-//                val u2 = UserVote("", "Ee41G8VlE36dV3BlA9df",
-//                    "QQLBE8yKYcqM5kDsPebc",
-//                    "P5Gt1vfwlPuaXE4rbe4Z", "wWbzw9bKz8ClanToPpB0",
-//                    "qNqDuavPCv5Wdq8sSwzf")
-//                v.updateVote(u2)
+                val e = EarlyQueriesObj()
+                val celeb = Celeb("", "", "Omer Adam", 0, "", "", 70, 30)
+                var callback = CallBack<Celeb, Map<String, Int>>(celeb)
+                val s = AnalyticsQueriesObj()
+                s.getCelebDistribution(callback)
+                while(!callback.getStatus()){
+                    continue
+                }
+                var output = "Left votes: " + callback.getOutput()!!["Left"] + "%\n"
+                output+= "Right votes: " + callback.getOutput()!!["Right"] + "%"
+                Toast.makeText(this, "Query Output $output", Toast.LENGTH_LONG).show()
                 Navigation(auth = auth)
             }
         }
