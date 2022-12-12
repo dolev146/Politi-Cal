@@ -142,7 +142,8 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                         LoginUser(email, password, auth, navController, context)
                     }, modifier = Modifier
                         .fillMaxWidth()
-                        .padding(8.dp), enabled = isPasswordValid
+                        .padding(8.dp),
+                        enabled = isPasswordValid && email.isNotEmpty()
                 ) {
                     Text(text = "Login")
                 }
@@ -165,6 +166,7 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
         }
     }
 }
+
 
 fun LoginUser(
     email: String,
@@ -198,5 +200,6 @@ fun LoginUser(
         }
     }
 }
+
 
 
