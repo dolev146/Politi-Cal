@@ -1,6 +1,7 @@
 package com.example.politi_cal.screens.login
 
 
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
@@ -29,11 +30,18 @@ import androidx.navigation.NavController
 import com.example.politi_cal.MainActivity
 import com.example.politi_cal.R
 import com.example.politi_cal.Screen
-import com.example.politi_cal.user
+
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 @Composable
 fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
+
+    // find the onstart
 
     val focusManager = LocalFocusManager.current
 
@@ -131,38 +139,11 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
 
                 Button(
                     onClick = {
-                            auth.signInWithEmailAndPassword(email, password)
-                                .addOnCompleteListener { task ->
-                                    if (task.isSuccessful) {
-                                        Toast.makeText(
-                                            context,
-                                            "Login Successful",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-                                        user = auth.currentUser
-                                        navController.navigate(Screen.SwipeScreen.route)
-                                    } else {
-                                        // If sign in fails, display a message to the user.
-                                        Log.w(
-                                            MainActivity.TAG,
-                                            "createUserWithEmail:failure",
-                                            task.exception
-                                        )
-                                        Toast.makeText(
-                                            context,
-                                            "Authentication failed.",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
-
-                                    }
-                                }
-
-//                        navController.navigate(Screen.SwipeScreen.route)
-                    },
-                    modifier = Modifier
+                        LoginUser(email, password, auth, navController, context)
+                    }, modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp),
-                    enabled = isPasswordValid && email.isNotEmpty()
+                        enabled = isPasswordValid && email.isNotEmpty()
                 ) {
                     Text(text = "Login")
                 }
@@ -185,4 +166,40 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
         }
     }
 }
+
+
+fun LoginUser(
+    email: String,
+    password: String,
+    auth: FirebaseAuth,
+    navController: NavController,
+    context: Context
+) {
+
+    if (email.isEmpty() || password.isEmpty()) {
+        Toast.makeText(
+            context, "Please enter email and password", Toast.LENGTH_SHORT
+        ).show()
+    } else {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                auth.signInWithEmailAndPassword(email, password).await()
+                withContext(context = Dispatchers.Main) {
+                    Toast.makeText(
+                        context, "Login Success", Toast.LENGTH_SHORT
+                    ).show()
+                    navController.navigate(Screen.SwipeScreen.route)
+                }
+            } catch (e: Exception) {
+                withContext(context = Dispatchers.Main) {
+                    Toast.makeText(
+                        context, e.message, Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    }
+}
+
+
 
