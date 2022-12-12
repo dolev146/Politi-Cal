@@ -131,9 +131,6 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
 
                 Button(
                     onClick = {
-                        if (email.isEmpty() || password.isEmpty()) {
-                            navController.navigate(Screen.SwipeScreen.route)
-                        } else {
                             auth.signInWithEmailAndPassword(email, password)
                                 .addOnCompleteListener { task ->
                                     if (task.isSuccessful) {
@@ -159,13 +156,13 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
 
                                     }
                                 }
-                        }
+
 //                        navController.navigate(Screen.SwipeScreen.route)
                     },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp),
-                    enabled = isPasswordValid
+                    enabled = isPasswordValid && email.isNotEmpty()
                 ) {
                     Text(text = "Login")
                 }
