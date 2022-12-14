@@ -9,6 +9,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.politi_cal.MainActivity.Companion.TAG
 import com.example.politi_cal.screens.NavDrawer.DrawerTopBar
 import com.example.politi_cal.screens.add_celeb.AddCelebScreen
+import com.example.politi_cal.screens.admin_screen.AdminOnlyScreen
 import com.example.politi_cal.screens.analytics.AdminAnalyticsScreen
 import com.example.politi_cal.screens.celeb_profile.CelebProfileScreen
 import com.example.politi_cal.screens.login.LoginScreen
@@ -109,6 +110,15 @@ fun Navigation(auth : FirebaseAuth, startScreen: String = Screen.LoginScreen.rou
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
                 AddCelebScreen(navController = navController, auth = auth)
+
+            })
+        }
+
+        composable(route = Screen.AdminOnlyScreen.route){
+            DrawerTopBar(navController = navCotroller , screen = { navController ->
+                // this is the screen that will be drawn after the drawer
+                // swipe screen
+                AdminOnlyScreen(navController = navController, auth = auth)
 
             })
         }
