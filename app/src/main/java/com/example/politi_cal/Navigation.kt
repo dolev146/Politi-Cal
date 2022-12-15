@@ -101,7 +101,10 @@ fun Navigation(auth : FirebaseAuth, startScreen: String = Screen.LoginScreen.rou
                 // clear the companiesForAddCeleb
                 companiesForAddCeleb.clear()
                 companiesForAddCelebNames.clear()
+                categoriesForAddCeleb.clear()
+                categoriesForAddCelebNames.clear()
                 retrieveCompanies()
+                retrieveCategories()
                 AddCelebScreen(navController = navController, auth = auth)
 
             })

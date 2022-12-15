@@ -76,6 +76,10 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4'
     // implement android of corotunes
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+    implementation("io.coil-kt:coil-compose:2.2.2")
+
+
+
 
 
 

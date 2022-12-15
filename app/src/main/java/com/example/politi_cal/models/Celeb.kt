@@ -9,6 +9,6 @@ data class Celeb(
                  val ImgUrl: String ,
                  val CelebInfo: String ,
                  val Category: String,
-                 var RightVotes: Int = 0,
-                 var LeftVotes: Int = 0
+                 var RightVotes: Long = 0,
+                 var LeftVotes: Long = 0
 )

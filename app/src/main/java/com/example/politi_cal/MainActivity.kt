@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.example.politi_cal.models.Category
 import com.example.politi_cal.models.Company
 import com.example.politi_cal.ui.theme.PolitiCalTheme
 import com.google.firebase.auth.FirebaseAuth
@@ -20,9 +21,13 @@ import kotlinx.coroutines.withContext
 val userCollectionRef = Firebase.firestore.collection("users")
 val celebCollectionRef = Firebase.firestore.collection("celebs")
 val companyCollectionRef = Firebase.firestore.collection("companies")
+val categoriesCollectionRef = Firebase.firestore.collection("categories")
 
 var companiesForAddCeleb = mutableListOf<Company>()
 var companiesForAddCelebNames = mutableListOf<String>()
+
+var categoriesForAddCeleb = mutableListOf<Category>()
+var categoriesForAddCelebNames = mutableListOf<String>()
 
 
 class MainActivity : ComponentActivity() {
@@ -77,10 +82,10 @@ fun checkLoggedInState(auth: FirebaseAuth): Boolean {
 }
 
 
-fun retrieveCompanies()  = CoroutineScope(Dispatchers.IO).launch {
+fun retrieveCompanies() = CoroutineScope(Dispatchers.IO).launch {
     try {
         val querySnapshot = companyCollectionRef.get().await()
-        for(document in querySnapshot.documents) {
+        for (document in querySnapshot.documents) {
             val companyDocument = document
             val companyID = companyDocument.id
             val companyCategory = companyDocument.data?.get("category").toString()
@@ -91,7 +96,28 @@ fun retrieveCompanies()  = CoroutineScope(Dispatchers.IO).launch {
         withContext(Dispatchers.Main) {
 
         }
-    } catch(e: Exception) {
+    } catch (e: Exception) {
+        withContext(Dispatchers.Main) {
+
+        }
+    }
+}
+
+fun retrieveCategories() = CoroutineScope(Dispatchers.IO).launch {
+    try {
+        val querySnapshot = categoriesCollectionRef.get().await()
+        for (document in querySnapshot.documents) {
+            val categoryDocument = document
+            val categoryID = categoryDocument.id
+            val categoryName = categoryDocument.data?.get("categoryName").toString()
+            val categoryObject = Category(categoryID, categoryName)
+            categoriesForAddCeleb.add(categoryObject)
+            categoriesForAddCelebNames.add(categoryName)
+        }
+        withContext(Dispatchers.Main) {
+
+        }
+    } catch (e: Exception) {
         withContext(Dispatchers.Main) {
 
         }

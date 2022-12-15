@@ -22,11 +22,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.politi_cal.MainActivity
-import com.example.politi_cal.Screen
-import com.example.politi_cal.celebCollectionRef
+import com.example.politi_cal.*
 import com.example.politi_cal.common.dropDownMenu
-import com.example.politi_cal.companiesForAddCelebNames
 import com.example.politi_cal.models.Celeb
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
@@ -34,6 +31,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+
 
 
 private  fun addCeleb(context : Context, celeb:Celeb , navController: NavController) = CoroutineScope(Dispatchers.IO).launch {
@@ -75,6 +73,7 @@ fun AddCelebScreen(navController: NavController, auth: FirebaseAuth) {
     var imgUrl by remember { mutableStateOf("") }
     var celebInfo by remember { mutableStateOf("") }
     var company by remember { mutableStateOf("") }
+    var category by remember { mutableStateOf("") }
 //    var listOfCompanies by remember {
 //        mutableStateOf(
 //            listOf("")
@@ -234,8 +233,15 @@ fun AddCelebScreen(navController: NavController, auth: FirebaseAuth) {
                 ),
             )
 
+
+            dropDownMenu(list = categoriesForAddCelebNames, labeli = "Select category" , onSelected =  { category = it } )
+
+
+
             Card(
-                modifier = Modifier.fillMaxWidth().padding(start = 20.dp, end = 20.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp)
                     ,
                 shape = RoundedCornerShape(16.dp),
                 border = BorderStroke(1.dp, Color.Black)
@@ -253,7 +259,7 @@ fun AddCelebScreen(navController: NavController, auth: FirebaseAuth) {
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 20.dp, end = 20.dp , bottom = 20.dp),
+                            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
                         colors = ButtonDefaults.buttonColors(
                             backgroundColor = MaterialTheme.colors.primary,
                             contentColor = MaterialTheme.colors.onPrimary
@@ -278,6 +284,7 @@ fun AddCelebScreen(navController: NavController, auth: FirebaseAuth) {
                             ImgUrl = imgUrl,
                             CelebInfo = celebInfo,
                             Company = company,
+                            Category = category
                         )
                         addCeleb(context,newCeleb,navController)
 //                    } else {

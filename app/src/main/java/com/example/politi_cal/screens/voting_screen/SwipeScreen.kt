@@ -1,7 +1,8 @@
 package com.example.politi_cal.screens.voting_screen
 
-
-import androidx.compose.foundation.Image
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,7 +14,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
@@ -21,20 +21,109 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+import com.example.politi_cal.MainActivity
 import com.example.politi_cal.R
+import com.example.politi_cal.celebCollectionRef
+import com.example.politi_cal.models.Celeb
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+
+var celebListParam = mutableListOf<Celeb>()
+
+fun getCelebrities(context: Context) = CoroutineScope(Dispatchers.IO).launch {
+    try {
+        // celebCollectionRef
+        // print the list of documents
+//        val Company: String ,
+//        val FirstName: String ,
+//        val LastName: String ,
+//        val BirthDate: Long,
+//        val ImgUrl: String ,
+//        val CelebInfo: String ,
+//        val Category: String,
+//        var RightVotes: Int = 0,
+//        var LeftVotes: Int = 0
+        celebCollectionRef.get().addOnSuccessListener { documents ->
+            for (document in documents) {
+                print(document.data)
+
+
+                val celeb = Celeb(
+                    FirstName = document.data["firstName"] as String,
+                    LastName = document.data["lastName"] as String,
+                    BirthDate = document.data["birthDate"] as Long,
+                    ImgUrl = document.data["imgUrl"] as String,
+                    CelebInfo = document.data["celebInfo"] as String,
+                    Category = document.data["category"] as String,
+                    RightVotes = document.data["rightVotes"] as Long,
+                    LeftVotes = document.data["leftVotes"] as Long,
+                    Company = document.data["company"] as String,
+                )
+
+                celebListParam.add(celeb)
+            }
+        }.await()
+        println(
+            "Celebrities: $celebListParam"
+        )
+
+        withContext(Dispatchers.Main) {
+            Toast.makeText(context, "Celebrities loaded", Toast.LENGTH_SHORT).show()
+        }
+
+
+//        celebList.shuffle() // shuffle the list
+//        celebListParam = celebList // set the list to the parameter
+
+
+    } catch (e: Exception) {
+        Log.d(MainActivity.TAG, "Error Getting celebrities: $e")
+        withContext(Dispatchers.Main) {
+            Toast.makeText(
+                context, "Error Error Getting celebrities: $e", Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+}
 
 
 @Composable
 fun SwipeScreen(navController: NavController, auth: FirebaseAuth) {
+
+    val celebList = celebListParam
+    // create  a Text and insert the celebList to it and show it
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black)
+    ) {
+        Text(
+            text = celebList.toString(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        )
+    }
+    SwipeScreenAlternate(navController, auth)
+}
+
+
+@Composable
+fun SwipeScreenAlternate(navController: NavController, auth: FirebaseAuth) {
     // A surface container using the 'background' color from the theme
     Surface(color = MaterialTheme.colors.background) {
-//        TopBar()
         Column() {
             PoliticalAppIconTop()
             HeroCard(
-                fullName = "Yakov Cohen",
-                worksAt = "McDonalds",
+//                fullName = celeb.FirstName + " " + celeb.LastName,
+//                worksAt = celeb.Company,
+                fullName = "Joe Biden",
+                worksAt = "President of the United States",
                 painter = painterResource(id = R.drawable.kermit2)
             )
             LeftRightButtonsRow()
@@ -58,8 +147,13 @@ fun LeftRightButtonsRow() {
                 tint = Color(0xFF03588c),
                 modifier = Modifier.size(150.dp)
             )
-            Text(text = "Lefty"
-                , style = TextStyle(color = Color(0xFF03588c), fontSize = 24.sp, fontWeight = FontWeight.Bold),
+            Text(
+                text = "Lefty",
+                style = TextStyle(
+                    color = Color(0xFF03588c),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                ),
                 // move the text a little bit to the right
                 modifier = Modifier.padding(start = 30.dp)
             )
@@ -73,7 +167,11 @@ fun LeftRightButtonsRow() {
             )
             Text(
                 text = "Righty",
-                style = TextStyle(color = Color(0xFFa60321), fontSize = 24.sp, fontWeight = FontWeight.Bold),
+                style = TextStyle(
+                    color = Color(0xFFa60321),
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                ),
                 modifier = Modifier.offset(x = -(25).dp)
             )
         }
@@ -106,10 +204,15 @@ fun ImageCard(
         elevation = 5.dp
     ) {
         Box() {
-            Image(
-                painter = painter,
-                contentDescription = "$fullName $worksAt",
-                contentScale = ContentScale.Crop,
+//            Image(
+//                painter = rememberAsyncImagePainter("https://picsum.photos/300/300"),
+//                contentDescription = "$fullName $worksAt",
+//                contentScale = ContentScale.Crop,
+//            )
+            AsyncImage(
+                model = "https://picsum.photos/300/300",
+                contentDescription = null,
+                placeholder = painterResource(R.drawable.app_logo)
             )
             Box(
                 modifier = Modifier
