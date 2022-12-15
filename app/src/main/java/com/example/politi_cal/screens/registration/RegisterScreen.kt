@@ -136,7 +136,6 @@ fun RegisterScreen(navController: NavController, auth: FirebaseAuth) {
                     ),
                     keyboardActions = KeyboardActions(onNext = {
                         focusManager.moveFocus(Down)
-
                     }),
                     isError = !isPasswordValid,
                     visualTransformation = if (isPasswordVisiable) VisualTransformation.None else PasswordVisualTransformation()

@@ -1,6 +1,7 @@
 package com.example.politi_cal.screens.preferences
 
 
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
@@ -177,22 +178,13 @@ fun PreferenceScreen(navController: NavController, auth: FirebaseAuth) {
                         userAge = selectedAge,
                         userGender = selectedGender
                     )
+
                     // add the user to the database
-                    CoroutineScope(Dispatchers.IO).launch {
-                        try {
-                            userCollectionRef.document(auth.currentUser?.email.toString()).set(userClass).await()
-                        } catch (e: Exception) {
-                            Log.d(TAG, "Error adding user to database: $e")
-                            withContext(Dispatchers.Main) {
-                                Toast.makeText(
-                                    context, "Error adding user to database: $e", Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-                    }
+                    editUser(auth, userClass, context, navController)
 
 
-                    navController.navigate(Screen.SwipeScreen.route)
+
+
 
                 },
                 modifier = Modifier
@@ -226,5 +218,22 @@ fun PreferenceScreen(navController: NavController, auth: FirebaseAuth) {
 //
 //        }
 //    }
-//
 //}
+
+private  fun editUser(auth : FirebaseAuth, userClass : User, context : Context, navController: NavController) = CoroutineScope(Dispatchers.IO).launch {
+    try {
+        userCollectionRef.document(auth.currentUser?.email.toString()).set(userClass).await()
+        withContext(Dispatchers.Main) {
+            Toast.makeText(context, "User added", Toast.LENGTH_SHORT).show()
+            navController.navigate(Screen.SwipeScreen.route)
+        }
+    } catch (e: Exception) {
+        Log.d(TAG, "Error adding user to database: $e")
+        withContext(Dispatchers.Main) {
+            Toast.makeText(
+                context, "Error adding user to database: $e", Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+}
+

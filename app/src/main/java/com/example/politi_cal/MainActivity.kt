@@ -4,17 +4,26 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.navigation.NavController
+import com.example.politi_cal.models.Company
 import com.example.politi_cal.ui.theme.PolitiCalTheme
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 
-val db = Firebase.firestore
-val userCollectionRef = db.collection("users")
-val celebCollectionRef = db.collection("celebs")
+//val db = Firebase.firestore
+val userCollectionRef = Firebase.firestore.collection("users")
+val celebCollectionRef = Firebase.firestore.collection("celebs")
+val companyCollectionRef = Firebase.firestore.collection("companies")
+
+var companiesForAddCeleb = mutableListOf<Company>()
+var companiesForAddCelebNames = mutableListOf<String>()
+
 
 class MainActivity : ComponentActivity() {
 
@@ -29,6 +38,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        retrieveCompanies()
         setContent {
             PolitiCalTheme {
                 Navigation(auth = auth)
@@ -65,3 +75,27 @@ fun checkLoggedInState(auth: FirebaseAuth): Boolean {
         return false
     }
 }
+
+
+fun retrieveCompanies()  = CoroutineScope(Dispatchers.IO).launch {
+    try {
+        val querySnapshot = companyCollectionRef.get().await()
+        for(document in querySnapshot.documents) {
+            val companyDocument = document
+            val companyID = companyDocument.id
+            val companyCategory = companyDocument.data?.get("category").toString()
+            val companyObject = Company(companyID, companyCategory)
+            companiesForAddCeleb.add(companyObject)
+            companiesForAddCelebNames.add(companyID)
+        }
+        withContext(Dispatchers.Main) {
+
+        }
+    } catch(e: Exception) {
+        withContext(Dispatchers.Main) {
+
+        }
+    }
+}
+
+

@@ -21,18 +21,15 @@ import androidx.compose.ui.unit.toSize
 
 @Composable
 fun dropDownMenu(list: List<String>, labeli: String, onSelected: (String) -> Unit = {}) {
-
     var expended by remember {
         mutableStateOf(false)
     }
     var selected by remember {
         mutableStateOf("")
     }
-
     var textFiledSize by remember {
         mutableStateOf(Size.Zero)
     } // this is the size of the text field
-
     val icon = if (expended) {
         Icons.Filled.KeyboardArrowUp
     } else {
