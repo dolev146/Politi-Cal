@@ -58,7 +58,6 @@ fun CelebProfileScreen(navController: NavController, auth: FirebaseAuth) {
 @Composable
 fun MoreInfo(information_param: String, modifier: Modifier = Modifier) {
     Column(modifier = modifier.padding(start = 26.dp, end = 26.dp)) {
-
         Text(
             text = "More information",
             color = Color.Black,
@@ -87,17 +86,30 @@ fun VotingBar(
 
     val shape = RoundedCornerShape(32.dp)
     Column(
-        Modifier.padding(start = 16.dp, end = 16.dp),
+        Modifier.padding(start = 16.dp, end = 16.dp).background(Color.Transparent),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
             modifier = modifier
                 .fillMaxWidth()
                 .height(32.dp)
-                .background(Color.White)
+                .background(Color.Transparent)
                 .clip(shape)
                 .border(1.dp, Color.Black, shape)
         ) {
+
+            Column(
+                modifier = Modifier
+                    .background(Color(0xFF03588C))
+                    .fillMaxHeight(leftyPercentWeight )
+                    .weight(1f)
+                    .clip(CircleShape),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+                // add rounded corners to the right side
+            ) {
+//0xFFA60321
+            }
             Column(
                 // add rounded corners to the left side
                 modifier = Modifier
@@ -107,18 +119,6 @@ fun VotingBar(
                     .fillMaxHeight(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-            }
-            Column(
-                modifier = Modifier
-                    .background(Color(0xFF03588C))
-                    .fillMaxHeight(leftyPercentWeight)
-                    .weight(1f)
-                    .clip(CircleShape),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-                // add rounded corners to the right side
             ) {
 
             }
@@ -142,11 +142,11 @@ fun VotingBar(
                         modifier = Modifier
                             .size(30.dp)
                             .clip(CircleShape)
-                            .background(Color(0xFFA60321))
+                            .background(Color(0xFF03588C))
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = "Right $rightyPercent%",
+                        text = "Lefty $leftyPercent%",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -157,11 +157,11 @@ fun VotingBar(
                         modifier = Modifier
                             .size(30.dp)
                             .clip(CircleShape)
-                            .background(Color(0xFF03588C))
+                            .background(Color(0xFFA60321))
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = "Left $leftyPercent%", fontSize = 20.sp, fontWeight = FontWeight.Bold
+                        text = "Righty $rightyPercent%", fontSize = 20.sp, fontWeight = FontWeight.Bold
                     )
                 }
             }

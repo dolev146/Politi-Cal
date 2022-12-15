@@ -15,9 +15,10 @@ data class User(@Exclude val userID: String = "",
                 val favoritePartyID: String,
                 val userName: String,
                 val email: String,
-                val password: String,
                 val registerDate: Long,
-                var userPref: List<String>
+                var userPref: List<String>,
+                var userGender: String,
+                var userAge : String
                 ) {
 
 }
