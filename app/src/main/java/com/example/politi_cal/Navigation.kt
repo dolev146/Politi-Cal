@@ -1,6 +1,7 @@
 package com.example.politi_cal
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -68,6 +69,11 @@ fun Navigation(auth : FirebaseAuth, startScreen: String = Screen.LoginScreen.rou
 
 
         composable(route = Screen.SwipeScreen.route) {
+            counter += 1
+            println("counter : " + counter)
+            val context = LocalContext.current
+            celebListParam.clear()
+            retrieveCelebs()
             DrawerTopBar(navController = navCotroller , screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen

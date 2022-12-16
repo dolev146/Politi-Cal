@@ -1,8 +1,5 @@
 package com.example.politi_cal.screens.voting_screen
 
-import android.content.Context
-import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,9 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
@@ -23,76 +18,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.example.politi_cal.MainActivity
 import com.example.politi_cal.R
-import com.example.politi_cal.celebCollectionRef
+import com.example.politi_cal.celebListParam
 import com.example.politi_cal.models.Celeb
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 
-var celebListParam = mutableListOf<Celeb>()
 
-fun getCelebrities(context: Context) = CoroutineScope(Dispatchers.IO).launch {
-    try {
-        celebCollectionRef.get().addOnSuccessListener { documents ->
-            for (document in documents) {
-                val celeb = Celeb(
-                    FirstName = document.data["firstName"] as String,
-                    LastName = document.data["lastName"] as String,
-                    BirthDate = document.data["birthDate"] as Long,
-                    ImgUrl = document.data["imgUrl"] as String,
-                    CelebInfo = document.data["celebInfo"] as String,
-                    Category = document.data["category"] as String,
-                    RightVotes = document.data["rightVotes"] as Long,
-                    LeftVotes = document.data["leftVotes"] as Long,
-                    Company = document.data["company"] as String,
-                )
-                celebListParam.add(celeb)
-            }
-        }.await()
-        println(
-            "Celebrities: $celebListParam"
-        )
-
-        withContext(Dispatchers.Main) {
-            Toast.makeText(context, "Celebrities loaded", Toast.LENGTH_SHORT).show()
-        }
-
-        celebListParam.shuffle() // shuffle the list
-
-    } catch (e: Exception) {
-        Log.d(MainActivity.TAG, "Error Getting celebrities: $e")
-        withContext(Dispatchers.Main) {
-            Toast.makeText(
-                context, "Error Error Getting celebrities: $e", Toast.LENGTH_SHORT
-            ).show()
-        }
-    }
-}
 
 
 @Composable
 fun SwipeScreen(navController: NavController, auth: FirebaseAuth) {
-    val context = LocalContext.current
-    getCelebrities(context)
 
-    val celebList = celebListParam
-    // create  a Text and insert the celebList to it and show it
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Black)
-    ) {
-        Text(
-            text = celebList.toString(), modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        )
-    }
     SwipeScreenAlternate(navController, auth)
 }
 
@@ -103,12 +39,26 @@ fun SwipeScreenAlternate(navController: NavController, auth: FirebaseAuth) {
     Surface(color = MaterialTheme.colors.background) {
         Column() {
             PoliticalAppIconTop()
+//            Text(
+//                text = celebListParam.toString(), modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(16.dp)
+//            )
+            var celeb = Celeb(Company = "test" , FirstName = "text" , LastName = "text" , BirthDate = 0 , ImgUrl = "https://user-images.githubusercontent.com/62290677/208085405-50e2a05c-2a41-4579-8038-263fe097b80d.png" , CelebInfo = "text" , Category = "text" , RightVotes = 0 , LeftVotes = 0)
+            // check if the list is empty
+            if(celebListParam.isNotEmpty()){
+                 celeb = celebListParam[0]
+            }
+
+
+
+
             HeroCard(
 //                fullName = celeb.FirstName + " " + celeb.LastName,
 //                worksAt = celeb.Company,
-                fullName = "Joe Biden",
-                worksAt = "President of the United States",
-                painter = painterResource(id = R.drawable.kermit2)
+                fullName = celeb.FirstName + " " + celeb.LastName,
+                worksAt = "Works at " + celeb.Company,
+                painter = celeb.ImgUrl
             )
             LeftRightButtonsRow()
         }
@@ -158,7 +108,7 @@ fun LeftRightButtonsRow() {
 
 
 @Composable
-fun HeroCard(modifier: Modifier = Modifier, fullName: String, worksAt: String, painter: Painter) {
+fun HeroCard(modifier: Modifier = Modifier, fullName: String, worksAt: String, painter: String) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround,
@@ -171,7 +121,7 @@ fun HeroCard(modifier: Modifier = Modifier, fullName: String, worksAt: String, p
 
 @Composable
 fun ImageCard(
-    painter: Painter, worksAt: String, fullName: String, modifier: Modifier = Modifier
+    painter: String, worksAt: String, fullName: String, modifier: Modifier = Modifier
 ) {
     Card(
         modifier = modifier
@@ -187,7 +137,7 @@ fun ImageCard(
 //                contentScale = ContentScale.Crop,
 //            )
             AsyncImage(
-                model = "https://user-images.githubusercontent.com/62290677/207936995-629a9f12-3992-48b2-b23f-12f901aa19c2.png",
+                model = painter,
                 contentDescription = null,
                 placeholder = painterResource(R.drawable.app_logo),
                 modifier = Modifier

@@ -5,16 +5,14 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.example.politi_cal.models.Category
+import com.example.politi_cal.models.Celeb
 import com.example.politi_cal.models.Company
 import com.example.politi_cal.ui.theme.PolitiCalTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 
 
 //val db = Firebase.firestore
@@ -28,6 +26,10 @@ var companiesForAddCelebNames = mutableListOf<String>()
 
 var categoriesForAddCeleb = mutableListOf<Category>()
 var categoriesForAddCelebNames = mutableListOf<String>()
+
+var celebListParam = mutableListOf<Celeb>()
+
+var counter = 0
 
 
 class MainActivity : ComponentActivity() {
@@ -43,7 +45,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        retrieveCompanies()
         setContent {
             PolitiCalTheme {
                 Navigation(auth = auth)
@@ -55,6 +56,7 @@ class MainActivity : ComponentActivity() {
         super.onStart()
         // use the checkLoggedInState function to check if the user is logged in
         val value = checkLoggedInState(auth)
+        //getCelebrities()
         if (value) {
             setContent {
                 Navigation(auth = auth, Screen.SwipeScreen.route)
@@ -68,6 +70,54 @@ class MainActivity : ComponentActivity() {
     }
 
 }
+
+
+fun retrieveCelebs() = CoroutineScope(Dispatchers.IO).launch {
+    var retries = 0
+    var MAX_RETRIES = 5
+    var RETRY_DELAY = 1000L
+    while (true) {
+        try {
+            val querySnapshot = celebCollectionRef.get().await()
+            for (document in querySnapshot.documents) {
+                val celebDocument = document
+                val celebID = celebDocument.id
+                val celebCompany = celebDocument.data?.get("company").toString()
+                val celebFirstName = celebDocument.data?.get("firstName").toString()
+                val celebLastName = celebDocument.data?.get("lastName").toString()
+                val celebBirthDate = celebDocument.data?.get("birthDate").toString().toLong()
+                val celebImgUrl = celebDocument.data?.get("imgUrl").toString()
+                val celebInfo = celebDocument.data?.get("celebInfo").toString()
+                val celebCategory = celebDocument.data?.get("category").toString()
+                val celebRightVotes = celebDocument.data?.get("rightVotes").toString().toLong()
+                val celebLeftVotes = celebDocument.data?.get("leftVotes").toString().toLong()
+                val celebObject = Celeb(
+                    Company = celebCompany,
+                    FirstName = celebFirstName,
+                    LastName = celebLastName,
+                    BirthDate = celebBirthDate,
+                    ImgUrl = celebImgUrl,
+                    CelebInfo = celebInfo,
+                    Category = celebCategory,
+                    RightVotes = celebRightVotes,
+                    LeftVotes = celebLeftVotes
+                )
+                celebListParam.add(celebObject)
+            }
+            celebListParam.shuffle()
+            break
+
+        } catch (e: Exception) {
+            if (retries == MAX_RETRIES) {  // If the maximum number of retries is reached
+                throw e  // Re-throw the exception to be handled by the caller
+            }
+            Log.d("error celeb", e.toString())
+        }
+        retries++  // Increment the retry count
+        delay(RETRY_DELAY)  // Wait before retrying
+    }
+}
+
 
 // write a function that check if user is logged in take in auth as a parameter and return a boolean
 // if user is logged in return true else return false
