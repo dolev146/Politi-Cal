@@ -72,8 +72,8 @@ fun Navigation(auth : FirebaseAuth, startScreen: String = Screen.LoginScreen.rou
             counter += 1
             println("counter : " + counter)
             val context = LocalContext.current
-            celebListParam.clear()
-            retrieveCelebs()
+//            celebListParam.clear()
+//            retrieveCelebs()
             DrawerTopBar(navController = navCotroller , screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen

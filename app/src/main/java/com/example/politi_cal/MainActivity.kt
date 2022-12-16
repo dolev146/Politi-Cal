@@ -45,6 +45,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        celebListParam.clear()
+        retrieveCelebs()
         setContent {
             PolitiCalTheme {
                 Navigation(auth = auth)
@@ -76,6 +78,22 @@ fun retrieveCelebs() = CoroutineScope(Dispatchers.IO).launch {
     var retries = 0
     var MAX_RETRIES = 5
     var RETRY_DELAY = 1000L
+    val auth = FirebaseAuth.getInstance()
+    val user = auth.currentUser?.email.toString()
+    val userPref = mutableListOf<String>()
+    try {
+        val docRef = userCollectionRef.document(user)
+        val doc = docRef.get().await()
+        for(document in doc.data?.values!!){
+            userPref.add(document.toString())
+        }
+
+    } catch (e: Exception) {
+        Log.e("retrieveCelebs", "Error: ${e.message}")
+    }
+    val userPrefListSource = userPref[1].split(",").toMutableList()
+    val userPrefList = removeCharacters(userPrefListSource)
+
     while (true) {
         try {
             val querySnapshot = celebCollectionRef.get().await()
@@ -89,6 +107,9 @@ fun retrieveCelebs() = CoroutineScope(Dispatchers.IO).launch {
                 val celebImgUrl = celebDocument.data?.get("imgUrl").toString()
                 val celebInfo = celebDocument.data?.get("celebInfo").toString()
                 val celebCategory = celebDocument.data?.get("category").toString()
+                if (!userPrefList.contains(celebCategory)){
+                    continue
+                }
                 val celebRightVotes = celebDocument.data?.get("rightVotes").toString().toLong()
                 val celebLeftVotes = celebDocument.data?.get("leftVotes").toString().toLong()
                 val celebObject = Celeb(
@@ -174,6 +195,10 @@ fun retrieveCategories() = CoroutineScope(Dispatchers.IO).launch {
         }
         Log.d("Categories", "Error")
     }
+}
+
+fun removeCharacters(list: List<String>): List<String> {
+    return list.map { it.replace(" ", "").replace("[", "").replace("]", "") }
 }
 
 

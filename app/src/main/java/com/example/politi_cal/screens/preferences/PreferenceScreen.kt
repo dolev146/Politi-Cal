@@ -18,8 +18,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.politi_cal.MainActivity.Companion.TAG
 import com.example.politi_cal.Screen
+import com.example.politi_cal.celebListParam
 import com.example.politi_cal.common.dropDownMenu
 import com.example.politi_cal.models.User
+import com.example.politi_cal.retrieveCelebs
 import com.example.politi_cal.userCollectionRef
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
@@ -225,6 +227,8 @@ private  fun editUser(auth : FirebaseAuth, userClass : User, context : Context, 
         userCollectionRef.document(auth.currentUser?.email.toString()).set(userClass).await()
         withContext(Dispatchers.Main) {
             Toast.makeText(context, "User added", Toast.LENGTH_SHORT).show()
+            celebListParam.clear()
+            retrieveCelebs()
             navController.navigate(Screen.SwipeScreen.route)
         }
     } catch (e: Exception) {

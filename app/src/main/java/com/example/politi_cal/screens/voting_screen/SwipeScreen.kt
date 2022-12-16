@@ -18,7 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.example.politi_cal.Navigation
 import com.example.politi_cal.R
+import com.example.politi_cal.Screen
 import com.example.politi_cal.celebListParam
 import com.example.politi_cal.models.Celeb
 import com.google.firebase.auth.FirebaseAuth
@@ -46,27 +48,38 @@ fun SwipeScreenAlternate(navController: NavController, auth: FirebaseAuth) {
 //            )
             var celeb = Celeb(Company = "test" , FirstName = "text" , LastName = "text" , BirthDate = 0 , ImgUrl = "https://user-images.githubusercontent.com/62290677/208085405-50e2a05c-2a41-4579-8038-263fe097b80d.png" , CelebInfo = "text" , Category = "text" , RightVotes = 0 , LeftVotes = 0)
             // check if the list is empty
-            if(celebListParam.isNotEmpty()){
-                 celeb = celebListParam[0]
-            }
 
-
-
-
-            HeroCard(
+            if (celebListParam.isEmpty()) {
+                Text(
+                    text = "Loading...", modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                )
+            } else {
+                celeb = celebListParam[0]
+                HeroCard(
 //                fullName = celeb.FirstName + " " + celeb.LastName,
 //                worksAt = celeb.Company,
-                fullName = celeb.FirstName + " " + celeb.LastName,
-                worksAt = "Works at " + celeb.Company,
-                painter = celeb.ImgUrl
-            )
-            LeftRightButtonsRow()
+                    fullName = celeb.FirstName + " " + celeb.LastName,
+                    worksAt = "Works at " + celeb.Company,
+                    painter = celeb.ImgUrl
+                )
+                LeftRightButtonsRow(navController)
+            }
+//            if(celebListParam.isNotEmpty()){
+//                 celeb = celebListParam[0]
+//            }
+
+
+
+
+
         }
     }
 }
 
 @Composable
-fun LeftRightButtonsRow() {
+fun LeftRightButtonsRow(navController : NavController) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround,
@@ -89,7 +102,10 @@ fun LeftRightButtonsRow() {
                 modifier = Modifier.padding(start = 30.dp)
             )
         }
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = {
+            celebListParam.removeAt(0)
+            navController.navigate(Screen.SwipeScreen.route)
+        }) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.righty_svg),
                 contentDescription = "Righty",
@@ -188,12 +204,6 @@ fun PoliticalAppIconTop(modifier: Modifier = Modifier) {
             tint = Color.Black,
             modifier = Modifier.size(100.dp)
         )
-//        Image(
-//            painter = painterResource(id = R.drawable.political_icon_image),
-//            contentDescription = "Political App Icon",
-//            modifier = Modifier
-//                .size(100.dp)
-//        )
     }
 }
 
