@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.example.politi_cal.DBObjects.AdminAnalyticsQueriesDBObj
 import com.example.politi_cal.DBObjects.AnalyticsQueriesObj
 import com.example.politi_cal.DBObjects.EarlyQueriesObj
 import com.example.politi_cal.DBObjects.UserVoteDBObj
@@ -47,20 +48,23 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PolitiCalTheme {
-                val e = EarlyQueriesObj()
-                var callback = CallBack<Int, Map<String, Double>>(0)
-                val s = AnalyticsQueriesObj()
-                s.getTotalDistribution(callback)
-                while(!callback.getStatus()){
-                    continue
-                }
-                var left = callback.getOutput()!!["Left"]
-                var right = callback.getOutput()!!["Right"]
-//                val p_left = left!! / (left+ right!!)
-//                val p_right = right!! / (left+ right!!)
-                var output = "Left votes:$left" + "%\n"
-                output+= "Right votes: $right" + "%"
-                Toast.makeText(this, "Query Output $output", Toast.LENGTH_LONG).show()
+//                val e = EarlyQueriesObj()
+//                var callback = CallBack<Int, Map<String, Double>>(0)
+//                val s = AnalyticsQueriesObj()
+//                s.getTotalDistribution(callback)
+//                while(!callback.getStatus()){
+//                    continue
+//                }
+//                var left = callback.getOutput()!!["Left"]
+//                var right = callback.getOutput()!!["Right"]
+////                val p_left = left!! / (left+ right!!)
+////                val p_right = right!! / (left+ right!!)
+//                var output = "Left votes:$left" + "%\n"
+//                output+= "Right votes: $right" + "%"
+//                Toast.makeText(this, "Query Output $output", Toast.LENGTH_LONG).show()
+                val aaqdb = AdminAnalyticsQueriesDBObj()
+//                var out = aaqdb.getAge(19970421)
+//                Toast.makeText(this, "My age is $out", Toast.LENGTH_LONG).show()
                 Navigation(auth = auth)
             }
         }
