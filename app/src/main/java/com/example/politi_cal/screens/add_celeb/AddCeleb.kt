@@ -92,6 +92,41 @@ fun AddCelebScreen(navController: NavController, auth: FirebaseAuth) {
                 Text(text = "Add Celeb Screen", style = MaterialTheme.typography.h4)
             }
 
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp)
+                ,
+                shape = RoundedCornerShape(16.dp),
+                border = BorderStroke(1.dp, Color.Black)
+            ) {
+                Column() {
+                    dropDownMenu(
+                        list = listOfCompanies,
+                        labeli = "Select Company",
+                        onSelected = { company = it },
+                    )
+                    // add a button to add a new company
+                    Button(
+                        onClick = {
+                            navController.navigate(Screen.AddNewCompanyScreen.route)
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = MaterialTheme.colors.primary,
+                            contentColor = MaterialTheme.colors.onPrimary
+                        ),
+
+                        ) {
+                        Text(text = "Add New Company ➡️")
+                    }
+
+                }
+
+            }
+
 
             OutlinedTextField(
                 value = firstName,
@@ -234,44 +269,15 @@ fun AddCelebScreen(navController: NavController, auth: FirebaseAuth) {
             )
 
 
-            dropDownMenu(list = categoriesForAddCelebNames, labeli = "Select category" , onSelected =  { category = it } )
+            dropDownMenu(
+                list = categoriesForAddCelebNames,
+                labeli = "Select category" ,
+                onSelected =  { category = it }
+            )
 
 
 
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 20.dp, end = 20.dp)
-                    ,
-                shape = RoundedCornerShape(16.dp),
-                border = BorderStroke(1.dp, Color.Black)
-            ) {
-                Column() {
-                    dropDownMenu(
-                        list = listOfCompanies,
-                        labeli = "Select Company",
-                        onSelected = { company = it },
-                    )
-                    // add a button to add a new company
-                    Button(
-                        onClick = {
-                            navController.navigate(Screen.AddNewCompanyScreen.route)
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = MaterialTheme.colors.primary,
-                            contentColor = MaterialTheme.colors.onPrimary
-                        ),
 
-                    ) {
-                        Text(text = "Add New Company ➡️")
-                    }
-
-                }
-
-            }
 
 
             Button(

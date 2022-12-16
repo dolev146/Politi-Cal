@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
@@ -37,22 +38,8 @@ var celebListParam = mutableListOf<Celeb>()
 
 fun getCelebrities(context: Context) = CoroutineScope(Dispatchers.IO).launch {
     try {
-        // celebCollectionRef
-        // print the list of documents
-//        val Company: String ,
-//        val FirstName: String ,
-//        val LastName: String ,
-//        val BirthDate: Long,
-//        val ImgUrl: String ,
-//        val CelebInfo: String ,
-//        val Category: String,
-//        var RightVotes: Int = 0,
-//        var LeftVotes: Int = 0
         celebCollectionRef.get().addOnSuccessListener { documents ->
             for (document in documents) {
-                print(document.data)
-
-
                 val celeb = Celeb(
                     FirstName = document.data["firstName"] as String,
                     LastName = document.data["lastName"] as String,
@@ -64,7 +51,6 @@ fun getCelebrities(context: Context) = CoroutineScope(Dispatchers.IO).launch {
                     LeftVotes = document.data["leftVotes"] as Long,
                     Company = document.data["company"] as String,
                 )
-
                 celebListParam.add(celeb)
             }
         }.await()
@@ -76,10 +62,7 @@ fun getCelebrities(context: Context) = CoroutineScope(Dispatchers.IO).launch {
             Toast.makeText(context, "Celebrities loaded", Toast.LENGTH_SHORT).show()
         }
 
-
-//        celebList.shuffle() // shuffle the list
-//        celebListParam = celebList // set the list to the parameter
-
+        celebListParam.shuffle() // shuffle the list
 
     } catch (e: Exception) {
         Log.d(MainActivity.TAG, "Error Getting celebrities: $e")
@@ -94,6 +77,8 @@ fun getCelebrities(context: Context) = CoroutineScope(Dispatchers.IO).launch {
 
 @Composable
 fun SwipeScreen(navController: NavController, auth: FirebaseAuth) {
+    val context = LocalContext.current
+    getCelebrities(context)
 
     val celebList = celebListParam
     // create  a Text and insert the celebList to it and show it
@@ -103,8 +88,7 @@ fun SwipeScreen(navController: NavController, auth: FirebaseAuth) {
             .background(Color.Black)
     ) {
         Text(
-            text = celebList.toString(),
-            modifier = Modifier
+            text = celebList.toString(), modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
         )
@@ -148,11 +132,8 @@ fun LeftRightButtonsRow() {
                 modifier = Modifier.size(150.dp)
             )
             Text(
-                text = "Lefty",
-                style = TextStyle(
-                    color = Color(0xFF03588c),
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
+                text = "Lefty", style = TextStyle(
+                    color = Color(0xFF03588c), fontSize = 24.sp, fontWeight = FontWeight.Bold
                 ),
                 // move the text a little bit to the right
                 modifier = Modifier.padding(start = 30.dp)
@@ -166,13 +147,9 @@ fun LeftRightButtonsRow() {
                 modifier = Modifier.size(150.dp)
             )
             Text(
-                text = "Righty",
-                style = TextStyle(
-                    color = Color(0xFFa60321),
-                    fontSize = 24.sp,
-                    fontWeight = FontWeight.Bold
-                ),
-                modifier = Modifier.offset(x = -(25).dp)
+                text = "Righty", style = TextStyle(
+                    color = Color(0xFFa60321), fontSize = 24.sp, fontWeight = FontWeight.Bold
+                ), modifier = Modifier.offset(x = -(25).dp)
             )
         }
 
@@ -210,9 +187,12 @@ fun ImageCard(
 //                contentScale = ContentScale.Crop,
 //            )
             AsyncImage(
-                model = "https://picsum.photos/300/300",
+                model = "https://user-images.githubusercontent.com/62290677/207936995-629a9f12-3992-48b2-b23f-12f901aa19c2.png",
                 contentDescription = null,
-                placeholder = painterResource(R.drawable.app_logo)
+                placeholder = painterResource(R.drawable.app_logo),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
             )
             Box(
                 modifier = Modifier

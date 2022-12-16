@@ -117,10 +117,12 @@ fun retrieveCategories() = CoroutineScope(Dispatchers.IO).launch {
         withContext(Dispatchers.Main) {
 
         }
+        Log.d("Categories", categoriesForAddCeleb.toString())
     } catch (e: Exception) {
         withContext(Dispatchers.Main) {
 
         }
+        Log.d("Categories", "Error")
     }
 }
 
