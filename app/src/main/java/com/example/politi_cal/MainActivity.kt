@@ -11,7 +11,9 @@ import com.example.politi_cal.DBObjects.EarlyQueriesObj
 import com.example.politi_cal.DBObjects.UserVoteDBObj
 import com.example.politi_cal.DBObjects.VoteOptionDBObj
 import com.example.politi_cal.models.CallBack
+import com.example.politi_cal.models.Category
 import com.example.politi_cal.models.Celeb
+import com.example.politi_cal.models.Company
 import com.example.politi_cal.models.UserVote
 import com.example.politi_cal.models.VoteOption
 import com.example.politi_cal.ui.theme.PolitiCalTheme
@@ -46,15 +48,18 @@ class MainActivity : ComponentActivity() {
         setContent {
             PolitiCalTheme {
                 val e = EarlyQueriesObj()
-                val celeb = Celeb("", "", "Omer Adam", 0, "", "", 70, 30)
-                var callback = CallBack<Celeb, Map<String, Int>>(celeb)
+                var callback = CallBack<Int, Map<String, Double>>(0)
                 val s = AnalyticsQueriesObj()
-                s.getCelebDistribution(callback)
+                s.getTotalDistribution(callback)
                 while(!callback.getStatus()){
                     continue
                 }
-                var output = "Left votes: " + callback.getOutput()!!["Left"] + "%\n"
-                output+= "Right votes: " + callback.getOutput()!!["Right"] + "%"
+                var left = callback.getOutput()!!["Left"]
+                var right = callback.getOutput()!!["Right"]
+//                val p_left = left!! / (left+ right!!)
+//                val p_right = right!! / (left+ right!!)
+                var output = "Left votes:$left" + "%\n"
+                output+= "Right votes: $right" + "%"
                 Toast.makeText(this, "Query Output $output", Toast.LENGTH_LONG).show()
                 Navigation(auth = auth)
             }

@@ -31,6 +31,10 @@ data class EarlyQueriesObj(val name: String = ""): EarlyQueriesInterface {
             callback.setOutput(map)
             callback.Call()
         }
+        else{
+            callback.setOutput(null)
+            callback.Call()
+        }
     }
 
     override fun getAllCompanies(): Map<String, Company> {
@@ -54,6 +58,10 @@ data class EarlyQueriesObj(val name: String = ""): EarlyQueriesInterface {
                 map[option] = vote
             }
             callback.setOutput(map)
+            callback.Call()
+        }
+        else{
+            callback.setOutput(null)
             callback.Call()
         }
     }
@@ -82,6 +90,10 @@ data class EarlyQueriesObj(val name: String = ""): EarlyQueriesInterface {
                 map.put(recordID, uservote)
             }
             callback.setOutput(map)
+            callback.Call()
+        }
+        else{
+            callback.setOutput(null)
             callback.Call()
         }
     }

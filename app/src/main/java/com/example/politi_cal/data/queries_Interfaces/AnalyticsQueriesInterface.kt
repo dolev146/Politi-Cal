@@ -29,21 +29,21 @@ interface AnalyticsQueriesInterface {
      * The company disribution will be 50% left and 50% right since 50% of the celebs tagged as
      * left, and the other 50% tagged as right.
      */
-    fun getCompanyDistribution(callBack: CallBack<Company, Map<VoteOption, Int>>): Job
+    fun getCompanyDistribution(callBack: CallBack<Company, Map<String, Double>>): Job
 
     /**
      * This function will get the votes for given category
      * Will work the same as company for each company in the category
      */
 
-    fun getCategoryStatistics(callBack: CallBack<Category, Map<VoteOption, Int>>): Job
+    fun getCategoryStatistics(callBack: CallBack<Category, Map<String, Double>>): Job
 
     /**
      * This function will get the votes for all of the categories
      * Will work the same as Category for each category
      */
 
-    fun getTotalDistribution(callBack: CallBack<Int, Map<VoteOption, Int>>): Job
+    fun getTotalDistribution(callBack: CallBack<Int, Map<String, Double>>): Job
 
     /**
      * This query will get get the number of users registered to the app during specific time.
