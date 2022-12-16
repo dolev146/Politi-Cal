@@ -20,10 +20,12 @@ import com.example.politi_cal.MainActivity.Companion.TAG
 import com.example.politi_cal.Screen
 import com.example.politi_cal.celebListParam
 import com.example.politi_cal.common.dropDownMenu
+import com.example.politi_cal.models.CallBack
 import com.example.politi_cal.models.User
 import com.example.politi_cal.retrieveCelebs
 import com.example.politi_cal.userCollectionRef
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -224,18 +226,22 @@ fun PreferenceScreen(navController: NavController, auth: FirebaseAuth) {
 
 private  fun editUser(auth : FirebaseAuth, userClass : User, context : Context, navController: NavController) = CoroutineScope(Dispatchers.IO).launch {
     try {
-        userCollectionRef.document(auth.currentUser?.email.toString()).set(userClass).await()
+        userCollectionRef.document(auth.currentUser?.email.toString()).set(userClass, SetOptions.merge()).await()
         withContext(Dispatchers.Main) {
-            Toast.makeText(context, "User added", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "User updated", Toast.LENGTH_SHORT).show()
+            var callBack = CallBack<Boolean,Boolean>(false)
             celebListParam.clear()
-            retrieveCelebs()
+            retrieveCelebs(callBack)
+            while(!callBack.getStatus()){
+                continue
+            }
             navController.navigate(Screen.SwipeScreen.route)
         }
     } catch (e: Exception) {
-        Log.d(TAG, "Error adding user to database: $e")
+        Log.d(TAG, "Error updated user to database: $e")
         withContext(Dispatchers.Main) {
             Toast.makeText(
-                context, "Error adding user to database: $e", Toast.LENGTH_SHORT
+                context, "Error updated user to database: $e", Toast.LENGTH_SHORT
             ).show()
         }
     }

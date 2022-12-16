@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.example.politi_cal.models.CallBack
 import com.example.politi_cal.models.Category
 import com.example.politi_cal.models.Celeb
 import com.example.politi_cal.models.Company
@@ -45,8 +46,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        celebListParam.clear()
-        retrieveCelebs()
         setContent {
             PolitiCalTheme {
                 Navigation(auth = auth)
@@ -74,7 +73,7 @@ class MainActivity : ComponentActivity() {
 }
 
 
-fun retrieveCelebs() = CoroutineScope(Dispatchers.IO).launch {
+fun retrieveCelebs(callBack: CallBack<Boolean, Boolean>) = CoroutineScope(Dispatchers.IO).launch {
     var retries = 0
     var MAX_RETRIES = 5
     var RETRY_DELAY = 1000L
@@ -84,15 +83,18 @@ fun retrieveCelebs() = CoroutineScope(Dispatchers.IO).launch {
     try {
         val docRef = userCollectionRef.document(user)
         val doc = docRef.get().await()
-        for(document in doc.data?.values!!){
-            userPref.add(document.toString())
+        for (document in doc.data?.entries!!) {
+            if (document.key == "userPref") {
+                userPref.addAll(document.value as List<String>)
+            }
         }
+        println(userPref)
+
 
     } catch (e: Exception) {
         Log.e("retrieveCelebs", "Error: ${e.message}")
     }
-    val userPrefListSource = userPref[1].split(",").toMutableList()
-    val userPrefList = removeCharacters(userPrefListSource)
+    val userPrefList = userPref.toList()
 
     while (true) {
         try {
@@ -107,7 +109,7 @@ fun retrieveCelebs() = CoroutineScope(Dispatchers.IO).launch {
                 val celebImgUrl = celebDocument.data?.get("imgUrl").toString()
                 val celebInfo = celebDocument.data?.get("celebInfo").toString()
                 val celebCategory = celebDocument.data?.get("category").toString()
-                if (!userPrefList.contains(celebCategory)){
+                if (!userPrefList.contains(celebCategory)) {
                     continue
                 }
                 val celebRightVotes = celebDocument.data?.get("rightVotes").toString().toLong()
@@ -126,6 +128,8 @@ fun retrieveCelebs() = CoroutineScope(Dispatchers.IO).launch {
                 celebListParam.add(celebObject)
             }
             celebListParam.shuffle()
+            callBack.setOutput(true)
+            callBack.Call()
             break
 
         } catch (e: Exception) {

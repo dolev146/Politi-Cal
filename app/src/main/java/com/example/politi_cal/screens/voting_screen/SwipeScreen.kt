@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.example.politi_cal.Navigation
 import com.example.politi_cal.R
 import com.example.politi_cal.Screen
 import com.example.politi_cal.celebListParam
@@ -107,6 +106,7 @@ fun LeftRightButtonsRow(navController : NavController) {
         IconButton(onClick = {
             celebListParam.removeAt(0)
             navController.navigate(Screen.SwipeScreen.route)
+
         }) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.righty_svg),

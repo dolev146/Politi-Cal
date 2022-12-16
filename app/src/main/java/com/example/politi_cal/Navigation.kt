@@ -5,6 +5,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.politi_cal.models.CallBack
 import com.example.politi_cal.screens.AddNewCompanyScreen
 import com.example.politi_cal.screens.NavDrawer.DrawerTopBar
 import com.example.politi_cal.screens.add_celeb.AddCelebScreen
@@ -20,7 +21,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
-fun Navigation(auth : FirebaseAuth, startScreen: String = Screen.LoginScreen.route) {
+fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.route) {
     val navCotroller = rememberNavController()
     NavHost(navController = navCotroller, startDestination = startScreen) {
 //        composable(route = Screen.MainScreen.route) {
@@ -43,8 +44,6 @@ fun Navigation(auth : FirebaseAuth, startScreen: String = Screen.LoginScreen.rou
 //        }
 
 
-
-
         composable(route = Screen.RegisterScreen.route) {
             RegisterScreen(navController = navCotroller, auth = auth)
         }
@@ -58,10 +57,7 @@ fun Navigation(auth : FirebaseAuth, startScreen: String = Screen.LoginScreen.rou
         composable(route = Screen.PreferenceScreen.route) {
 
 
-                PreferenceScreen(navController = navCotroller, auth = auth)
-
-
-
+            PreferenceScreen(navController = navCotroller, auth = auth)
 
 
         }
@@ -72,9 +68,20 @@ fun Navigation(auth : FirebaseAuth, startScreen: String = Screen.LoginScreen.rou
             counter += 1
             println("counter : " + counter)
             val context = LocalContext.current
+            var flag = celebListParam.size == 0
+            if (flag) {
+                var callBack = CallBack<Boolean, Boolean>(false)
+                celebListParam.clear()
+                retrieveCelebs(callBack)
+                while (!callBack.getStatus()) {
+                    continue
+                }
+            }
+
+
 //            celebListParam.clear()
 //            retrieveCelebs()
-            DrawerTopBar(navController = navCotroller , screen = { navController ->
+            DrawerTopBar(navController = navCotroller, screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
                 SwipeScreen(navController = navController, auth = auth)
@@ -83,7 +90,7 @@ fun Navigation(auth : FirebaseAuth, startScreen: String = Screen.LoginScreen.rou
         }
 
         composable(route = Screen.CelebProfileScreen.route) {
-            DrawerTopBar(navController = navCotroller , screen = { navController ->
+            DrawerTopBar(navController = navCotroller, screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
                 CelebProfileScreen(navController = navController, auth = auth)
@@ -92,7 +99,7 @@ fun Navigation(auth : FirebaseAuth, startScreen: String = Screen.LoginScreen.rou
         }
 
         composable(route = Screen.UserProfileScreen.route) {
-            DrawerTopBar(navController = navCotroller , screen = { navController ->
+            DrawerTopBar(navController = navCotroller, screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
                 UserProfileScreen(navController = navController, auth = auth)
@@ -101,7 +108,7 @@ fun Navigation(auth : FirebaseAuth, startScreen: String = Screen.LoginScreen.rou
         }
 
         composable(route = Screen.AddCelebScreen.route) {
-            DrawerTopBar(navController = navCotroller , screen = { navController ->
+            DrawerTopBar(navController = navCotroller, screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
                 // clear the companiesForAddCeleb
@@ -116,8 +123,8 @@ fun Navigation(auth : FirebaseAuth, startScreen: String = Screen.LoginScreen.rou
             })
         }
 
-        composable(route = Screen.AdminOnlyScreen.route){
-            DrawerTopBar(navController = navCotroller , screen = { navController ->
+        composable(route = Screen.AdminOnlyScreen.route) {
+            DrawerTopBar(navController = navCotroller, screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
                 AdminOnlyScreen(navController = navController, auth = auth)
@@ -126,7 +133,7 @@ fun Navigation(auth : FirebaseAuth, startScreen: String = Screen.LoginScreen.rou
         }
 
         composable(route = Screen.AdminAnalyticsScreen.route) {
-            DrawerTopBar(navController = navCotroller , screen = { navController ->
+            DrawerTopBar(navController = navCotroller, screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
                 AdminAnalyticsScreen(navController = navController, auth = auth)
@@ -135,7 +142,7 @@ fun Navigation(auth : FirebaseAuth, startScreen: String = Screen.LoginScreen.rou
         }
 
         composable(route = Screen.AddNewCompanyScreen.route) {
-                AddNewCompanyScreen(navController = navCotroller, auth = auth)
+            AddNewCompanyScreen(navController = navCotroller, auth = auth)
         }
 
     }
