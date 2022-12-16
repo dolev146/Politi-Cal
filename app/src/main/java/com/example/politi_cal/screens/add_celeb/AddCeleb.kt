@@ -11,6 +11,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -129,6 +134,14 @@ fun AddCelebScreen(navController: NavController, auth: FirebaseAuth) {
 
 
             OutlinedTextField(
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = "Person Icon"
+                    )
+                },
+
+
                 value = firstName,
                 onValueChange = {
                     firstName = it
@@ -157,6 +170,14 @@ fun AddCelebScreen(navController: NavController, auth: FirebaseAuth) {
             )
 
             OutlinedTextField(
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Person,
+                        contentDescription = "Person Icon"
+                    )
+                },
+
+
                 value = lastName,
                 onValueChange = {
                     lastName = it
@@ -185,6 +206,15 @@ fun AddCelebScreen(navController: NavController, auth: FirebaseAuth) {
             )
 
             OutlinedTextField(
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.DateRange,
+                        contentDescription = "Date Icon"
+                    )
+                },
+
+
+
                 value = birthDate,
                 onValueChange = {
                     birthDate = it
@@ -213,6 +243,16 @@ fun AddCelebScreen(navController: NavController, auth: FirebaseAuth) {
             )
 
             OutlinedTextField(
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Add,
+                        contentDescription = "Image Icon"
+                    )
+                },
+
+
+
+
                 value = imgUrl,
                 onValueChange = {
                     imgUrl = it
@@ -241,6 +281,14 @@ fun AddCelebScreen(navController: NavController, auth: FirebaseAuth) {
             )
 
             OutlinedTextField(
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Email,
+                        contentDescription = "Email Icon"
+                    )
+                },
+
+
                 value = celebInfo,
                 onValueChange = {
                     celebInfo = it
