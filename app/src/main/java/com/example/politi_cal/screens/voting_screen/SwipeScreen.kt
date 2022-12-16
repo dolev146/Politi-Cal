@@ -57,18 +57,20 @@ fun SwipeScreenAlternate(navController: NavController, auth: FirebaseAuth) {
                 )
             } else {
                 celeb = celebListParam[0]
-                HeroCard(
-//                fullName = celeb.FirstName + " " + celeb.LastName,
-//                worksAt = celeb.Company,
-                    fullName = celeb.FirstName + " " + celeb.LastName,
-                    worksAt = "Works at " + celeb.Company,
-                    painter = celeb.ImgUrl
-                )
-                LeftRightButtonsRow(navController)
+
             }
 //            if(celebListParam.isNotEmpty()){
 //                 celeb = celebListParam[0]
 //            }
+
+            HeroCard(
+//                fullName = celeb.FirstName + " " + celeb.LastName,
+//                worksAt = celeb.Company,
+                fullName = celeb.FirstName + " " + celeb.LastName,
+                worksAt = "Works at " + celeb.Company,
+                painter = celeb.ImgUrl
+            )
+            LeftRightButtonsRow(navController)
 
 
 
