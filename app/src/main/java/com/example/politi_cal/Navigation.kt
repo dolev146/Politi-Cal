@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.politi_cal.models.CallBack
 import com.example.politi_cal.models.Celeb
+import com.example.politi_cal.models.DontCotinueUntillTrue
 import com.example.politi_cal.screens.AddNewCompanyScreen
 import com.example.politi_cal.screens.NavDrawer.DrawerTopBar
 import com.example.politi_cal.screens.add_celeb.AddCelebScreen
@@ -66,10 +67,20 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
 
         composable(route = Screen.SwipeScreen.route) {
             if (celebListParam.size == 0) {
+                val checkTrue = DontCotinueUntillTrue()
+                celebListFilterNames.clear()
+                retrieveUserVotes(checkTrue)
+                while (checkTrue.isTrue == false) {
+                    Thread.sleep(100)
+                    continue
+                }
+
+
                 val callBack = CallBack<Boolean, Boolean>(false)
                 celebListParam.clear()
                 retrieveCelebs(callBack)
                 while (!callBack.getStatus()) {
+                    Thread.sleep(100)
                     continue
                 }
                 celebListParam.add(

@@ -1,10 +1,9 @@
 package com.example.politi_cal.models
 
 data class UserVote(
-    val RecordID: String,
-    val UserID: String,
-    val CelebID: String,
-    val CategoryID: String,
-    val CompanyID: String,
-    val VoteID: String
+    val UserEmail: String,
+    val CelebFullName: String,
+    val CategoryName: String,
+    val CompanyName: String,
+    val VoteDirection: String
 )

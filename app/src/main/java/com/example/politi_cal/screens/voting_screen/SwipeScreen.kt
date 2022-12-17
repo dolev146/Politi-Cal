@@ -25,6 +25,8 @@ import com.example.politi_cal.R
 import com.example.politi_cal.celebCollectionRef
 import com.example.politi_cal.celebListParam
 import com.example.politi_cal.models.Celeb
+import com.example.politi_cal.models.UserVote
+import com.example.politi_cal.userVotesCollectionRef
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.CoroutineScope
@@ -37,24 +39,16 @@ import kotlinx.coroutines.withContext
 private fun leftVote(celeb: Celeb, context: Context) {
     CoroutineScope(Dispatchers.IO).launch {
         try {
+            val email = FirebaseAuth.getInstance().currentUser?.email
+            val userVote = UserVote(
+                UserEmail = email.toString(),
+                CelebFullName = celeb.FirstName + " " + celeb.LastName,
+                CategoryName = celeb.Category,
+                CompanyName = celeb.Company,
+                VoteDirection = "left"
+            )
+            userVotesCollectionRef.add(userVote).await()
             celeb.LeftVotes += 1
-
-            val auth = FirebaseAuth.getInstance()
-            val user = auth.currentUser?.email.toString()
-//            val docRef = userCollectionRef.document(user).update()
-//            val doc = docRef.get().await()
-//            val userVote = mutableListOf<String>()
-//            for (document in doc.data?.entries!!) {
-//                if (document.key == "userPref") {
-//                    userVote.addAll(document.value as List<String>)
-//                }
-//            }
-//            println(userVote)
-//            userCollectionRef.document(FirebaseAuth.getInstance().currentUser!!.uid).update(
-//                celebListParam,
-//                celeb
-//            ).await()
-
             celebCollectionRef.document(celeb.FirstName + " " + celeb.LastName)
                 .set(celeb, SetOptions.merge()).await()
             withContext(Dispatchers.Main) {
@@ -72,6 +66,15 @@ private fun leftVote(celeb: Celeb, context: Context) {
 private fun rightVote(celeb: Celeb, context: Context) {
     CoroutineScope(Dispatchers.IO).launch {
         try {
+            val email = FirebaseAuth.getInstance().currentUser?.email
+            val userVote = UserVote(
+                UserEmail = email.toString(),
+                CelebFullName = celeb.FirstName + " " + celeb.LastName,
+                CategoryName = celeb.Category,
+                CompanyName = celeb.Company,
+                VoteDirection = "right"
+            )
+            userVotesCollectionRef.add(userVote).await()
             celeb.RightVotes += 1
             celebCollectionRef.document(celeb.FirstName + " " + celeb.LastName)
                 .set(celeb, SetOptions.merge()).await()

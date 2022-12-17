@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.politi_cal.models.CallBack
-import com.example.politi_cal.models.Category
-import com.example.politi_cal.models.Celeb
-import com.example.politi_cal.models.Company
+import com.example.politi_cal.models.*
 import com.example.politi_cal.ui.theme.PolitiCalTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
@@ -30,7 +27,9 @@ var categoriesForAddCelebNames = mutableListOf<String>()
 
 var celebListParam = mutableListOf<Celeb>()
 
-var counter = 0
+val userVotesCollectionRef = Firebase.firestore.collection("userVotes")
+
+val celebListFilterNames = mutableListOf<String>()
 
 
 class MainActivity : ComponentActivity() {
@@ -73,6 +72,29 @@ class MainActivity : ComponentActivity() {
 }
 
 
+fun retrieveUserVotes(checkTrue : DontCotinueUntillTrue)= CoroutineScope(Dispatchers.IO).launch {
+    try {
+        val auth = FirebaseAuth.getInstance()
+        val user = auth.currentUser?.email.toString()
+        userVotesCollectionRef.whereEqualTo("userEmail" , user).get().addOnSuccessListener {
+                documents ->
+            for (document in documents) {
+                val celebName = document.getString("celebFullName")
+                celebListFilterNames.add(celebName.toString())
+            }
+        }
+        println(celebListFilterNames)
+        checkTrue.setTrue()
+    }
+    catch (e: Exception) {
+        withContext(Dispatchers.Main) {
+            Log.d("Error", "Error: ${e.message}")
+        }
+    }
+}
+
+
+
 fun retrieveCelebs(callBack: CallBack<Boolean, Boolean>) = CoroutineScope(Dispatchers.IO).launch {
     var retries = 0
     var MAX_RETRIES = 5
@@ -89,12 +111,12 @@ fun retrieveCelebs(callBack: CallBack<Boolean, Boolean>) = CoroutineScope(Dispat
             }
         }
         println(userPref)
-
-
     } catch (e: Exception) {
         Log.e("retrieveCelebs", "Error: ${e.message}")
     }
     val userPrefList = userPref.toList()
+
+
 
     while (true) {
         try {
@@ -105,6 +127,10 @@ fun retrieveCelebs(callBack: CallBack<Boolean, Boolean>) = CoroutineScope(Dispat
                 val celebCompany = celebDocument.data?.get("company").toString()
                 val celebFirstName = celebDocument.data?.get("firstName").toString()
                 val celebLastName = celebDocument.data?.get("lastName").toString()
+                val fullName = "$celebFirstName $celebLastName"
+                if(celebListFilterNames.contains(fullName)){
+                    continue
+                }
                 val celebBirthDate = celebDocument.data?.get("birthDate").toString().toLong()
                 val celebImgUrl = celebDocument.data?.get("imgUrl").toString()
                 val celebInfo = celebDocument.data?.get("celebInfo").toString()
