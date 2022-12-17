@@ -1,15 +1,18 @@
 package com.example.politi_cal.screens.voting_screen
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
@@ -19,68 +22,134 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.politi_cal.R
-import com.example.politi_cal.Screen
+import com.example.politi_cal.celebCollectionRef
 import com.example.politi_cal.celebListParam
 import com.example.politi_cal.models.Celeb
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.SetOptions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 
+private fun leftVote(celeb: Celeb, context: Context) {
+    CoroutineScope(Dispatchers.IO).launch {
+        try {
+            celeb.LeftVotes += 1
 
+            val auth = FirebaseAuth.getInstance()
+            val user = auth.currentUser?.email.toString()
+//            val docRef = userCollectionRef.document(user).update()
+//            val doc = docRef.get().await()
+//            val userVote = mutableListOf<String>()
+//            for (document in doc.data?.entries!!) {
+//                if (document.key == "userPref") {
+//                    userVote.addAll(document.value as List<String>)
+//                }
+//            }
+//            println(userVote)
+//            userCollectionRef.document(FirebaseAuth.getInstance().currentUser!!.uid).update(
+//                celebListParam,
+//                celeb
+//            ).await()
+
+            celebCollectionRef.document(celeb.FirstName + " " + celeb.LastName)
+                .set(celeb, SetOptions.merge()).await()
+            withContext(Dispatchers.Main) {
+                Toast.makeText(context, "Left Vote Added", Toast.LENGTH_SHORT).show()
+            }
+
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+}
+
+private fun rightVote(celeb: Celeb, context: Context) {
+    CoroutineScope(Dispatchers.IO).launch {
+        try {
+            celeb.RightVotes += 1
+            celebCollectionRef.document(celeb.FirstName + " " + celeb.LastName)
+                .set(celeb, SetOptions.merge()).await()
+            withContext(Dispatchers.Main) {
+                Toast.makeText(context, "Right Vote Added", Toast.LENGTH_SHORT).show()
+            }
+
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+}
 
 @Composable
 fun SwipeScreen(navController: NavController, auth: FirebaseAuth) {
 
-    SwipeScreenAlternate(navController, auth)
+    var celeb by remember {
+        mutableStateOf<Celeb>(
+            Celeb(
+                Company = "test",
+                FirstName = "text",
+                LastName = "text",
+                BirthDate = 0,
+                ImgUrl = "https://user-images.githubusercontent.com/62290677/208085405-50e2a05c-2a41-4579-8038-263fe097b80d.png",
+                CelebInfo = "text",
+                Category = "text",
+                RightVotes = 0,
+                LeftVotes = 0
+            )
+        )
+    }
+
+    if (celebListParam.isEmpty()) {
+        Text(
+            text = "Loading...", modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        )
+    } else {
+        celeb = celebListParam[0]
+    }
+
+    SwipeScreenAlternate(celeb) {
+        // check if the list is empty before removing the first element
+        if (celebListParam.size > 1) {
+            celebListParam.removeAt(0)
+            celeb = celebListParam[0]
+        }
+    }
 }
 
 
 @Composable
-fun SwipeScreenAlternate(navController: NavController, auth: FirebaseAuth) {
+fun SwipeScreenAlternate(
+    celeb: Celeb, mycustomfun: () -> Unit
+) {
     // A surface container using the 'background' color from the theme
     Surface(color = MaterialTheme.colors.background) {
         Column() {
             PoliticalAppIconTop()
-//            Text(
-//                text = celebListParam.toString(), modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(16.dp)
-//            )
-            var celeb = Celeb(Company = "test" , FirstName = "text" , LastName = "text" , BirthDate = 0 , ImgUrl = "https://user-images.githubusercontent.com/62290677/208085405-50e2a05c-2a41-4579-8038-263fe097b80d.png" , CelebInfo = "text" , Category = "text" , RightVotes = 0 , LeftVotes = 0)
-            // check if the list is empty
-
-            if (celebListParam.isEmpty()) {
-                Text(
-                    text = "Loading...", modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                )
-            } else {
-                celeb = celebListParam[0]
-
-            }
-//            if(celebListParam.isNotEmpty()){
-//                 celeb = celebListParam[0]
-//            }
-
             HeroCard(
-//                fullName = celeb.FirstName + " " + celeb.LastName,
-//                worksAt = celeb.Company,
                 fullName = celeb.FirstName + " " + celeb.LastName,
                 worksAt = "Works at " + celeb.Company,
                 painter = celeb.ImgUrl
             )
-            LeftRightButtonsRow(navController)
-
-
-
-
+            if (celebListParam.size != 1) {
+                LeftRightButtonsRow(mycustomfun, celeb)
+            }
 
         }
     }
 }
 
 @Composable
-fun LeftRightButtonsRow(navController : NavController) {
+fun LeftRightButtonsRow(mycustomfun: () -> Unit, celeb: Celeb) {
+    val context = LocalContext.current
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround,
@@ -88,7 +157,10 @@ fun LeftRightButtonsRow(navController : NavController) {
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = {
+            leftVote(celeb, context)
+            mycustomfun()
+        }) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.left_svg),
                 contentDescription = "lefty",
@@ -104,9 +176,9 @@ fun LeftRightButtonsRow(navController : NavController) {
             )
         }
         IconButton(onClick = {
-            celebListParam.removeAt(0)
-            navController.navigate(Screen.SwipeScreen.route)
 
+            mycustomfun()
+            rightVote(celeb, context)
         }) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = R.drawable.righty_svg),
@@ -149,11 +221,6 @@ fun ImageCard(
         elevation = 5.dp
     ) {
         Box() {
-//            Image(
-//                painter = rememberAsyncImagePainter("https://picsum.photos/300/300"),
-//                contentDescription = "$fullName $worksAt",
-//                contentScale = ContentScale.Crop,
-//            )
             AsyncImage(
                 model = painter,
                 contentDescription = null,
@@ -209,22 +276,3 @@ fun PoliticalAppIconTop(modifier: Modifier = Modifier) {
     }
 }
 
-//@Composable
-//fun TopBar(
-//    modifier: Modifier = Modifier
-//) {
-//    Row(
-//        verticalAlignment = Alignment.CenterVertically,
-//        horizontalArrangement = Arrangement.SpaceBetween,
-//        modifier = modifier.fillMaxWidth()
-//    ) {
-//        Icon(
-//            imageVector = Icons.Default.Menu,
-//            contentDescription = "Back",
-//            tint = Color.Black,
-//            modifier = Modifier
-//                .size(40.dp)
-//                .padding(start = 5.dp)
-//        )
-//    }
-//}

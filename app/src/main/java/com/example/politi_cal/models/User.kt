@@ -8,7 +8,7 @@ package com.example.politi_cal.models
  * Only the admin can change a user role.
  */
 
-data class User( val userID: String ,
+data class User(val userID: String ,
                 val roleID: Int = 1, // 0 admin 1 user
                 val favoritePartyID: String,
                 val userName: String,
@@ -16,5 +16,5 @@ data class User( val userID: String ,
                 val registerDate: Long,
                 var userPref: List<String>,
                 var userGender: String,
-                var userAge : String
+                var userAge : String,
                 )

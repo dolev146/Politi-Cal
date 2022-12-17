@@ -1,11 +1,11 @@
 package com.example.politi_cal
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.politi_cal.models.CallBack
+import com.example.politi_cal.models.Celeb
 import com.example.politi_cal.screens.AddNewCompanyScreen
 import com.example.politi_cal.screens.NavDrawer.DrawerTopBar
 import com.example.politi_cal.screens.add_celeb.AddCelebScreen
@@ -65,27 +65,29 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
 
 
         composable(route = Screen.SwipeScreen.route) {
-            counter += 1
-            println("counter : " + counter)
-            val context = LocalContext.current
-            var flag = celebListParam.size == 0
-            if (flag) {
-                var callBack = CallBack<Boolean, Boolean>(false)
+            if (celebListParam.size == 0) {
+                val callBack = CallBack<Boolean, Boolean>(false)
                 celebListParam.clear()
                 retrieveCelebs(callBack)
                 while (!callBack.getStatus()) {
                     continue
                 }
+                celebListParam.add(
+                    Celeb(
+                        Company = "to swipe",
+                        FirstName = "no more",
+                        LastName = "Celebs",
+                        BirthDate = 0,
+                        ImgUrl = "https://user-images.githubusercontent.com/62290677/208234784-89da08f2-06dd-4581-88c9-f19cc6c989ed.png",
+                        CelebInfo = "text",
+                        Category = "text",
+                        RightVotes = 0,
+                        LeftVotes = 0
+                    )
+                )
             }
-
-
-//            celebListParam.clear()
-//            retrieveCelebs()
             DrawerTopBar(navController = navCotroller, screen = { navController ->
-                // this is the screen that will be drawn after the drawer
-                // swipe screen
                 SwipeScreen(navController = navController, auth = auth)
-
             })
         }
 

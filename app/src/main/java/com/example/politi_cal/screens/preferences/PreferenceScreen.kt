@@ -180,7 +180,7 @@ fun PreferenceScreen(navController: NavController, auth: FirebaseAuth) {
                         userPref = interests,
                         userID = auth.currentUser?.uid.toString(),
                         userAge = selectedAge,
-                        userGender = selectedGender
+                        userGender = selectedGender,
                     )
 
                     // add the user to the database
