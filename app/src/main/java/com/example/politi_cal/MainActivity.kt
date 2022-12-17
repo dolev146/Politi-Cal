@@ -76,7 +76,7 @@ class MainActivity : ComponentActivity() {
 }
 
 
-fun retrieveUserVotes(checkTrue : DontCotinueUntillTrue)= CoroutineScope(Dispatchers.IO).launch {
+fun retrieveUserVotes(callback : CallBack<Boolean,Boolean> )= CoroutineScope(Dispatchers.IO).launch {
     try {
         val auth = FirebaseAuth.getInstance()
         val user = auth.currentUser?.email.toString()
@@ -88,7 +88,8 @@ fun retrieveUserVotes(checkTrue : DontCotinueUntillTrue)= CoroutineScope(Dispatc
             }
         }
         println(celebListFilterNames)
-        checkTrue.setTrue()
+        callback.setOutput(true)
+        callback.Call()
     }
     catch (e: Exception) {
         withContext(Dispatchers.Main) {

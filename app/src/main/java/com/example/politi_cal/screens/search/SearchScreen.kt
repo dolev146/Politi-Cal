@@ -78,11 +78,8 @@ fun SearchScreen(navController: NavController, auth: FirebaseAuth) {
                 {
                     //Todo//
 
-                    navController
-                        .navigate(
-                            Screen.CelebProfileScreen.route
 
-                        )
+                    navController.navigate(Screen.CelebProfileScreen.route)
 
                 }) {
                     Text(text = "Search")
