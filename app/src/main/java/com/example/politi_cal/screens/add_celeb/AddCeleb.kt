@@ -140,8 +140,6 @@ fun AddCelebScreen(navController: NavController, auth: FirebaseAuth) {
                         contentDescription = "Person Icon"
                     )
                 },
-
-
                 value = firstName,
                 onValueChange = {
                     firstName = it

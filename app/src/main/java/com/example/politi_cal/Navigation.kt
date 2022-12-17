@@ -1,10 +1,8 @@
 package com.example.politi_cal
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import com.example.politi_cal.models.CallBack
 import com.example.politi_cal.models.Celeb
@@ -18,6 +16,7 @@ import com.example.politi_cal.screens.celeb_profile.CelebProfileScreen
 import com.example.politi_cal.screens.login.LoginScreen
 import com.example.politi_cal.screens.preferences.PreferenceScreen
 import com.example.politi_cal.screens.registration.RegisterScreen
+import com.example.politi_cal.screens.search.SearchScreen
 import com.example.politi_cal.screens.user_profile.UserProfileScreen
 import com.example.politi_cal.screens.voting_screen.SwipeScreen
 import com.google.firebase.auth.FirebaseAuth
@@ -105,45 +104,39 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
         }
 
         composable(
-            route = Screen.CelebProfileScreen.route + "/{FirstName}" + "/{LastName}" + "/{Company}" + "/{Category}" + "/{ImgUrl}" + "/{CelebInfo}" + "/{BirthDate}" + "/{RightVotes}" + "/{LeftVotes}",
-            arguments = listOf(navArgument("FirstName") {
-                type = NavType.StringType
-            }, navArgument("LastName") {
-                type = NavType.StringType
-            }, navArgument("Company") {
-                type = NavType.StringType
-            }, navArgument("Category") {
-                type = NavType.StringType
-            }, navArgument("ImgUrl") {
-                type = NavType.StringType
-            }, navArgument("CelebInfo") {
-                type = NavType.StringType
-            }, navArgument("BirthDate") {
-                type = NavType.LongType
-            }, navArgument("RightVotes") {
-                type = NavType.LongType
-            }, navArgument("LeftVotes") {
-                type = NavType.LongType
-            })
-        ) { entry ->
-
+            route = Screen.CelebProfileScreen.route
+        ) {
             DrawerTopBar(navController = navCotroller, screen = { navController ->
-                // this is the screen that will be drawn after the drawer
-                // swipe screen
-                CelebProfileScreen(
-                    navController = navController
-                    , auth = auth,
-                    firstName = entry.arguments?.getString("FirstName")!!,
-                    lastName = entry.arguments?.getString("LastName")!!,
-                    company = entry.arguments?.getString("Company")!!,
-                    category = entry.arguments?.getString("Category")!!,
-                    imgUrl = entry.arguments?.getString("ImgUrl")!!,
-                    celebInfo = entry.arguments?.getString("CelebInfo")!!,
-                    birthDate = entry.arguments?.getLong("BirthDate")!!,
-                    rightVotes = entry.arguments?.getLong("RightVotes")!!,
-                    leftVotes = entry.arguments?.getLong("LeftVotes")!!
+                val yonitLevi = Celeb(
+                    FirstName = "Danny",
+                    LastName = "Kushmaro",
+                    ImgUrl = "https://user-images.githubusercontent.com/62290677/208052996-baca855b-bb75-4728-b1aa-a65f317b1aa9.png",
+                    CelebInfo = "Danny Kushmaro (Hebrew: דני קושמרו; born 10 May 1968) is an Israeli journalist, news anchor[1] and television presenter.",
+                    BirthDate = 19680510,
+                    Category = "Journalism",
+                    Company = "N12 new Channel",
+                    RightVotes = 0,
+                    LeftVotes = 90,
                 )
+                CelebProfileScreen(
+                    navController = navCotroller,
+                    auth = auth,
+                    yonitLevi.FirstName,
+                    yonitLevi.LastName,
+                    yonitLevi.Company,
+                    yonitLevi.Category,
+                    yonitLevi.ImgUrl,
+                    yonitLevi.CelebInfo,
+                    yonitLevi.BirthDate,
+                    yonitLevi.RightVotes,
+                    yonitLevi.LeftVotes,
+                )
+            })
+        }
 
+        composable(route = Screen.SearchScreen.route) {
+            DrawerTopBar(navController = navCotroller, screen = { navController ->
+                SearchScreen(navController = navController, auth = auth)
             })
         }
 

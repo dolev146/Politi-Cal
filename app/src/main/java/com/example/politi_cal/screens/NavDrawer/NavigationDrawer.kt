@@ -1,7 +1,6 @@
 package com.example.politi_cal.screens.NavDrawer
 
 
-import android.graphics.Color.alpha
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -17,16 +16,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.politi_cal.Screen
-import com.example.politi_cal.screens.voting_screen.SwipeScreen
-import com.example.politi_cal.userCollectionRef
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 
@@ -93,6 +88,12 @@ fun DrawerTopBar(
     val context = LocalContext.current
     var menuContent = mutableListOf(
         MenuItem(
+            id = "search",
+            title = "Search",
+            contentDescription = "Go to Search screen",
+            icon = Icons.Default.Search
+        ),
+        MenuItem(
             id = "swipe",
             title = "Swipe",
             contentDescription = "Go to Swipe screen",
@@ -102,11 +103,6 @@ fun DrawerTopBar(
             title = "Settings",
             contentDescription = "Go to Settings screen",
             icon = Icons.Default.Settings
-        ), MenuItem(
-            id = "celeb profile",
-            title = "Celeb Profile",
-            contentDescription = "Go to Celeb profile screen",
-            icon = Icons.Default.Info
         ), MenuItem(
             id = "user profile",
             title = "User Profile",
@@ -129,7 +125,8 @@ fun DrawerTopBar(
             title = "Logout",
             contentDescription = "Go to Logout screen",
             icon = Icons.Default.ExitToApp
-        )
+        ),
+
     )
 
     if (isAdmin()){
@@ -174,9 +171,6 @@ fun DrawerTopBar(
                     "settings" -> {
                         navController.navigate(Screen.PreferenceScreen.route)
                     }
-                    "celeb profile" -> {
-                        navController.navigate(Screen.CelebProfileScreen.route)
-                    }
                     "user profile" -> {
                         navController.navigate(Screen.UserProfileScreen.route)
                     }
@@ -189,6 +183,9 @@ fun DrawerTopBar(
                     "logout" -> {
                         auth.signOut()
                         navController.navigate(Screen.LoginScreen.route)
+                    }
+                    "search" -> {
+                        navController.navigate(Screen.SearchScreen.route)
                     }
                     "admin only" -> {
                         // check that the user is admin

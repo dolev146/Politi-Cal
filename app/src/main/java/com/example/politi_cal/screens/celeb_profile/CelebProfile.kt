@@ -1,6 +1,5 @@
 package com.example.politi_cal.screens.celeb_profile
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -13,16 +12,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.politi_cal.R
+import coil.compose.AsyncImage
 import com.example.politi_cal.models.Celeb
 import com.google.firebase.auth.FirebaseAuth
+import kotlin.math.roundToInt
 
 
 @Composable
@@ -67,25 +65,28 @@ fun CelebProfileScreenAlternate(navController: NavController, auth: FirebaseAuth
                 ProfileSection(
                     name = celeb.FirstName + " " + celeb.LastName,
                     company = celeb.Company,
+                    ImgUrl = celeb.ImgUrl,
                 )
 
+                // check if celeb.RightVotes is zero then increase it by 1
+                if(celeb.RightVotes == 0L) {
+                    celeb.RightVotes += 1
+                }
+                // check if celeb.LeftVotes is zero then increase it by 1
+                if(celeb.LeftVotes == 0L) {
+                    celeb.LeftVotes += 1
+                }
                 val total = celeb.RightVotes + celeb.LeftVotes
                 val rightPercent = (celeb.RightVotes.toDouble() / total.toDouble()) * 100
                 val leftPercent = (celeb.LeftVotes.toDouble() / total.toDouble()) * 100
-                // convert to int
-                val rightPercentInt = rightPercent.toInt()
-                val leftPercentInt = leftPercent.toInt()
 
                 // voting bar
                 VotingBar(
-                    leftyPercent = leftPercentInt, rightyPercent = rightPercentInt
+                    leftyPercent = leftPercent, rightyPercent = rightPercent
                 )
-
                 MoreInfo(
                     celeb.CelebInfo
                 )
-
-
             }
         })
 
@@ -117,10 +118,8 @@ fun MoreInfo(information_param: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun VotingBar(
-    modifier: Modifier = Modifier, leftyPercent: Int, rightyPercent: Int
+    modifier: Modifier = Modifier, leftyPercent: Double, rightyPercent: Double
 ) {
-    var leftyPercentWeight: Float = (leftyPercent / 10).toFloat()
-    var rightyPercentWeight: Float = (rightyPercent / 10).toFloat()
 
     val shape = RoundedCornerShape(32.dp)
     Column(
@@ -141,8 +140,8 @@ fun VotingBar(
             Column(
                 modifier = Modifier
                     .background(Color(0xFF03588C))
-                    .fillMaxHeight(leftyPercentWeight)
-                    .weight(1f)
+                    .fillMaxHeight()
+                    .weight(leftyPercent.toFloat())
                     .clip(CircleShape),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -154,7 +153,7 @@ fun VotingBar(
                 // add rounded corners to the left side
                 modifier = Modifier
                     .background(Color(0xFFA60321))
-                    .weight(rightyPercentWeight)
+                    .weight(rightyPercent.toFloat())
                     .clip(CircleShape)
                     .fillMaxHeight(),
                 verticalArrangement = Arrangement.Center,
@@ -186,7 +185,7 @@ fun VotingBar(
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = "Lefty $leftyPercent%",
+                        text = "Lefty ${leftyPercent.roundToInt()}%",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -201,7 +200,7 @@ fun VotingBar(
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = "Righty $rightyPercent%",
+                        text = "Righty ${rightyPercent.roundToInt()}%",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold
                     )
@@ -247,7 +246,7 @@ fun TopBar(
 
 @Composable
 fun ProfileSection(
-    name: String, company: String, modifier: Modifier = Modifier
+    name: String, company: String, ImgUrl : String ,  modifier: Modifier = Modifier
 ) {
 
     Column(
@@ -255,9 +254,20 @@ fun ProfileSection(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        RoundImage(
-            image = painterResource(id = R.drawable.profile_pic), modifier = Modifier.size(250.dp)
+        AsyncImage(
+            model = ImgUrl,
+            contentDescription = "Profile Picture",
+            modifier = Modifier
+                .size(200.dp)
+                .border(
+                    width = 6.dp, color = Color.White, shape = CircleShape
+                )
+                .aspectRatio(1f, matchHeightConstraintsFirst = true)
+                .clip(CircleShape)
+                .padding(3.dp)
+
         )
+
         Text(
             text = name,
             overflow = TextOverflow.Ellipsis,
@@ -273,21 +283,4 @@ fun ProfileSection(
             color = Color.Black
         )
     }
-}
-
-@Composable
-fun RoundImage(
-    image: Painter, modifier: Modifier = Modifier
-) {
-    Image(
-        painter = image,
-        contentDescription = "Profile image",
-        modifier = modifier
-            .aspectRatio(1f, matchHeightConstraintsFirst = true)
-            .border(
-                width = 6.dp, color = Color.White, shape = CircleShape
-            )
-            .padding(3.dp)
-            .clip(CircleShape)
-    )
 }

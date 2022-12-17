@@ -33,6 +33,8 @@ val celebListFilterNames = mutableListOf<String>()
 
 val checkTrue = DontCotinueUntillTrue()
 
+//var CelebForCelebProfile = Celeb()
+
 
 class MainActivity : ComponentActivity() {
 
