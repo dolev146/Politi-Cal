@@ -31,6 +31,8 @@ val userVotesCollectionRef = Firebase.firestore.collection("userVotes")
 
 val celebListFilterNames = mutableListOf<String>()
 
+val checkTrue = DontCotinueUntillTrue()
+
 
 class MainActivity : ComponentActivity() {
 

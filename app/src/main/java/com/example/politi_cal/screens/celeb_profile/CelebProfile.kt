@@ -21,12 +21,42 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.politi_cal.R
+import com.example.politi_cal.models.Celeb
 import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
-fun CelebProfileScreen(navController: NavController, auth: FirebaseAuth) {
-     BlackBackgroundSquare()
+fun CelebProfileScreen(
+    navController: NavController,
+    auth: FirebaseAuth,
+    firstName: String,
+    lastName: String,
+    company: String,
+    category: String,
+    imgUrl: String,
+    celebInfo: String,
+    birthDate: Long,
+    rightVotes: Long,
+    leftVotes: Long,
+) {
+    var celeb = Celeb(
+        FirstName = firstName,
+        LastName = lastName,
+        Company = company,
+        Category = category,
+        ImgUrl = imgUrl,
+        CelebInfo = celebInfo,
+        BirthDate = birthDate,
+        RightVotes = rightVotes,
+        LeftVotes = leftVotes
+    )
+    CelebProfileScreenAlternate(navController, auth, celeb)
+}
+
+
+@Composable
+fun CelebProfileScreenAlternate(navController: NavController, auth: FirebaseAuth, celeb: Celeb) {
+    BlackBackgroundSquare()
     Column(modifier = Modifier.fillMaxSize()) {
 
         LazyColumn(content = {
@@ -35,17 +65,25 @@ fun CelebProfileScreen(navController: NavController, auth: FirebaseAuth) {
                 TopBar()
                 Spacer(modifier = Modifier.height(60.dp))
                 ProfileSection(
-                    name = "Amit Segal",
-                    company = "N12 news channel",
+                    name = celeb.FirstName + " " + celeb.LastName,
+                    company = celeb.Company,
                 )
+
+                val total = celeb.RightVotes + celeb.LeftVotes
+                val rightPercent = (celeb.RightVotes.toDouble() / total.toDouble()) * 100
+                val leftPercent = (celeb.LeftVotes.toDouble() / total.toDouble()) * 100
+                // convert to int
+                val rightPercentInt = rightPercent.toInt()
+                val leftPercentInt = leftPercent.toInt()
 
                 // voting bar
                 VotingBar(
-                    leftyPercent = 10, rightyPercent = 90
+                    leftyPercent = leftPercentInt, rightyPercent = rightPercentInt
                 )
-                // lazy column for more info
 
-                MoreInfo("Amit Segal is a journalist and a news anchor. He is the host of the N12 news channel. He is a very popular journalist. Amit Yitzchak Segal[1] (born Biz in Nisan 5, 1982, April 10, 1982) is an Israeli journalist, radio and television personality. Serves as the political commentator of the news company and a political columnist in the \"Yediot Aharonot\" newspaper. One of the most influential journalists in Israel[2]. Presents Meet the Press on Channel 12 together with Ben Caspit.")
+                MoreInfo(
+                    celeb.CelebInfo
+                )
 
 
             }
@@ -86,7 +124,9 @@ fun VotingBar(
 
     val shape = RoundedCornerShape(32.dp)
     Column(
-        Modifier.padding(start = 16.dp, end = 16.dp).background(Color.Transparent),
+        Modifier
+            .padding(start = 16.dp, end = 16.dp)
+            .background(Color.Transparent),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
@@ -101,7 +141,7 @@ fun VotingBar(
             Column(
                 modifier = Modifier
                     .background(Color(0xFF03588C))
-                    .fillMaxHeight(leftyPercentWeight )
+                    .fillMaxHeight(leftyPercentWeight)
                     .weight(1f)
                     .clip(CircleShape),
                 verticalArrangement = Arrangement.Center,
@@ -161,7 +201,9 @@ fun VotingBar(
                     )
                     Spacer(modifier = Modifier.width(10.dp))
                     Text(
-                        text = "Righty $rightyPercent%", fontSize = 20.sp, fontWeight = FontWeight.Bold
+                        text = "Righty $rightyPercent%",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
                     )
                 }
             }
