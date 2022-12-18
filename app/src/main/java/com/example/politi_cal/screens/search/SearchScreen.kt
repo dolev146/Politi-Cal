@@ -1,5 +1,6 @@
 package com.example.politi_cal.screens.search
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,17 +15,24 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.politi_cal.CelebForCelebProfile
+import com.example.politi_cal.MainActivity
 import com.example.politi_cal.Screen
+import com.example.politi_cal.data.queries_Interfaces.CelebSearchDB
+import com.example.politi_cal.models.CallBack
+import com.example.politi_cal.models.Celeb
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun SearchScreen(navController: NavController, auth: FirebaseAuth) {
     val focusManager = LocalFocusManager.current
+    val context = LocalContext.current
     var search by remember {
         mutableStateOf("")
     }
@@ -76,11 +84,19 @@ fun SearchScreen(navController: NavController, auth: FirebaseAuth) {
 
                 Button(onClick =
                 {
-                    //Todo//
-
-
-                    navController.navigate(Screen.CelebProfileScreen.route)
-
+                    var callback = CallBack<String, Celeb>(search)
+                    val searchdb = CelebSearchDB()
+                    searchdb.getCelebByName(callback)
+                    while(!callback.getStatus()){
+                        continue
+                    }
+                    if(callback.getOutput() != null){
+                        CelebForCelebProfile = callback.getOutput()!!
+                        navController.navigate(Screen.CelebProfileScreen.route)
+                    }
+                    else{
+                        Toast.makeText(context, "Celeb not found",  Toast.LENGTH_LONG).show()
+                    }
                 }) {
                     Text(text = "Search")
 
