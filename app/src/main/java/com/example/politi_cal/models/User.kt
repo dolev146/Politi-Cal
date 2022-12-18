@@ -10,7 +10,7 @@ import com.google.firebase.firestore.Exclude
  * Only the admin can change a user role.
  */
 
-data class User(@Exclude val userID: String = "",
+data class User(val userID: String = "",
                 val roleID: Int = 1, // 0 admin 1 user
                 val favoritePartyID: String,
                 val userName: String,

@@ -8,6 +8,7 @@ import com.example.politi_cal.models.CallBack
 import com.example.politi_cal.models.Category
 import com.example.politi_cal.models.Celeb
 import com.example.politi_cal.models.Company
+import com.example.politi_cal.models.User
 import com.example.politi_cal.models.VoteOption
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -163,5 +164,4 @@ class AnalyticsQueriesObj : AnalyticsQueriesInterface {
             callBack.Call()
         }
     }
-
 }

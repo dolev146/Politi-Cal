@@ -18,9 +18,9 @@ import org.threeten.bp.LocalDate
 class AdminAnalyticsQueriesDBObj: AdminAnalyticsQueriesInterface {
     override fun getAgeDistribution(callback: CallBack<Boolean, Map<String, Double>>)
     = CoroutineScope(Dispatchers.IO).launch{
-        val age_groups_list = listOf("0-10", "11-20", "21-30", "31-40", "41-50", "51-60", "61-70",
-        "71-80", "81-90", "91-100", "101-110", "111-120")
-        var age_group_map = HashMap<String, Int>()
+        val age_groups_list = listOf("18-25", "26-32", "33-40", "41-50", "51-60", "61-70",
+            "71-80", "More than 81")
+        var age_group_map = HashMap<String, Int>() //change to long
         for(age_group in age_groups_list){
             age_group_map[age_group] = 0
         }
@@ -30,10 +30,14 @@ class AdminAnalyticsQueriesDBObj: AdminAnalyticsQueriesInterface {
         if(users.documents.isNotEmpty()){
             for(user in users){
                 for (age_group in age_groups_list){
+                    val age = getAge(user["birthDate"] as Int)
+                    if(age > 80){
+                        age_group_map[age_group] = age_group_map[age_group] !!+ 1
+                        break
+                    }
                     val group_split = age_group.split("-")
                     val min = Integer.parseInt(group_split[0])
                     val max = Integer.parseInt(group_split[1])
-                    val age = getAge(user["birthDate"] as Int)
                     if(age >= min && age <= max){
                         age_group_map[age_group] = age_group_map[age_group] !!+ 1
                         break
@@ -160,5 +164,4 @@ class AdminAnalyticsQueriesDBObj: AdminAnalyticsQueriesInterface {
             callBack.Call()
         }
     }
-
 }

@@ -11,6 +11,7 @@ import com.example.politi_cal.DBObjects.AnalyticsQueriesObj
 import com.example.politi_cal.DBObjects.EarlyQueriesObj
 import com.example.politi_cal.DBObjects.UserVoteDBObj
 import com.example.politi_cal.DBObjects.VoteOptionDBObj
+import com.example.politi_cal.data.queries_Interfaces.CelebSearch
 import com.example.politi_cal.models.CallBack
 import com.example.politi_cal.models.Category
 import com.example.politi_cal.models.Celeb
@@ -20,11 +21,15 @@ import com.example.politi_cal.models.VoteOption
 import com.example.politi_cal.ui.theme.PolitiCalTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.auth.User
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.android.awaitFrame
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
-public var user :FirebaseUser? = null
+public var user: FirebaseUser? = null
 
 val db = Firebase.firestore
 val userCollectionRef = db.collection("users")
@@ -32,39 +37,35 @@ val userCollectionRef = db.collection("users")
 class MainActivity : ComponentActivity() {
 
 
-
     companion object {
-        val TAG : String = MainActivity::class.java.simpleName
+        val TAG: String = MainActivity::class.java.simpleName
     }
+
     private val auth by lazy {
         FirebaseAuth.getInstance()
     }
-
-
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             PolitiCalTheme {
-//                val e = EarlyQueriesObj()
-//                var callback = CallBack<Int, Map<String, Double>>(0)
-//                val s = AnalyticsQueriesObj()
-//                s.getTotalDistribution(callback)
+//                val search = CelebSearch()
+//                var callback = CallBack<Boolean, HashSet<Celeb>>(false)
+//                search.searchCeleb(callback, "Omer", "ad")
 //                while(!callback.getStatus()){
 //                    continue
 //                }
-//                var left = callback.getOutput()!!["Left"]
-//                var right = callback.getOutput()!!["Right"]
-////                val p_left = left!! / (left+ right!!)
-////                val p_right = right!! / (left+ right!!)
-//                var output = "Left votes:$left" + "%\n"
-//                output+= "Right votes: $right" + "%"
-//                Toast.makeText(this, "Query Output $output", Toast.LENGTH_LONG).show()
-                val aaqdb = AdminAnalyticsQueriesDBObj()
-//                var out = aaqdb.getAge(19970421)
-//                Toast.makeText(this, "My age is $out", Toast.LENGTH_LONG).show()
+//                Toast.makeText(this, "hello world", Toast.LENGTH_LONG).show()
+                val user = com.example.politi_cal.models.User("v@v.com", 1, "", "",
+                    "", "", 2222, listOf(""))
+                var callback = CallBack<com.example.politi_cal.models.User, ArrayList<Celeb>>(user)
+                val queries = AnalyticsQueriesObj()
+                queries.getUnVotedCelebsByUserID(callback)
+                while(!callback.getStatus()){
+                    continue
+                }
+                println("hello world")
                 Navigation(auth = auth)
             }
         }
