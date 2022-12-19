@@ -183,7 +183,8 @@ fun LoginUser(
     } else {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                auth.signInWithEmailAndPassword(email, password).await()
+//                Log.w("CHECK", "email: $email password: $password" )
+                auth.signInWithEmailAndPassword(email.toString(), password.toString()).await()
                 withContext(context = Dispatchers.Main) {
                     Toast.makeText(
                         context, "Login Success", Toast.LENGTH_SHORT
