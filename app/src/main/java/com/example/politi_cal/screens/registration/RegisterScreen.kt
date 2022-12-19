@@ -163,7 +163,7 @@ fun RegisterScreen(navController: NavController, auth: FirebaseAuth) {
                 Button(
                     onClick = {
 
-                        RegisterUser(auth, email, password = "not relevant",  navController)
+                        RegisterUser(auth, email, password = password,  navController)
 
 
                     },

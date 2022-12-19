@@ -142,7 +142,7 @@ fun SwipeScreenAlternate(
                 worksAt = "Works at " + celeb.Company,
                 painter = celeb.ImgUrl
             )
-            if (celebListParam.size != 1) {
+            if (celebListParam.size != 0) {
                 LeftRightButtonsRow(mycustomfun, celeb)
             }
 

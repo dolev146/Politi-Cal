@@ -68,6 +68,16 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
         composable(route = Screen.SwipeScreen.route) {
             if (celebListParam.size == 0) {
 
+                var callBack = CallBack<Boolean, ArrayList<Celeb>>(false)
+                retrieveCelebsByUser(callBack)
+                while(!callBack.getStatus()){
+                    continue
+                }
+                var output = callBack.getOutput()
+                if(output !=null){
+                    celebListParam.clear()
+                    celebListParam.addAll(output)
+                }
 
 //                val checkTrue = DontCotinueUntillTrue()
 //                celebListFilterNames.clear()
@@ -77,26 +87,26 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
 //                    continue
 //                }
 
-                val callback2 = CallBack<Boolean,Boolean>(false)
-                celebListFilterNames.clear()
-                retrieveUserVotes(callback2)
-                while (!callback2.getStatus()) {
-                    Thread.sleep(100)
-                    continue
-                }
-
-
-
-
-
-
-                val callBack = CallBack<Boolean, Boolean>(false)
-                celebListParam.clear()
-                retrieveCelebs(callBack)
-                while (!callBack.getStatus()) {
-                    Thread.sleep(100)
-                    continue
-                }
+//                val callback2 = CallBack<Boolean,Boolean>(false)
+//                celebListFilterNames.clear()
+//                retrieveUserVotes(callback2)
+//                while (!callback2.getStatus()) {
+//                    Thread.sleep(100)
+//                    continue
+//                }
+//
+//
+//
+//
+//
+//
+//                val callBack = CallBack<Boolean, Boolean>(false)
+//                celebListParam.clear()
+//                retrieveCelebs(callBack)
+//                while (!callBack.getStatus()) {
+//                    Thread.sleep(100)
+//                    continue
+//                }
                 celebListParam.add(
                     Celeb(
                         Company = "to swipe",
