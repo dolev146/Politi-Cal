@@ -1,8 +1,10 @@
 package com.example.politi_cal.screens.analytics
 
 import android.graphics.Typeface
+import android.os.Build
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
@@ -43,6 +45,12 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
 import com.example.politi_cal.R
+import com.example.politi_cal.categoriesForAddCelebNames
+import com.example.politi_cal.companiesForAddCeleb
+import com.example.politi_cal.companiesForAddCelebNames
+import com.example.politi_cal.models.CallBack
+import com.example.politi_cal.retrieveCategories
+import com.example.politi_cal.retrieveCompanies
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.PieData
@@ -50,7 +58,9 @@ import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.google.firebase.auth.FirebaseAuth
 import java.util.*
-
+import java.util.stream.Collector
+import kotlin.collections.ArrayList
+import kotlin.streams.toList
 
 
 @Composable
@@ -98,13 +108,35 @@ fun AdminAnalyticsScreen(navController: NavController, auth: FirebaseAuth) {
                         })
                 }
             }
-            createDropMenus()
+            var callback_category = CallBack<Boolean, Boolean>(false)
+            var callback_company= CallBack<Boolean, Boolean>(false)
+            retrieveCategories(callback_category)
+            retrieveCompanies(callback_company)
+            var flag = 0
+            while(true){
+                if(callback_category.getStatus()){
+                    flag += 1
+                }
+                if(callback_company.getStatus()){
+                    flag += 1
+                }
+                if (flag == 2){
+                    break
+                }
+                else{
+                    flag = 0
+                }
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                createDropMenus()
+            }
         }
     }
     
 }
 
 
+@RequiresApi(Build.VERSION_CODES.N)
 @Composable
 @OptIn(ExperimentalMaterialApi::class)
 fun createDropMenus() {
@@ -114,6 +146,25 @@ fun createDropMenus() {
 
     var cat_enabled by remember {
         mutableStateOf(true)
+    }
+    val categories = categoriesForAddCelebNames
+    var selection by remember { mutableStateOf(categories[0]) }
+    var category_expanded by remember {
+        mutableStateOf(false)
+    }
+
+    var companies = companiesForAddCeleb.stream()
+        .filter { it.category.equals(selection) }
+        .map { it.companyID }
+        .toList().toMutableList()
+
+//                    listOf<String>(
+//                    "All", "Maccabi Haifa soccer club", "Maccabi Tel Aviv Basketball club", "The Likud",
+//                    "N12 News", "Ariel University", "Mordechai from OS course"
+//                )
+    var selectioncompany by remember { mutableStateOf(companies[0]) }
+    var company_expanded by remember {
+        mutableStateOf(false)
     }
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -133,19 +184,11 @@ fun createDropMenus() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                val categories = listOf<String>(
-                    "Sport", "Journalism", "Academics",
-                    "Culinary", "Entertainment", "Science"
-                )
-                var selection by remember { mutableStateOf(categories[0]) }
-                var expanded by remember {
-                    mutableStateOf(false)
-                }
                 Switch(checked = cat_enabled,
                     onCheckedChange = {
                         cat_enabled=!cat_enabled })
-                ExposedDropdownMenuBox(expanded = expanded,
-                    onExpandedChange = { expanded = !expanded && cat_enabled })
+                ExposedDropdownMenuBox(expanded = category_expanded,
+                    onExpandedChange = { category_expanded = !category_expanded && cat_enabled })
                 {
                     TextField(
                         readOnly = true,
@@ -154,16 +197,21 @@ fun createDropMenus() {
                         onValueChange = { },
                         label = { Text(text = "Category") },
                         trailingIcon = {
-                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = category_expanded)
                         },
                         colors = ExposedDropdownMenuDefaults.textFieldColors()
                     )
-                    ExposedDropdownMenu(expanded = expanded,
-                        onDismissRequest = { expanded = false }) {
+                    ExposedDropdownMenu(expanded = category_expanded,
+                        onDismissRequest = { category_expanded = false }) {
                         categories.forEach { selected ->
                             DropdownMenuItem(onClick = {
                                 selection = selected
-                                expanded = false
+                                companies.clear()
+                                companies = companiesForAddCeleb.stream()
+                                    .filter { it.category.equals(selection) }
+                                    .map { it.companyID }
+                                    .toList() as ArrayList<String>
+                                category_expanded = false
                             })
                             {
                                 Text(text = selected)
@@ -186,18 +234,11 @@ fun createDropMenus() {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                val companies = listOf<String>(
-                    "All", "Maccabi Haifa soccer club", "Maccabi Tel Aviv Basketball club", "The Likud",
-                    "N12 News", "Ariel University", "Mordechai from OS course"
-                )
-                var selectioncompany by remember { mutableStateOf(companies[0]) }
-                var expanded by remember {
-                    mutableStateOf(false)
-                }
+
                 Switch(checked = comp_enabled && cat_enabled,
                     onCheckedChange = {comp_enabled=!comp_enabled && cat_enabled})
-                ExposedDropdownMenuBox(expanded = expanded,
-                    onExpandedChange = { expanded = !expanded && comp_enabled &&cat_enabled })
+                ExposedDropdownMenuBox(expanded = company_expanded,
+                    onExpandedChange = { company_expanded = !company_expanded && comp_enabled &&cat_enabled })
                 {
                     TextField(
                         readOnly = true,
@@ -206,16 +247,16 @@ fun createDropMenus() {
                         onValueChange = { },
                         label = { Text(text = "Company") },
                         trailingIcon = {
-                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = company_expanded)
                         },
                         colors = ExposedDropdownMenuDefaults.textFieldColors()
                     )
-                    ExposedDropdownMenu(expanded = expanded,
-                        onDismissRequest = { expanded = false }) {
+                    ExposedDropdownMenu(expanded = company_expanded,
+                        onDismissRequest = { company_expanded = false }) {
                         companies.forEach { selected ->
                             DropdownMenuItem(onClick = {
                                 selectioncompany = selected
-                                expanded = false
+                                company_expanded = false
                             })
                             {
                                 Text(text = selected)
