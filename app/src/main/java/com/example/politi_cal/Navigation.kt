@@ -67,6 +67,8 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
 
         composable(route = Screen.SwipeScreen.route) {
             if (celebListParam.size == 0) {
+
+
 //                val checkTrue = DontCotinueUntillTrue()
 //                celebListFilterNames.clear()
 //                retrieveUserVotes(checkTrue)
@@ -109,6 +111,15 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
                     )
                 )
             }
+//            var callBack = CallBack<Boolean,MutableList<Celeb>>(false)
+//            retrieveCelebsByUserOfri(callBack)
+//            while (!callBack.getStatus()) {
+//                continue
+//            }
+//            val whynotworking = callBack.getOutput()
+//            if (whynotworking != null) {
+//                celebListParam = whynotworking
+//            }
             DrawerTopBar(navController = navCotroller, screen = { navController ->
                 SwipeScreen(navController = navController, auth = auth)
             })
@@ -118,29 +129,19 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
             route = Screen.CelebProfileScreen.route
         ) {
             DrawerTopBar(navController = navCotroller, screen = { navController ->
-                val yonitLevi = Celeb(
-                    FirstName = "Danny",
-                    LastName = "Kushmaro",
-                    ImgUrl = "https://user-images.githubusercontent.com/62290677/208052996-baca855b-bb75-4728-b1aa-a65f317b1aa9.png",
-                    CelebInfo = "Danny Kushmaro (Hebrew: דני קושמרו; born 10 May 1968) is an Israeli journalist, news anchor[1] and television presenter.",
-                    BirthDate = 19680510,
-                    Category = "Journalism",
-                    Company = "N12 new Channel",
-                    RightVotes = 0,
-                    LeftVotes = 90,
-                )
+                val searchedCeleb = CelebForCelebProfile
                 CelebProfileScreen(
                     navController = navCotroller,
                     auth = auth,
-                    yonitLevi.FirstName,
-                    yonitLevi.LastName,
-                    yonitLevi.Company,
-                    yonitLevi.Category,
-                    yonitLevi.ImgUrl,
-                    yonitLevi.CelebInfo,
-                    yonitLevi.BirthDate,
-                    yonitLevi.RightVotes,
-                    yonitLevi.LeftVotes,
+                    searchedCeleb.FirstName,
+                    searchedCeleb.LastName,
+                    searchedCeleb.Company,
+                    searchedCeleb.Category,
+                    searchedCeleb.ImgUrl,
+                    searchedCeleb.CelebInfo,
+                    searchedCeleb.BirthDate,
+                    searchedCeleb.RightVotes,
+                    searchedCeleb.LeftVotes,
                 )
             })
         }
