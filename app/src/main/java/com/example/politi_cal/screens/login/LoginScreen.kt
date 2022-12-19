@@ -185,10 +185,12 @@ fun LoginUser(
     } else {
         CoroutineScope(Dispatchers.IO).launch {
             try {
+
                 Log.w(TAG, email.toString())
                 Log.w(TAG, password.toString())
                 val auth2 = FirebaseAuth.getInstance()
                 auth2.signInWithEmailAndPassword(email, password).await()
+
                 withContext(context = Dispatchers.Main) {
                     Toast.makeText(
                         context, "Login Success", Toast.LENGTH_SHORT
