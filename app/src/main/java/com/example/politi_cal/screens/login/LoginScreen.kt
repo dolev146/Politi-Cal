@@ -2,6 +2,7 @@ package com.example.politi_cal.screens.login
 
 
 import android.content.Context
+import android.nfc.Tag
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.politi_cal.MainActivity
+import com.example.politi_cal.MainActivity.Companion.TAG
 import com.example.politi_cal.R
 import com.example.politi_cal.Screen
 
@@ -183,8 +185,12 @@ fun LoginUser(
     } else {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-//                Log.w("CHECK", "email: $email password: $password" )
-                auth.signInWithEmailAndPassword(email.toString(), password.toString()).await()
+
+                Log.w(TAG, email.toString())
+                Log.w(TAG, password.toString())
+                val auth2 = FirebaseAuth.getInstance()
+                auth2.signInWithEmailAndPassword(email, password).await()
+
                 withContext(context = Dispatchers.Main) {
                     Toast.makeText(
                         context, "Login Success", Toast.LENGTH_SHORT
@@ -192,6 +198,7 @@ fun LoginUser(
                     navController.navigate(Screen.SwipeScreen.route)
                 }
             } catch (e: Exception) {
+                Log.d(TAG, e.message.toString())
                 withContext(context = Dispatchers.Main) {
                     Toast.makeText(
                         context, e.message, Toast.LENGTH_SHORT
