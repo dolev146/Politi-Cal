@@ -13,7 +13,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
 
 
-//val db = Firebase.firestore
+val db = Firebase.firestore
 val userCollectionRef = Firebase.firestore.collection("users")
 val celebCollectionRef = Firebase.firestore.collection("celebs")
 val companyCollectionRef = Firebase.firestore.collection("companies")
@@ -33,7 +33,8 @@ val celebListFilterNames = mutableListOf<String>()
 
 val checkTrue = DontCotinueUntillTrue()
 
-//var CelebForCelebProfile = Celeb()
+var CelebForCelebProfile = Celeb("", "", "", 0, "",
+    "", "", 0, 0)
 
 
 class MainActivity : ComponentActivity() {
