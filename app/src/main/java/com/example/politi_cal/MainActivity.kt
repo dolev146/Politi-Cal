@@ -238,3 +238,57 @@ fun removeCharacters(list: List<String>): List<String> {
 }
 
 
+
+
+fun retrieveCelebsByUserOfri(callBack: CallBack<Boolean, MutableList<Celeb>>)
+        =CoroutineScope(Dispatchers.IO).launch {
+    val auth = FirebaseAuth.getInstance()
+    val userId = auth.currentUser?.email.toString()
+    val uservotes = db.collection("userVotes")
+        .whereEqualTo("userEmail", userId)
+        .get().await()
+    val userData = db.collection("users").document(userId).get().await()
+    var prefs = HashSet<String>()
+    if(userData.exists()){
+        for(pref in arrayOf(userData["userPref"])){
+            prefs.add(pref.toString())
+        }
+    }
+    var voted_celebs = HashSet<String>()
+    if(uservotes.documents.isNotEmpty()){
+        for(document in uservotes){
+            val celebId = document["celebFullName"].toString()
+            voted_celebs.add(celebId)
+        }
+    }
+    val celebs = db.collection("celebs")
+        .get().await()
+    if(celebs.documents.isNotEmpty()){
+        val unvoted_celeb = ArrayList<Celeb>()
+        for(celeb in celebs){
+            if(celeb.id in voted_celebs){
+                continue
+            }
+            val category = celeb["category"].toString()
+            if(!(category in prefs)){
+                continue
+            }
+            val fname = celeb["firstName"].toString()
+            val lname = celeb["lastName"].toString()
+            val birthdate = Integer.parseInt(celeb["birthDate"].toString())
+            val company = celeb["company"].toString()
+            val imgUrl = celeb["imgUrl"].toString()
+            val left = Integer.parseInt(celeb["leftVotes"].toString())
+            val right = Integer.parseInt(celeb["rightVotes"].toString())
+            val info = celeb["celebInfo"].toString()
+            var celeb = Celeb(Company = company, FirstName = fname, LastName=lname,
+                BirthDate = birthdate.toLong(), ImgUrl = imgUrl, CelebInfo = info
+                , RightVotes = right.toLong(), LeftVotes = left.toLong(), Category = category
+            )
+            unvoted_celeb.add(celeb)
+        }
+        callBack.setOutput(unvoted_celeb)
+        callBack.Call()
+    }
+}
+

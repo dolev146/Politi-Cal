@@ -67,6 +67,8 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
 
         composable(route = Screen.SwipeScreen.route) {
             if (celebListParam.size == 0) {
+
+
 //                val checkTrue = DontCotinueUntillTrue()
 //                celebListFilterNames.clear()
 //                retrieveUserVotes(checkTrue)
@@ -109,6 +111,15 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
                     )
                 )
             }
+//            var callBack = CallBack<Boolean,MutableList<Celeb>>(false)
+//            retrieveCelebsByUserOfri(callBack)
+//            while (!callBack.getStatus()) {
+//                continue
+//            }
+//            val whynotworking = callBack.getOutput()
+//            if (whynotworking != null) {
+//                celebListParam = whynotworking
+//            }
             DrawerTopBar(navController = navCotroller, screen = { navController ->
                 SwipeScreen(navController = navController, auth = auth)
             })
