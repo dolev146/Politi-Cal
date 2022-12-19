@@ -66,14 +66,16 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
 
 
         composable(route = Screen.SwipeScreen.route) {
+            celebListParam.clear()
             var callBack = CallBack<Boolean,MutableList<Celeb>>(false)
             retrieveCelebsByUserOfri(callBack)
             while (!callBack.getStatus()) {
                 continue
             }
-            val whynotworking = callBack.getOutput()
-            if (whynotworking != null) {
-                celebListParam = whynotworking
+            val working = callBack.getOutput()
+            if (working != null) {
+                celebListParam = working
+                celebListParam.shuffle()
             }
             DrawerTopBar(navController = navCotroller, screen = { navController ->
                 SwipeScreen(navController = navController, auth = auth)

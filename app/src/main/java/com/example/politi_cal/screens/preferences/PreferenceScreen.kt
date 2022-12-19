@@ -16,14 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.politi_cal.*
 import com.example.politi_cal.MainActivity.Companion.TAG
-import com.example.politi_cal.Screen
-import com.example.politi_cal.celebListParam
 import com.example.politi_cal.common.dropDownMenu
 import com.example.politi_cal.models.CallBack
+import com.example.politi_cal.models.Celeb
 import com.example.politi_cal.models.User
-import com.example.politi_cal.retrieveCelebs
-import com.example.politi_cal.userCollectionRef
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.CoroutineScope
@@ -229,11 +227,16 @@ private  fun editUser(auth : FirebaseAuth, userClass : User, context : Context, 
         userCollectionRef.document(auth.currentUser?.email.toString()).set(userClass, SetOptions.merge()).await()
         withContext(Dispatchers.Main) {
             Toast.makeText(context, "User updated", Toast.LENGTH_SHORT).show()
-            var callBack = CallBack<Boolean,Boolean>(false)
             celebListParam.clear()
-            retrieveCelebs(callBack)
-            while(!callBack.getStatus()){
+            var callBack = CallBack<Boolean,MutableList<Celeb>>(false)
+            retrieveCelebsByUserOfri(callBack)
+            while (!callBack.getStatus()) {
                 continue
+            }
+            val working = callBack.getOutput()
+            if (working != null) {
+                celebListParam = working
+                celebListParam.shuffle()
             }
             navController.navigate(Screen.SwipeScreen.route)
         }
