@@ -163,7 +163,7 @@ fun RegisterScreen(navController: NavController, auth: FirebaseAuth) {
                 Button(
                     onClick = {
 
-                        RegisterUser(auth, email, password = "not relevant",  navController)
+                        RegisterUser(auth, email, password, navController)
 
 
                     },
@@ -175,27 +175,6 @@ fun RegisterScreen(navController: NavController, auth: FirebaseAuth) {
                     Text(text = "Register")
                 }
 
-                fun saveUser(
-                    user: User
-                    // pass also context
-
-
-                ) = CoroutineScope(Dispatchers.IO).launch {
-                    try {
-                        userCollectionRef.add(user).await()
-                        withContext(Dispatchers.Main) {
-                            Log.d(TAG, "User saved")
-
-                        }
-
-                    } catch (e: Exception) {
-                        withContext(Dispatchers.Main) {
-
-                            e.printStackTrace()
-                        }
-                    }
-                }
-
             }
 
         }
@@ -205,7 +184,12 @@ fun RegisterScreen(navController: NavController, auth: FirebaseAuth) {
 
 }
 
-fun RegisterUser(auth: FirebaseAuth, email: String, password: String  = "not relevant", navController: NavController) {
+fun RegisterUser(
+    auth: FirebaseAuth,
+    email: String,
+    password: String,
+    navController: NavController
+) {
 
     // register the email and password with firebase auth
     if (email.isNotEmpty() && password.isNotEmpty()) {
@@ -217,8 +201,8 @@ fun RegisterUser(auth: FirebaseAuth, email: String, password: String  = "not rel
                     navController.navigate(Screen.PreferenceScreen.route)
                 }
 
-            }catch (e: Exception){
-                withContext(Dispatchers.Main){
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
                     Toast.makeText(navController.context, e.message, Toast.LENGTH_SHORT).show()
                 }
             }
@@ -228,12 +212,12 @@ fun RegisterUser(auth: FirebaseAuth, email: String, password: String  = "not rel
     }
 }
 
-fun checkLoggedInState(auth: FirebaseAuth,navController: NavController){
-    if(auth.currentUser != null){
+fun checkLoggedInState(auth: FirebaseAuth, navController: NavController) {
+    if (auth.currentUser != null) {
         Log.d(TAG, "User is logged in")
 
 
-    }else{
+    } else {
         Log.d(TAG, "User is not logged in")
     }
 }

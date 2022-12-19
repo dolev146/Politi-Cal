@@ -124,6 +124,18 @@ fun SwipeScreen(navController: NavController, auth: FirebaseAuth) {
         if (celebListParam.size > 1) {
             celebListParam.removeAt(0)
             celeb = celebListParam[0]
+        } else {
+            celeb = Celeb(
+                Company = "test",
+                FirstName = "text",
+                LastName = "text",
+                BirthDate = 0,
+                ImgUrl = "https://user-images.githubusercontent.com/62290677/208085405-50e2a05c-2a41-4579-8038-263fe097b80d.png",
+                CelebInfo = "text",
+                Category = "text",
+                RightVotes = 0,
+                LeftVotes = 0
+            )
         }
     }
 }

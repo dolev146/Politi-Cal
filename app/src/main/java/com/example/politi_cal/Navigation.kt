@@ -66,60 +66,15 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
 
 
         composable(route = Screen.SwipeScreen.route) {
-            if (celebListParam.size == 0) {
-
-
-//                val checkTrue = DontCotinueUntillTrue()
-//                celebListFilterNames.clear()
-//                retrieveUserVotes(checkTrue)
-//                while (checkTrue.isTrue == false) {
-//                    Thread.sleep(100)
-//                    continue
-//                }
-
-                val callback2 = CallBack<Boolean,Boolean>(false)
-                celebListFilterNames.clear()
-                retrieveUserVotes(callback2)
-                while (!callback2.getStatus()) {
-                    Thread.sleep(100)
-                    continue
-                }
-
-
-
-
-
-
-                val callBack = CallBack<Boolean, Boolean>(false)
-                celebListParam.clear()
-                retrieveCelebs(callBack)
-                while (!callBack.getStatus()) {
-                    Thread.sleep(100)
-                    continue
-                }
-                celebListParam.add(
-                    Celeb(
-                        Company = "to swipe",
-                        FirstName = "no more",
-                        LastName = "Celebs",
-                        BirthDate = 0,
-                        ImgUrl = "https://user-images.githubusercontent.com/62290677/208234784-89da08f2-06dd-4581-88c9-f19cc6c989ed.png",
-                        CelebInfo = "text",
-                        Category = "text",
-                        RightVotes = 0,
-                        LeftVotes = 0
-                    )
-                )
+            var callBack = CallBack<Boolean,MutableList<Celeb>>(false)
+            retrieveCelebsByUserOfri(callBack)
+            while (!callBack.getStatus()) {
+                continue
             }
-//            var callBack = CallBack<Boolean,MutableList<Celeb>>(false)
-//            retrieveCelebsByUserOfri(callBack)
-//            while (!callBack.getStatus()) {
-//                continue
-//            }
-//            val whynotworking = callBack.getOutput()
-//            if (whynotworking != null) {
-//                celebListParam = whynotworking
-//            }
+            val whynotworking = callBack.getOutput()
+            if (whynotworking != null) {
+                celebListParam = whynotworking
+            }
             DrawerTopBar(navController = navCotroller, screen = { navController ->
                 SwipeScreen(navController = navController, auth = auth)
             })
