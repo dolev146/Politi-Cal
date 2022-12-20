@@ -165,14 +165,14 @@ fun VotingBar(
         // second row
         // stack over flow https://stackoverflow.com/questions/74619069/what-is-the-attribute-of-the-moddifier-that-i-need-to-change-to-make-the-corners?noredirect=1#comment131712293_74619069
         Column(
-            Modifier.padding(start = 46.dp, end = 46.dp),
+            Modifier.padding(start = 46.dp, end = 46.dp).background(Color.Transparent),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp)
-                    .background(Color.White),
+                    .background(Color.Transparent),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
