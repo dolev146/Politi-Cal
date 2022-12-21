@@ -16,11 +16,14 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.politi_cal.R
 import com.example.politi_cal.Screen
 import com.example.politi_cal.userCollectionRef
 import com.google.common.primitives.UnsignedBytes.toInt
@@ -41,8 +44,10 @@ fun DrawerHeader() {
             .fillMaxWidth()
             .padding(vertical = 64.dp), contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = "Header", fontSize = 60.sp, modifier = Modifier.align(Alignment.Center)
+        Icon(
+            imageVector = ImageVector.vectorResource(id = R.drawable.app_logo),
+            contentDescription = "logo",
+            modifier = Modifier.size(100.dp)
         )
     }
 }
