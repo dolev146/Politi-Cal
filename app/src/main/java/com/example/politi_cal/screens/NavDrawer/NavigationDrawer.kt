@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.politi_cal.Screen
-import com.example.politi_cal.db
 import com.example.politi_cal.userCollectionRef
 import com.google.common.primitives.UnsignedBytes.toInt
 import com.google.firebase.auth.FirebaseAuth
@@ -31,7 +30,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
-import okhttp3.Dispatcher
 
 
 
@@ -114,9 +112,9 @@ fun DrawerTopBar(
             icon = Icons.Default.Home
         ),
         MenuItem(
-            id = "settings",
-            title = "Settings",
-            contentDescription = "Go to Settings screen",
+            id = "preferences",
+            title = "Preferences",
+            contentDescription = "Go to Preferences screen",
             icon = Icons.Default.Settings
         ),
         MenuItem(
@@ -186,8 +184,8 @@ fun DrawerTopBar(
                     "swipe" -> {
                         navController.navigate(Screen.SwipeScreen.route)
                     }
-                    "settings" -> {
-                        navController.navigate(Screen.PreferenceScreen.route)
+                    "preferences" -> {
+                        navController.navigate(Screen.PreferenceScreen2.route)
                     }
                     "user profile" -> {
                         navController.navigate(Screen.UserProfileScreen.route)

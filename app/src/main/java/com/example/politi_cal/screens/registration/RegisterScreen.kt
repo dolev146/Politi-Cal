@@ -205,7 +205,7 @@ fun RegisterUser(
                 auth.createUserWithEmailAndPassword(email, password).await()
                 checkLoggedInState(auth, navController)
                 withContext(Dispatchers.Main) {
-                    navController.navigate(Screen.PreferenceScreen.route)
+                    navController.navigate(Screen.PreferenceScreen1.route)
                 }
 
             } catch (e: Exception) {

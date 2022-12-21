@@ -13,7 +13,8 @@ import com.example.politi_cal.screens.admin_screen.AdminOnlyScreen
 import com.example.politi_cal.screens.analytics.AdminAnalyticsScreen
 import com.example.politi_cal.screens.celeb_profile.CelebProfileScreen
 import com.example.politi_cal.screens.login.LoginScreen
-import com.example.politi_cal.screens.preferences.PreferenceScreen
+import com.example.politi_cal.screens.preferences.PreferenceScreen1
+import com.example.politi_cal.screens.preferences.PreferenceScreen2
 import com.example.politi_cal.screens.registration.RegisterScreen
 import com.example.politi_cal.screens.search.SearchScreen
 import com.example.politi_cal.screens.user_profile.UserProfileScreen
@@ -55,11 +56,18 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
 
         }
 
-        composable(route = Screen.PreferenceScreen.route) {
+        composable(route = Screen.PreferenceScreen1.route) {
 
 
-            PreferenceScreen(navController = navCotroller, auth = auth)
+                PreferenceScreen1(navController = navCotroller, auth = auth)
 
+
+        }
+
+        composable(route = Screen.PreferenceScreen2.route) {
+            DrawerTopBar(navController = navCotroller, screen = { navController ->
+            PreferenceScreen2(navController = navCotroller, auth = auth)
+            })
 
         }
 
@@ -67,7 +75,7 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
 
         composable(route = Screen.SwipeScreen.route) {
             celebListParam.clear()
-            var callBack = CallBack<Boolean,MutableList<Celeb>>(false)
+            var callBack = CallBack<Boolean, MutableList<Celeb>>(false)
             retrieveCelebsByUserOfri(callBack)
             while (!callBack.getStatus()) {
                 continue
