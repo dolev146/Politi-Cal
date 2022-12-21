@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
@@ -36,6 +37,29 @@ fun SearchScreen(navController: NavController, auth: FirebaseAuth) {
     var search by remember {
         mutableStateOf("")
     }
+
+    // list of celebs
+    var celebsSearchList by remember {
+        mutableStateOf(mutableListOf<Celeb>())
+    }
+
+    var celebExample = Celeb(
+        Company = "no company",
+        FirstName = "no more swipes",
+        LastName = "finished",
+        BirthDate = 0,
+        ImgUrl = "https://user-images.githubusercontent.com/62290677/208495339-a1f0a482-878f-4f88-ad88-1eef3bfe36c4.png",
+        CelebInfo = "text",
+        Category = "text",
+        RightVotes = 0,
+        LeftVotes = 0
+    )
+
+
+
+
+
+
     LazyColumn(content = {
         item {
             Column(
@@ -84,6 +108,9 @@ fun SearchScreen(navController: NavController, auth: FirebaseAuth) {
 
                 Button(onClick =
                 {
+
+                    celebsSearchList.add(celebExample)
+
                     var callback = CallBack<String, Celeb>(search)
                     val searchdb = CelebSearchDB()
                     searchdb.getCelebByName(callback)
@@ -104,7 +131,74 @@ fun SearchScreen(navController: NavController, auth: FirebaseAuth) {
 
 
             }
+           // celebListComp(celebsSearchList = celebsSearchList, navController = navController)
 
         }
+        items(celebsSearchList.size) {
+            if (celebsSearchList.isEmpty()) {
+                     println("no celebs")
+            } else {
+                celebsSearchList.forEach { celebie ->
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp),
+                        elevation = 8.dp
+                    ) {
+                        Column(
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 20.dp)
+                                .clip(MaterialTheme.shapes.medium)
+                        ) {
+                            Text(
+                                text = celebie.FirstName + " " + celebie.LastName,
+                                style = MaterialTheme.typography.h6
+                            )
+                            Button(onClick = {
+                                CelebForCelebProfile = celebie
+                                navController.navigate(Screen.CelebProfileScreen.route)
+                            }) {
+                                Text(text = "View Profile")
+                            }
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+
+
     })
 }
+
+//@Composable
+//fun celebListComp(celebsSearchList: MutableList<Celeb> , navController: NavController) {
+//    LazyColumn(content = {
+//        items(celebsSearchList.size) { index ->
+//            celebComp(celebsSearchList[index])
+//        }
+//    })
+//
+//}
+//
+//@Composable
+//fun celebComp(celeb: Celeb) {
+//    Card {
+//        Column(
+//            verticalArrangement = Arrangement.Center,
+//            horizontalAlignment = Alignment.CenterHorizontally,
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .padding(top = 20.dp)
+//        ) {
+//            Text(text = celeb.FirstName + " " + celeb.LastName, style = MaterialTheme.typography.h4)
+//            Text(text = celeb.Company, style = MaterialTheme.typography.h4)
+//        }
+//    }
+//
+//}
