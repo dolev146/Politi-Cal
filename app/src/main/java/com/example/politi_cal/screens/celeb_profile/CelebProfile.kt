@@ -67,18 +67,29 @@ fun CelebProfileScreenAlternate(navController: NavController, auth: FirebaseAuth
                     company = celeb.Company,
                     ImgUrl = celeb.ImgUrl,
                 )
-
+                    var flag = false
                 // check if celeb.RightVotes is zero then increase it by 1
-                if(celeb.RightVotes == 0L) {
                     celeb.RightVotes += 1
-                }
                 // check if celeb.LeftVotes is zero then increase it by 1
-                if(celeb.LeftVotes == 0L) {
                     celeb.LeftVotes += 1
+
+                if (celeb.RightVotes > 1L && celeb.LeftVotes > 1L) {
+                    celeb.RightVotes -= 1
+                    celeb.LeftVotes -= 1
+                    flag = true
                 }
                 val total = celeb.RightVotes + celeb.LeftVotes
-                val rightPercent = (celeb.RightVotes.toDouble() / total.toDouble()) * 100
-                val leftPercent = (celeb.LeftVotes.toDouble() / total.toDouble()) * 100
+                var rightPercent = (celeb.RightVotes.toDouble() / total.toDouble()) * 100
+                var leftPercent = (celeb.LeftVotes.toDouble() / total.toDouble()) * 100
+
+                if ( celeb.LeftVotes == 1L && celeb.RightVotes != 1L && !flag ) {
+                    leftPercent = 0.00000001
+                    rightPercent = 100 -leftPercent
+                }
+                if ( celeb.RightVotes == 1L && celeb.LeftVotes != 1L && !flag ) {
+                    rightPercent = 0.00000001
+                    leftPercent = 100 - rightPercent
+                }
 
                 // voting bar
                 VotingBar(
