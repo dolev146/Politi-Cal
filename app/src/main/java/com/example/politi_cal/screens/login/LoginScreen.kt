@@ -75,8 +75,7 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
         Icon(
             imageVector = ImageVector.vectorResource(id = R.drawable.app_logo),
             contentDescription = "logo",
-            modifier = Modifier
-                .size(100.dp)
+            modifier = Modifier.size(100.dp)
         )
         Text(
             text = "Login Screen",
@@ -138,10 +137,11 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                 Button(
                     onClick = {
                         LoginUser(email, password, auth, navController, context)
-                    }, modifier = Modifier
+                    },
+                    modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp),
-                        enabled = isPasswordValid && email.isNotEmpty()
+                    enabled = isPasswordValid && email.isNotEmpty()
                 ) {
                     Text(text = "Login")
                 }
@@ -149,22 +149,46 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
             }
 
         }
-        Button(
+
+
+        TextButton(
             onClick = {
                 navController.navigate(Screen.RegisterScreen.route)
-            },
-            modifier = Modifier
+            }, modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
-            colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color.Red, contentColor = Color.White
-            )
+                .padding(8.dp)
         ) {
             Text(text = "New User ? Register now ! ")
         }
 
-        Text(text = "All Rights Reserved to @PolitiCal", modifier = Modifier.padding(8.dp)
-            , color = Color.Gray)
+        Text(
+            text = "All Rights Reserved to @PolitiCal",
+            modifier = Modifier.padding(8.dp),
+            color = Color.Gray
+        )
+
+        TextButton(
+            onClick = {
+                email = "admin@admin.com"
+                password = "123456"
+            }, modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
+            Text(text = "Admin User :" + " admin@admin.com " + " pass: 123456" )
+        }
+
+        TextButton(
+            onClick = {
+                email = "a@a.com"
+                password = "123456"
+            }, modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
+            Text(text =  "UserEmail : a@a.com " + "password : 123456")
+        }
+
 
 
 

@@ -32,7 +32,6 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 
-
 @Composable
 fun DrawerHeader() {
     Box(
@@ -91,11 +90,10 @@ fun DrawerTopBar(
     }
 
 
-
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
-    isAdmin(context){
+    isAdmin(context) {
         isAdminState = true
     }
     var menuContent = mutableListOf(
@@ -117,25 +115,14 @@ fun DrawerTopBar(
             contentDescription = "Go to Preferences screen",
             icon = Icons.Default.Settings
         ),
-        MenuItem(
-            id = "user profile",
-            title = "User Profile",
-            contentDescription = "Go to User profile screen",
-            icon = Icons.Default.AccountBox
-        ),
-        MenuItem(
-            id = "add celeb",
-            title = "Add Celeb",
-            contentDescription = "Go to User profile screen",
-            icon = Icons.Default.Add
-        ),
+//        MenuItem(
+//            id = "user profile",
+//            title = "User Profile",
+//            contentDescription = "Go to User profile screen",
+//            icon = Icons.Default.AccountBox
+//        ),
 
-        MenuItem(
-            id = "admin analytics",
-            title = "Admin Analytics",
-            contentDescription = "Go to Admin Analytics screen",
-            icon = Icons.Default.MoreVert
-        ),
+
         MenuItem(
             id = "logout",
             title = "Logout",
@@ -153,14 +140,33 @@ fun DrawerTopBar(
         //            contentDescription = "Go to Admin Only screen",
         //            icon = Icons.Default.MoreVert,
         //        )
+//        menuContent.add(
+//            MenuItem(
+//                id = "admin only",
+//                title = "Admin only",
+//                contentDescription = "Go to Admin Only screen",
+//                icon = Icons.Default.MoreVert,
+//            )
+//        )
         menuContent.add(
             MenuItem(
-                id = "admin only",
-                title = "Admin only",
-                contentDescription = "Go to Admin Only screen",
-                icon = Icons.Default.MoreVert,
+                id = "add celeb",
+                title = "Add Celeb",
+                contentDescription = "Go to User profile screen",
+                icon = Icons.Default.Add
             )
         )
+
+        menuContent.add(
+            MenuItem(
+                id = "admin analytics",
+                title = "Admin Analytics",
+                contentDescription = "Go to Admin Analytics screen",
+                icon = Icons.Default.MoreVert
+            )
+        )
+
+
     }
 
 
@@ -228,7 +234,7 @@ fun DrawerTopBar(
 }
 
 
-fun isAdmin(context: Context , changeStateFunc: () -> Unit) = CoroutineScope(Dispatchers.IO).launch {
+fun isAdmin(context: Context, changeStateFunc: () -> Unit) = CoroutineScope(Dispatchers.IO).launch {
     try {
         val email = FirebaseAuth.getInstance().currentUser?.email
         if (email != null) {
@@ -237,9 +243,9 @@ fun isAdmin(context: Context , changeStateFunc: () -> Unit) = CoroutineScope(Dis
                 for (document in doc.data?.entries!!) {
                     if (document.key == "roleID") {
                         var roleID = document.value as Long
-                        if (roleID == 0L){
+                        if (roleID == 0L) {
 
-                                changeStateFunc()
+                            changeStateFunc()
 
 
                         }
