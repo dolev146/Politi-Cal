@@ -40,8 +40,9 @@ fun SearchScreen(navController: NavController, auth: FirebaseAuth) {
 
     // list of celebs
     var celebsSearchList by remember {
-        mutableStateOf(mutableListOf<Celeb>())
+        mutableStateOf(mutableStateListOf<Celeb>())
     }
+
 
     var celebExample = Celeb(
         Company = "no company",
@@ -108,21 +109,23 @@ fun SearchScreen(navController: NavController, auth: FirebaseAuth) {
 
                 Button(onClick =
                 {
+                    if (search == "") {
+                        Toast.makeText(context, "Please enter a name", Toast.LENGTH_SHORT).show()
 
-                    celebsSearchList.add(celebExample)
-
-                    var callback = CallBack<String, Celeb>(search)
-                    val searchdb = CelebSearchDB()
-                    searchdb.getCelebByName(callback)
-                    while(!callback.getStatus()){
-                        continue
                     }
-                    if(callback.getOutput() != null){
-                        CelebForCelebProfile = callback.getOutput()!!
-                        navController.navigate(Screen.CelebProfileScreen.route)
-                    }
-                    else{
-                        Toast.makeText(context, "Celeb not found",  Toast.LENGTH_LONG).show()
+                    else {
+                        var callback = CallBack<String, Celeb>(search)
+                        val searchdb = CelebSearchDB()
+                        searchdb.getCelebByName(callback)
+                        while (!callback.getStatus()) {
+                            continue
+                        }
+                        if (callback.getOutput() != null) {
+                            CelebForCelebProfile = callback.getOutput()!!
+                            navController.navigate(Screen.CelebProfileScreen.route)
+                        } else {
+                            Toast.makeText(context, "Celeb not found", Toast.LENGTH_LONG).show()
+                        }
                     }
                 }) {
                     Text(text = "Search")
