@@ -4,13 +4,18 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import com.example.politi_cal.models.*
 import com.example.politi_cal.ui.theme.PolitiCalTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 
 val db = Firebase.firestore
@@ -53,6 +58,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PolitiCalTheme {
+                this.window.statusBarColor = Color(0xFFD7C488).toArgb()
+                this.window.navigationBarColor = Color(0xFFD7C488).toArgb()
                 Navigation(auth = auth)
             }
         }
@@ -65,10 +72,14 @@ class MainActivity : ComponentActivity() {
         //getCelebrities()
         if (value) {
             setContent {
+                this.window.statusBarColor = Color(0xFFD7C488).toArgb()
+                this.window.navigationBarColor = Color(0xFFD7C488).toArgb()
                 Navigation(auth = auth, Screen.SwipeScreen.route)
             }
         } else {
             setContent {
+                this.window.statusBarColor = Color(0xFFD7C488).toArgb()
+                this.window.navigationBarColor = Color(0xFFD7C488).toArgb()
                 Navigation(auth = auth)
             }
 
