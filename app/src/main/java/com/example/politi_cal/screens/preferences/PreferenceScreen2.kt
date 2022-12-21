@@ -173,6 +173,7 @@ fun PreferenceScreen2(navController: NavController, auth: FirebaseAuth) {
                     val currentDay =
                         java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_MONTH)
                     val stringDate = "$currentYear$currentMonth$currentDay"
+
                     val userClass = User(
                         email = auth.currentUser?.email.toString(),
                         favoritePartyID = selectedParty,
@@ -227,6 +228,17 @@ fun PreferenceScreen2(navController: NavController, auth: FirebaseAuth) {
 
 private  fun editUser(auth : FirebaseAuth, userClass : User, context : Context, navController: NavController) = CoroutineScope(Dispatchers.IO).launch {
     try {
+        // get the user
+        val emailFilterDoc =
+            userCollectionRef.whereEqualTo("email", auth.currentUser?.email.toString()).get().await()
+        var userRoleId = 1
+        // check if the user is admin threw roleID
+        if (emailFilterDoc.documents.isNotEmpty()) {
+            for (doc in emailFilterDoc) {
+                userRoleId = doc.get("roleID").toString().toInt()
+            }
+        }
+        userClass.roleID = userRoleId
         userCollectionRef.document(auth.currentUser?.email.toString()).set(userClass, SetOptions.merge()).await()
         withContext(Dispatchers.Main) {
             Toast.makeText(context, "User updated", Toast.LENGTH_SHORT).show()
