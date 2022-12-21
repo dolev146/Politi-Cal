@@ -109,20 +109,21 @@ fun SearchScreen(navController: NavController, auth: FirebaseAuth) {
 
                 Button(onClick =
                 {
+                    celebsSearchList.clear()
                     if (search == "") {
                         Toast.makeText(context, "Please enter a name", Toast.LENGTH_SHORT).show()
 
                     }
                     else {
-                        var callback = CallBack<String, Celeb>(search)
+                        var callback = CallBack<String, MutableList<Celeb>>(search)
                         val searchdb = CelebSearchDB()
                         searchdb.getCelebByName(callback)
                         while (!callback.getStatus()) {
                             continue
                         }
                         if (callback.getOutput() != null) {
-                            CelebForCelebProfile = callback.getOutput()!!
-                            navController.navigate(Screen.CelebProfileScreen.route)
+                            celebsSearchList.addAll(callback.getOutput()!!)
+
                         } else {
                             Toast.makeText(context, "Celeb not found", Toast.LENGTH_LONG).show()
                         }
