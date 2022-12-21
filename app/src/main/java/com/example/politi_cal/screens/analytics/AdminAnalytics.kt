@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.ExperimentalMaterialApi
@@ -39,16 +37,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavController
+import coil.drawable.CrossfadeDrawable
 import com.example.politi_cal.R
 import com.example.politi_cal.categoriesForAddCelebNames
 import com.example.politi_cal.companiesForAddCeleb
-import com.example.politi_cal.companiesForAddCelebNames
+import com.example.politi_cal.data.ObjectDB.AnalyticsQueriesObj
+import com.example.politi_cal.distribution
 import com.example.politi_cal.models.CallBack
+import com.example.politi_cal.models.Category
+import com.example.politi_cal.models.Company
 import com.example.politi_cal.retrieveCategories
 import com.example.politi_cal.retrieveCompanies
 import com.github.mikephil.charting.charts.PieChart
@@ -57,11 +58,14 @@ import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
-import java.util.stream.Collector
 import kotlin.collections.ArrayList
 import kotlin.streams.toList
 
+var piechart: PieChart? = null
 
 @Composable
 fun AdminAnalyticsScreen(navController: NavController, auth: FirebaseAuth) {
@@ -85,7 +89,8 @@ fun AdminAnalyticsScreen(navController: NavController, auth: FirebaseAuth) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Crossfade(targetState = getPieChartData) { pieChartData ->
+//                createAndUpdatePieChart()
+                Crossfade(targetState = distribution) { pieChartData ->
                     AndroidView(factory = { context ->
                         PieChart(context).apply {
                             layoutParams = LinearLayout.LayoutParams(
@@ -109,21 +114,20 @@ fun AdminAnalyticsScreen(navController: NavController, auth: FirebaseAuth) {
                 }
             }
             var callback_category = CallBack<Boolean, Boolean>(false)
-            var callback_company= CallBack<Boolean, Boolean>(false)
+            var callback_company = CallBack<Boolean, Boolean>(false)
             retrieveCategories(callback_category)
             retrieveCompanies(callback_company)
             var flag = 0
-            while(true){
-                if(callback_category.getStatus()){
+            while (true) {
+                if (callback_category.getStatus()) {
                     flag += 1
                 }
-                if(callback_company.getStatus()){
+                if (callback_company.getStatus()) {
                     flag += 1
                 }
-                if (flag == 2){
+                if (flag == 2) {
                     break
-                }
-                else{
+                } else {
                     flag = 0
                 }
             }
@@ -132,9 +136,33 @@ fun AdminAnalyticsScreen(navController: NavController, auth: FirebaseAuth) {
             }
         }
     }
-    
-}
 
+}
+@Composable
+fun createAndUpdatePieChart(){
+    Crossfade(targetState = distribution) { pieChartData ->
+        AndroidView(factory = { context ->
+            PieChart(context).apply {
+                layoutParams = LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                )
+                this.description.isEnabled = false
+                this.isDrawHoleEnabled = false
+                this.legend.isEnabled = true
+                this.legend.textSize = 40F
+                this.legend.horizontalAlignment =
+                    Legend.LegendHorizontalAlignment.CENTER
+                this.setEntryLabelColor((resources.getColor(R.color.white)))
+            }
+        },
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(5.dp), update = {
+                updatePieChartWithData(it, pieChartData)
+            })
+    }
+}
 
 @RequiresApi(Build.VERSION_CODES.N)
 @Composable
@@ -157,11 +185,6 @@ fun createDropMenus() {
         .filter { it.category.equals(selection) }
         .map { it.companyID }
         .toList().toMutableList()
-
-//                    listOf<String>(
-//                    "All", "Maccabi Haifa soccer club", "Maccabi Tel Aviv Basketball club", "The Likud",
-//                    "N12 News", "Ariel University", "Mordechai from OS course"
-//                )
     var selectioncompany by remember { mutableStateOf(companies[0]) }
     var company_expanded by remember {
         mutableStateOf(false)
@@ -186,13 +209,14 @@ fun createDropMenus() {
             ) {
                 Switch(checked = cat_enabled,
                     onCheckedChange = {
-                        cat_enabled=!cat_enabled })
+                        cat_enabled = !cat_enabled
+                    })
                 ExposedDropdownMenuBox(expanded = category_expanded,
                     onExpandedChange = { category_expanded = !category_expanded && cat_enabled })
                 {
                     TextField(
                         readOnly = true,
-                        enabled=cat_enabled,
+                        enabled = cat_enabled,
                         value = selection,
                         onValueChange = { },
                         label = { Text(text = "Category") },
@@ -236,9 +260,11 @@ fun createDropMenus() {
             ) {
 
                 Switch(checked = comp_enabled && cat_enabled,
-                    onCheckedChange = {comp_enabled=!comp_enabled && cat_enabled})
+                    onCheckedChange = { comp_enabled = !comp_enabled && cat_enabled })
                 ExposedDropdownMenuBox(expanded = company_expanded,
-                    onExpandedChange = { company_expanded = !company_expanded && comp_enabled &&cat_enabled })
+                    onExpandedChange = {
+                        company_expanded = !company_expanded && comp_enabled && cat_enabled
+                    })
                 {
                     TextField(
                         readOnly = true,
@@ -266,21 +292,77 @@ fun createDropMenus() {
                 }
             }
         }
-        OutlinedButton(onClick = { /*TODO*/ },
-            colors= ButtonDefaults.buttonColors(
+        OutlinedButton(
+             onClick =  {
+                val analyticsCreator = AnalyticsQueriesObj()
+                // company distribution
+                if(cat_enabled && comp_enabled) {
+                    var company = Company(selectioncompany.toString(), selection.toString())
+                    var callback = CallBack<Company, Map<String, Double>>(company)
+                    analyticsCreator.getCompanyDistribution(callback)
+                    while (!callback.getStatus()){
+                        continue
+                    }
+                    val data = callback!!.getOutput()
+                    val left_distribution = data!!["Left"] !!* 100
+                    val right_distribution = data!!["Right"] !!* 100
+                    distribution.clear()
+                    distribution.add(PieChartData("Left", left_distribution!!.toFloat()))
+                    distribution.add(PieChartData("Right", right_distribution!!.toFloat()))
+                }
+                // category distribution
+                else if(cat_enabled && !comp_enabled){
+                    var category = Category(selection.toString(), selection.toString())
+                    var callback = CallBack<Category, Map<String, Double>>(category)
+                    analyticsCreator.getCategoryStatistics(callback)
+                    while (!callback.getStatus()){
+                        continue
+                    }
+                    val data = callback!!.getOutput()
+                    val left_distribution = data!!["Left"] !!* 100
+                    val right_distribution = data!!["Right"] !!* 100
+                    distribution.clear()
+                    distribution.add(PieChartData("Left", left_distribution!!.toFloat()))
+                    distribution.add(PieChartData("Right", right_distribution!!.toFloat()))
+                }
+                //total distribution
+                else{
+                    var callback = CallBack<Int, Map<String, Double>>(0)
+                    analyticsCreator.getTotalDistribution(callback)
+                    while (!callback.getStatus()){
+                        continue
+                    }
+                    val data = callback!!.getOutput()
+                    val left_distribution = data!!["Left"] !!* 100
+                    val right_distribution = data!!["Right"] !!* 100
+                    distribution.clear()
+                    distribution.add(PieChartData("Left", left_distribution!!.toFloat()))
+                    distribution.add(PieChartData("Right", right_distribution!!.toFloat()))
+                }
+
+                 CoroutineScope(Dispatchers.IO).launch {
+                    updatePieChartWithData(piechart!!, distribution)
+                 }
+            },
+            colors = ButtonDefaults.buttonColors(
                 backgroundColor = MaterialTheme.colors.primary,
                 contentColor = Color.White
-            )) {
+            )
+        ) {
             Text("Apply")
         }
     }
 }
 
 
+//@Composable
 fun updatePieChartWithData(
     chart: PieChart,
     data: List<PieChartData>
 ) {
+    if(piechart == null){
+        piechart = chart
+    }
     val entries = ArrayList<PieEntry>()
     for (i in data.indices) {
         val item = data[i]

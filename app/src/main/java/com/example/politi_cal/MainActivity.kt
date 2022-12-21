@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.example.politi_cal.models.*
+import com.example.politi_cal.screens.analytics.PieChartData
 import com.example.politi_cal.ui.theme.PolitiCalTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -36,6 +37,8 @@ val checkTrue = DontCotinueUntillTrue()
 
 var CelebForCelebProfile = Celeb("", "", "", 0, "",
     "", "", 0, 0)
+
+var distribution = ArrayList<PieChartData>()
 
 
 class MainActivity : ComponentActivity() {

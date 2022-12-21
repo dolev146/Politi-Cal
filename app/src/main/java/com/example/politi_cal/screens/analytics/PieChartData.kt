@@ -9,3 +9,4 @@ val getPieChartData = listOf(
     PieChartData("Left", 45.6F),
     PieChartData("Right", 54.4F)
 )
+
