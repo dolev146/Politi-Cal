@@ -29,9 +29,6 @@ import androidx.navigation.NavController
 import com.example.politi_cal.MainActivity.Companion.TAG
 import com.example.politi_cal.R
 import com.example.politi_cal.Screen
-import com.example.politi_cal.models.User
-
-import com.example.politi_cal.userCollectionRef
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -81,14 +78,12 @@ fun RegisterScreen(navController: NavController, auth: FirebaseAuth) {
             imageVector = ImageVector.vectorResource(id = R.drawable.app_logo),
             contentDescription = "logo",
             modifier = Modifier
-                .padding(16.dp)
-                .size(200.dp)
+                .size(80.dp)
         )
         Text(
             text = "Register Screen",
             style = MaterialTheme.typography.h1,
             fontSize = 32.sp,
-            modifier = Modifier.padding(8.dp)
         )
         Card(
             modifier = Modifier
@@ -178,6 +173,18 @@ fun RegisterScreen(navController: NavController, auth: FirebaseAuth) {
             }
 
         }
+
+        TextButton(
+            onClick = {
+                navController.navigate(Screen.LoginScreen.route)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
+            Text(text = "Already have an account? Login")
+        }
+
 
 
     }

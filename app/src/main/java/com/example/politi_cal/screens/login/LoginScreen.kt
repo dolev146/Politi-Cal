@@ -2,7 +2,6 @@ package com.example.politi_cal.screens.login
 
 
 import android.content.Context
-import android.nfc.Tag
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
@@ -28,11 +27,9 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.politi_cal.MainActivity
 import com.example.politi_cal.MainActivity.Companion.TAG
 import com.example.politi_cal.R
 import com.example.politi_cal.Screen
-
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -79,14 +76,13 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
             imageVector = ImageVector.vectorResource(id = R.drawable.app_logo),
             contentDescription = "logo",
             modifier = Modifier
-                .padding(16.dp)
-                .size(200.dp)
+                .size(100.dp)
         )
         Text(
             text = "Login Screen",
             style = MaterialTheme.typography.h1,
             fontSize = 32.sp,
-            modifier = Modifier.padding(8.dp)
+            modifier = Modifier.padding(4.dp)
         )
         Card(
             modifier = Modifier
@@ -166,6 +162,12 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
         ) {
             Text(text = "New User ? Register now ! ")
         }
+
+        Text(text = "All Rights Reserved to @PolitiCal", modifier = Modifier.padding(8.dp)
+            , color = Color.Gray)
+
+
+
     }
 }
 
