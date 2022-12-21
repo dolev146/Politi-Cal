@@ -1,21 +1,21 @@
 package com.example.politi_cal.screens.search
 
 import android.widget.Toast
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
@@ -42,6 +42,7 @@ fun SearchScreen(navController: NavController, auth: FirebaseAuth) {
     var celebsSearchList by remember {
         mutableStateOf(mutableStateListOf<Celeb>())
     }
+
 
 
     var celebExample = Celeb(
@@ -109,10 +110,9 @@ fun SearchScreen(navController: NavController, auth: FirebaseAuth) {
 
                 Button(onClick =
                 {
-                    celebsSearchList.clear()
+
                     if (search == "") {
                         Toast.makeText(context, "Please enter a name", Toast.LENGTH_SHORT).show()
-
                     }
                     else {
                         var callback = CallBack<String, MutableList<Celeb>>(search)
@@ -122,7 +122,12 @@ fun SearchScreen(navController: NavController, auth: FirebaseAuth) {
                             continue
                         }
                         if (callback.getOutput() != null) {
-                            celebsSearchList.addAll(callback.getOutput()!!)
+                            with(celebsSearchList) {
+                                clear()
+                                addAll(callback.getOutput()!!)
+                            }
+//                            celebsSearchList.clear()
+//                            celebsSearchList.addAll(callback.getOutput()!!)
 
                         } else {
                             Toast.makeText(context, "Celeb not found", Toast.LENGTH_LONG).show()
@@ -138,24 +143,24 @@ fun SearchScreen(navController: NavController, auth: FirebaseAuth) {
            // celebListComp(celebsSearchList = celebsSearchList, navController = navController)
 
         }
-        items(celebsSearchList.size) {
+        itemsIndexed(celebsSearchList) { index, item ->
             if (celebsSearchList.isEmpty()) {
                      println("no celebs")
             } else {
-                celebsSearchList.forEach { celebie ->
+            val celebie = item
+         //   celebsSearchList.forEach { celebie ->
                     Card(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp),
                         elevation = 8.dp
                     ) {
-                        Column(
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally,
+                        Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(top = 20.dp)
                                 .clip(MaterialTheme.shapes.medium)
+                        ,horizontalArrangement = Arrangement.SpaceAround
+                        , verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
                                 text = celebie.FirstName + " " + celebie.LastName,
@@ -164,13 +169,15 @@ fun SearchScreen(navController: NavController, auth: FirebaseAuth) {
                             Button(onClick = {
                                 CelebForCelebProfile = celebie
                                 navController.navigate(Screen.CelebProfileScreen.route)
-                            }) {
+                            }, colors = ButtonDefaults.buttonColors(
+                                    backgroundColor = Color.White, contentColor = Color.Gray
+                                )) {
                                 Text(text = "View Profile")
                             }
                         }
                     }
 
-                }
+
 
             }
         }
