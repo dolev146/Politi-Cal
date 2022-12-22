@@ -6,22 +6,22 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Button
-import androidx.compose.material.Checkbox
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.politi_cal.*
 import com.example.politi_cal.MainActivity.Companion.TAG
+import com.example.politi_cal.Screen
+import com.example.politi_cal.celebListParam
 import com.example.politi_cal.common.dropDownMenu
 import com.example.politi_cal.models.CallBack
 import com.example.politi_cal.models.Celeb
 import com.example.politi_cal.models.User
+import com.example.politi_cal.retrieveCelebsByUserOfri
+import com.example.politi_cal.userCollectionRef
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.CoroutineScope
@@ -34,9 +34,16 @@ import kotlinx.coroutines.withContext
 fun PreferenceScreen(navController: NavController, auth: FirebaseAuth) {
     var gender = listOf<String>("Male", "Female", "Prefers not to say", "Other")
     var selectedGender by remember { mutableStateOf("this is the first ") }
-    var age = listOf<String>(
-        "18-25", "26-32", "33-40", "41-50", "51-60", "61-70", "71-80", "More then 81"
-    )
+
+    var dd by remember { mutableStateOf("") }
+    var mm by remember { mutableStateOf("") }
+    var yyyy by remember { mutableStateOf("") }
+
+
+    // TODO change the age to three inputs that collect DD MM YYYY and then convert
+    // TODO convert them to the format of YYYYMMDD to INT and save this in the DB as birthDate
+    // TODO remove the userAge from the DB
+
     var selectedAge by remember { mutableStateOf("") }
     var party = listOf<String>(
         "Likud",
@@ -80,7 +87,30 @@ fun PreferenceScreen(navController: NavController, auth: FirebaseAuth) {
             dropDownMenu(list = gender,
                 labeli = "Select gender",
                 onSelected = { selectedGender = it })
-            dropDownMenu(list = age, labeli = "Select age", onSelected = { selectedAge = it })
+            //dropDownMenu(list = age, labeli = "Select age", onSelected = { selectedAge = it })
+            // make a row that get input from user for DD MM YYYY
+            Card {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                ) {
+                    Text(
+                        text = "Select your birth date",
+                        style = MaterialTheme.typography.h6
+                    )
+                    dropDownMenu(list = (1..31).toList().map { it.toString() },
+                        labeli = "DD",
+                        onSelected = { dd = it})
+                    dropDownMenu(list = (1..12).toList().map { it.toString() },
+                        labeli = "MM",
+                        onSelected = { mm = it})
+                    dropDownMenu(list = (1900..2021).toList().map { it.toString() },
+                        labeli = "YYYY",
+                        onSelected = { yyyy = it })
+                }
+            }
+
             dropDownMenu(list = party, labeli = "Select party", onSelected = { selectedParty = it })
             Text(
                 text = "Select your interests",
@@ -170,6 +200,7 @@ fun PreferenceScreen(navController: NavController, auth: FirebaseAuth) {
                     val currentDay =
                         java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_MONTH)
                     val stringDate = "$currentYear$currentMonth$currentDay"
+                    val birthDate = yyyy + mm + dd
                     val userClass = User(
                         email = auth.currentUser?.email.toString(),
                         favoritePartyID = selectedParty,
@@ -177,7 +208,7 @@ fun PreferenceScreen(navController: NavController, auth: FirebaseAuth) {
                         registerDate = stringDate.toLong(),
                         userPref = interests,
                         userID = auth.currentUser?.uid.toString(),
-                        userAge = selectedAge,
+                        userAge = birthDate.toLong(),
                         userGender = selectedGender,
                     )
 
@@ -192,7 +223,7 @@ fun PreferenceScreen(navController: NavController, auth: FirebaseAuth) {
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
-                enabled = selectedGender != "" && selectedAge != "" && selectedParty != "" && (checkStateSports.value || checkStateJournalism.value || checkStatePolitics.value || checkStateFamous.value || checkStateAcademic.value)
+                enabled = selectedGender != "" && dd != ""  && mm != "" && yyyy != "" && selectedParty != "" && (checkStateSports.value || checkStateJournalism.value || checkStatePolitics.value || checkStateFamous.value || checkStateAcademic.value)
             ) {
                 Text(text = "Submit")
             }

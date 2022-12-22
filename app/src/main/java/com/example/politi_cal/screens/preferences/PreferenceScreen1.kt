@@ -6,10 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Button
-import androidx.compose.material.Checkbox
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,9 +34,15 @@ import kotlinx.coroutines.withContext
 fun PreferenceScreen1(navController: NavController, auth: FirebaseAuth) {
     var gender = listOf<String>("Male", "Female", "Prefers not to say", "Other")
     var selectedGender by remember { mutableStateOf("this is the first ") }
-    var age = listOf<String>(
-        "18-25", "26-32", "33-40", "41-50", "51-60", "61-70", "71-80", "More then 81"
-    )
+
+
+    var dd by remember { mutableStateOf("") }
+    var mm by remember { mutableStateOf("") }
+    var yyyy by remember { mutableStateOf("") }
+
+    var ddList = listOf<String>("01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31")
+    var mmList = listOf<String>("01","02","03","04","05","06","07","08","09","10","11","12")
+
 
 
     // TODO change the age to three inputs that collect DD MM YYYY and then convert
@@ -89,7 +92,30 @@ fun PreferenceScreen1(navController: NavController, auth: FirebaseAuth) {
             dropDownMenu(list = gender,
                 labeli = "Select gender",
                 onSelected = { selectedGender = it })
-            dropDownMenu(list = age, labeli = "Select age", onSelected = { selectedAge = it })
+            //dropDownMenu(list = age, labeli = "Select age", onSelected = { selectedAge = it })
+            // make a row that get input from user for DD MM YYYY
+            Card {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
+                ) {
+                    Text(
+                        text = "Select your birth date",
+                        style = MaterialTheme.typography.h6
+                    )
+                    dropDownMenu(list = ddList,
+                        labeli = "DD",
+                        onSelected = { dd = it})
+                    dropDownMenu(list = mmList,
+                        labeli = "MM",
+                        onSelected = { mm = it})
+                    dropDownMenu(list = (1900..2021).toList().map { it.toString() },
+                        labeli = "YYYY",
+                        onSelected = { yyyy = it })
+                }
+            }
+
             dropDownMenu(list = party, labeli = "Select party", onSelected = { selectedParty = it })
             Text(
                 text = "Select your interests",
@@ -179,6 +205,7 @@ fun PreferenceScreen1(navController: NavController, auth: FirebaseAuth) {
                     val currentDay =
                         java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_MONTH)
                     val stringDate = "$currentYear$currentMonth$currentDay"
+                    val birthDate = yyyy + mm + dd
                     val userClass = User(
                         email = auth.currentUser?.email.toString(),
                         favoritePartyID = selectedParty,
@@ -186,7 +213,7 @@ fun PreferenceScreen1(navController: NavController, auth: FirebaseAuth) {
                         registerDate = stringDate.toLong(),
                         userPref = interests,
                         userID = auth.currentUser?.uid.toString(),
-                        userAge = selectedAge,
+                        userAge = birthDate.toLong(),
                         userGender = selectedGender,
                     )
 
@@ -201,7 +228,7 @@ fun PreferenceScreen1(navController: NavController, auth: FirebaseAuth) {
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth(),
-                enabled = selectedGender != "" && selectedAge != "" && selectedParty != "" && (checkStateSports.value || checkStateJournalism.value || checkStatePolitics.value || checkStateFamous.value || checkStateAcademic.value)
+                enabled = selectedGender != "" && dd != ""  && mm != "" && yyyy != "" && selectedParty != "" && (checkStateSports.value || checkStateJournalism.value || checkStatePolitics.value || checkStateFamous.value || checkStateAcademic.value)
             ) {
                 Text(text = "Submit")
             }

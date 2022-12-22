@@ -36,7 +36,7 @@ fun dropDownMenu(list: List<String>, labeli: String, onSelected: (String) -> Uni
         Icons.Filled.KeyboardArrowDown
     }
 
-    Column(modifier = Modifier.padding(20.dp)) {
+    Column(modifier = Modifier.padding(10.dp)) {
         OutlinedTextField(value = selected, onValueChange = {
             onSelected(it)
         }, modifier = Modifier
