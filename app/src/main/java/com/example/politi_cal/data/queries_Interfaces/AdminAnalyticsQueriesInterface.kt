@@ -49,6 +49,6 @@ interface AdminAnalyticsQueriesInterface {
      * return a map that contains how many users registered in each month.
      */
 
-    fun getNumberOfUsersByYear_MonthBasedData(callBack: CallBack<Int, Map<Int, Int>>):Job
+    fun getNumberOfUsersByYear_MonthBasedData(callBack: CallBack<Int, Map<Int, Double>>):Job
 
 }

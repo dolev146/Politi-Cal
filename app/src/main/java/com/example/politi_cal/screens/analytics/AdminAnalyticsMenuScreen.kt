@@ -37,7 +37,7 @@ var dialoginput2text = ""
 var openDialog = false
 var userNumber = false
 var userNumberByYear = false
-var userNumberTimeRange = false
+var monthDistribution = false
 
 @Composable
 fun AdminAnalyticsMenuScreen(navController: NavController, auth: FirebaseAuth) {
@@ -45,7 +45,7 @@ fun AdminAnalyticsMenuScreen(navController: NavController, auth: FirebaseAuth) {
     var openDialog by remember { mutableStateOf(openDialog) }
     var userNumber by remember { mutableStateOf(userNumber) }
     var userNumberByYear by remember { mutableStateOf(userNumberByYear) }
-    var userNumberTimeRange by remember { mutableStateOf(userNumberTimeRange) }
+    var monthDistribution by remember { mutableStateOf(monthDistribution) }
     LazyColumn(content = {
         item {
             Column(
@@ -133,7 +133,6 @@ fun AdminAnalyticsMenuScreen(navController: NavController, auth: FirebaseAuth) {
                                 "users in the application."
                         userNumber = true
                         userNumberByYear = false
-                        userNumberTimeRange = false
                         openDialog = true
 
                     }
@@ -149,8 +148,8 @@ fun AdminAnalyticsMenuScreen(navController: NavController, auth: FirebaseAuth) {
                         // TODO show number of users
                         userNumber = false
                         userNumberByYear = true
-                        userNumberTimeRange = false
                         openDialog = true
+                        monthDistribution = false
                     }
                 ) {
                     Text(text = "Number Of Users In Year ")
@@ -163,6 +162,10 @@ fun AdminAnalyticsMenuScreen(navController: NavController, auth: FirebaseAuth) {
                         .fillMaxWidth(),
                     onClick = {
                         // TODO show number of users
+                        userNumber = false
+                        userNumberByYear = true
+                        openDialog = true
+                        monthDistribution = true
                     }
                 ) {
                     Text(text = "users registered in year distributed by month ")
@@ -191,7 +194,6 @@ fun AdminAnalyticsMenuScreen(navController: NavController, auth: FirebaseAuth) {
                                         openDialog = false
                                         userNumber = false
                                         userNumberByYear = false
-                                        userNumberTimeRange = false
                                     }
                                 ) {
                                     Text("OK")
@@ -234,17 +236,38 @@ fun AdminAnalyticsMenuScreen(navController: NavController, auth: FirebaseAuth) {
                                         dialoginput1 = selected_year
                                         val analyticsCreator = AdminAnalyticsQueriesDBObj()
                                         val year = Integer.parseInt(dialoginput1)
-                                        var callback = CallBack<Int, Int>(year)
-                                        analyticsCreator.getNumberOfUsersByYear(callback)
-                                        while (!callback.getStatus()) {
-                                            continue
+                                        if(!monthDistribution) {
+                                            var callback = CallBack<Int, Int>(year)
+                                            analyticsCreator.getNumberOfUsersByYear(callback)
+                                            while (!callback.getStatus()) {
+                                                continue
+                                            }
+                                            var numberOfUsers = callback!!.getOutput()
+                                            dialoginputtext =
+                                                "There are $numberOfUsers users who register in year $year"
+                                            userNumber = true
+                                            userNumberByYear = false
+                                            openDialog = true
                                         }
-                                        var numberOfUsers = callback!!.getOutput()
-                                        dialoginputtext = "There are $numberOfUsers users who register in year $year"
-                                        userNumber = true
-                                        userNumberByYear = false
-                                        userNumberTimeRange = false
-                                        openDialog = true
+                                        else{
+                                            var callback = CallBack<Int, Map<Int, Double>>(year)
+                                            analyticsCreator.getNumberOfUsersByYear_MonthBasedData(callback)
+                                            while(!callback.getStatus()){
+                                                continue
+                                            }
+                                            adminDistribution.clear()
+                                            val output = callback!!.getOutput()
+                                            for(entry in output!!.entries){
+                                                adminDistribution
+                                                    .add(PieChartData(getMonthName(entry.key), entry.value.toFloat() * 100))
+                                            }
+                                            monthDistribution = false
+                                            userNumber = false
+                                            userNumberByYear = false
+                                            openDialog = false
+                                            adminAnalyticsTitle = "User registration in $year distribution"
+                                            navController.navigate(Screen.AdminAnalyticsViewScreen.route)
+                                        }
                                     }
                                 ) {
                                     Text("OK")
@@ -252,99 +275,37 @@ fun AdminAnalyticsMenuScreen(navController: NavController, auth: FirebaseAuth) {
                             }
                         }
                     )
-                } else if (userNumberTimeRange) {
-
                 }
             }
         }
     })
 }
 
-//@Composable
-//fun InfoDialog() {
-//    AlertDialog1(
-//        onDismissRequest = {
-//            openDialog = false
-//        },
-//        title = {
-//            Text(text = "Result")
-//        },
-//        text = {
-//            Text(text = dialoginputtext)
-//        },
-//        buttons = {
-//            Row(
-//                modifier = Modifier.padding(all = 8.dp),
-//                horizontalArrangement = Arrangement.Center
-//            ) {
-//                Button(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    onClick = {
-//                        openDialog = false
-//                        userNumber = false
-//                        userNumberByYear = false
-//                        userNumberTimeRange = false
-//                    }
-//                ) {
-//                    Text("OK")
-//                }
-//            }
-//        }
-//    )
-//}
 
-//
-//@Composable
-//fun InputDialog() {
-//    AlertDialog1(
-//        onDismissRequest = {
-//            openDialog = false
-//        },
-//        title = {
-//            Text(text = "Input needed")
-//        },
-//        text = {
-//            Column() {
-//                Text("Enter the Wanted year")
-//                TextField(
-//                    value = "2022",
-//                    onValueChange = {
-//                        if (it.isDigitsOnly()) {
-//                            dialoginput1 = it
-//                        } else {
-//                            dialoginput1 = "2022"
-//                        }
-//                    }
-//                )
-//            }
-//        },
-//        buttons = {
-//            Row(
-//                modifier = Modifier.padding(all = 8.dp),
-//                horizontalArrangement = Arrangement.Center
-//            ) {
-//                Button(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    onClick = {
-//                        val analyticsCreator = AdminAnalyticsQueriesDBObj()
-//                        val year = Integer.parseInt(dialoginput1)
-//                        var callback = CallBack<Int, Int>(year)
-//                        analyticsCreator.getNumberOfUsersByYear(callback)
-//                        while (!callback.getStatus()) {
-//                            continue
-//                        }
-//                        var numberOfUsers = callback!!.getOutput()
-//                        dialoginputtext = "There are $numberOfUsers users who register in year $year"
-//                        userNumber = true
-//                        userNumberByYear = false
-//                        userNumberTimeRange = false
-//                        openDialog = true
-//                    }
-//                ) {
-//                    Text("OK")
-//                }
-//            }
-//        }
-//    )
-//}
-//
+fun getMonthName(month: Int): String {
+    if (month == 1) {
+        return "January"
+    } else if (month == 2) {
+        return "Feburary"
+    } else if (month == 3) {
+        return "March"
+    } else if (month == 4) {
+        return "April"
+    } else if (month == 5) {
+        return "May"
+    } else if (month == 6) {
+        return "June"
+    } else if (month == 7) {
+        return "July"
+    } else if (month == 8) {
+        return "August"
+    } else if (month == 9) {
+        return "September"
+    } else if (month == 10) {
+        return "October"
+    } else if (month == 11) {
+        return "November"
+    } else {
+        return "December"
+    }
+}

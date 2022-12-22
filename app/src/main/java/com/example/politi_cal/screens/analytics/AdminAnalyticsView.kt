@@ -126,7 +126,6 @@ fun updateAdminPieChartWithData(
 
 
     val redColor = Color(0xFFF44336)
-//    val blueColor = Color(0xFF3291F3)
 
     var color_list = getNColors(entries.size)
     var list = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -135,11 +134,6 @@ fun updateAdminPieChartWithData(
         TODO("VERSION.SDK_INT < N")
     }
     ds.colors = list
-//    ds.colors = arrayListOf(
-//        redColor.toArgb(),
-//        blueColor.toArgb(),
-//    )
-
 
     ds.yValuePosition = PieDataSet.ValuePosition.INSIDE_SLICE
     ds.xValuePosition = PieDataSet.ValuePosition.INSIDE_SLICE
@@ -164,3 +158,4 @@ fun getNColors(needed_colors: Int): ArrayList<Color>{
     }
     return outColors
 }
+

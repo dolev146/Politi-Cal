@@ -134,7 +134,7 @@ class AdminAnalyticsQueriesDBObj: AdminAnalyticsQueriesInterface {
         }
     }
 
-    override fun getNumberOfUsersByYear_MonthBasedData(callBack: CallBack<Int, Map<Int, Int>>)
+    override fun getNumberOfUsersByYear_MonthBasedData(callBack: CallBack<Int, Map<Int, Double>>)
             = CoroutineScope(Dispatchers.IO).launch{
         var year = callBack.getInput() !!* 10000
         val result = db.collection("users")
@@ -142,11 +142,12 @@ class AdminAnalyticsQueriesDBObj: AdminAnalyticsQueriesInterface {
             .orderBy("registerDate")
             .get().await()
         if(result.documents.isNotEmpty()){
+            var size = 0
             var map = HashMap<Int, Int>()
             for(user in result){
-                val long_date = user["registerDate"]
-                val register_year = Integer.parseInt(long_date.toString().substring(0, 3))
-                val register_month = Integer.parseInt(long_date.toString().substring(4, 5))
+                val long_date = Integer.parseInt(user["registerDate"].toString())
+                val register_year = Integer.parseInt(long_date.toString().substring(0, 4))
+                val register_month = Integer.parseInt(long_date.toString().substring(4, 6))
                 if(!map.containsKey(register_month)){
                     map[register_month] = 0
                 }
@@ -155,9 +156,16 @@ class AdminAnalyticsQueriesDBObj: AdminAnalyticsQueriesInterface {
                 }
                 if(callBack.getInput() == register_year){
                     map[register_month] = map[register_month] !!+ 1
+                    size += 1
                 }
             }
-            callBack.setOutput(map)
+            var outmap = HashMap<Int, Double>()
+            for(entry in map.entries){
+                val distribution = (entry.value.toDouble() / size.toDouble()).toDouble()
+                var month = entry.key
+                outmap[month] = distribution
+            }
+            callBack.setOutput(outmap)
             callBack.Call()
         }
     }
