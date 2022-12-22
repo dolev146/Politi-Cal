@@ -1,16 +1,16 @@
 package com.example.politi_cal.screens.analytics
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.politi_cal.Screen
 import com.google.firebase.auth.FirebaseAuth
 
 //var piechart: PieChart? = null
@@ -19,7 +19,14 @@ import com.google.firebase.auth.FirebaseAuth
 fun AdminAnalyticsScreen(navController: NavController, auth: FirebaseAuth) {
     LazyColumn(content = {
         item {
-            Column(modifier =  Modifier.fillMaxSize().padding(10.dp) ) {
+            Column(modifier =  Modifier.fillMaxSize().padding(10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceAround,
+
+
+
+
+            ) {
 
 
             Text(
@@ -28,15 +35,21 @@ fun AdminAnalyticsScreen(navController: NavController, auth: FirebaseAuth) {
             )
 
 
-            Button(onClick = {
+            Button(
+                modifier = Modifier.padding(10.dp).fillMaxWidth(),
+
+                onClick = {
                 // TODO: Add analytics
+                    navController.navigate(Screen.AdminAnalyticsViewScreen.route)
 
                 }
             ) {
                 Text(text = "Party Distribution")
             }
 
-            Button(onClick = {
+            Button(
+                modifier = Modifier.padding(10.dp).fillMaxWidth(),
+                onClick = {
                 // TODO: Add analytics
 
             }
@@ -44,21 +57,27 @@ fun AdminAnalyticsScreen(navController: NavController, auth: FirebaseAuth) {
                 Text(text = "age group distribution")
             }
 
-            Button(onClick = {
+            Button(
+                modifier = Modifier.padding(10.dp).fillMaxWidth(),
+                onClick = {
                 // TODO: Add analytics
             }
             ) {
                 Text(text = "age group distribution")
             }
 
-            Button(onClick = {
+            Button(
+                modifier = Modifier.padding(10.dp).fillMaxWidth(),
+                onClick = {
                     // TODO show number of users
             }
             ) {
                 Text(text = "Number Of Users")
             }
 
-            Button(onClick = {
+            Button(
+                modifier = Modifier.padding(10.dp).fillMaxWidth(),
+                onClick = {
                     // TODO show number of users
             }
             ) {
@@ -66,19 +85,16 @@ fun AdminAnalyticsScreen(navController: NavController, auth: FirebaseAuth) {
             }
 
 
-            Button(onClick = {
+            Button(
+                modifier = Modifier.padding(10.dp).fillMaxWidth(),
+                onClick = {
                 // TODO show number of users
             }
             ) {
                 Text(text = "users registered in year distributed by month ")
             }
 
-            Button(onClick = {
-                // TODO show number of users
-            }
-            ) {
-                Text(text = " ")
-            }
+
 
 
 
