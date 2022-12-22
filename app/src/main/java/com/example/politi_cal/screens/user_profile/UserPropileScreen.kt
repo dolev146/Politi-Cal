@@ -1,7 +1,6 @@
 package com.example.politi_cal.screens.user_profile
 
 
-
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Checkbox
 import androidx.compose.material.Surface
@@ -9,7 +8,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -47,8 +45,7 @@ fun UserProfileScreen(navController: NavController, auth: FirebaseAuth) {
                 Text(
                     text = "Welcome back " + username,
                     fontSize = 25.sp,
-                    modifier = Modifier
-                        .fillMaxSize()
+                    modifier = Modifier.fillMaxSize()
                 )
             }
         }
@@ -68,8 +65,7 @@ fun UserProfileScreen(navController: NavController, auth: FirebaseAuth) {
                 Text(
                     text = "Select your favorite categories:",
                     fontSize = 25.sp,
-                    modifier = Modifier
-                        .fillMaxSize()
+                    modifier = Modifier.fillMaxSize()
                 )
             }
         }
@@ -99,8 +95,7 @@ fun UserProfileScreen(navController: NavController, auth: FirebaseAuth) {
         }
 
         val categories = listOf<String>(
-            "Sport", "Journalism", "Academics",
-            "Culinary", "Entertainment", "Science"
+            "Sport", "Journalism", "Academics", "Culinary", "Entertainment", "Science"
         )
 
         Surface(
@@ -116,14 +111,14 @@ fun UserProfileScreen(navController: NavController, auth: FirebaseAuth) {
                     .width(50.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
-            )
-            {
+            ) {
 
 
                 //TODO: need to think how to make it changeable
 
 
-                Checkbox(checked = sport_checked,
+                Checkbox(
+                    checked = sport_checked,
                     onCheckedChange = { sport_checked = !sport_checked })
                 Text(text = categories[0], fontSize = 20.sp)
 
@@ -149,8 +144,7 @@ fun UserProfileScreen(navController: NavController, auth: FirebaseAuth) {
                     .width(50.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
-            )
-            {
+            ) {
 
 
                 //TODO: need to think how to make it changeable
@@ -180,8 +174,7 @@ fun UserProfileScreen(navController: NavController, auth: FirebaseAuth) {
                     .width(50.dp),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
-            )
-            {
+            ) {
 
 
                 //TODO: need to think how to make it changeable

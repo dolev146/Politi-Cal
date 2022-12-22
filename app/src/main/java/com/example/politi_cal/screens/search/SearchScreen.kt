@@ -10,7 +10,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,7 +22,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.politi_cal.CelebForCelebProfile
-import com.example.politi_cal.MainActivity
 import com.example.politi_cal.Screen
 import com.example.politi_cal.data.queries_Interfaces.CelebSearchDB
 import com.example.politi_cal.models.CallBack
@@ -42,7 +40,6 @@ fun SearchScreen(navController: NavController, auth: FirebaseAuth) {
     var celebsSearchList by remember {
         mutableStateOf(mutableStateListOf<Celeb>())
     }
-
 
 
     var celebExample = Celeb(
@@ -76,8 +73,7 @@ fun SearchScreen(navController: NavController, auth: FirebaseAuth) {
                 OutlinedTextField(
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Default.Search,
-                            contentDescription = "Search Icon"
+                            imageVector = Icons.Default.Search, contentDescription = "Search Icon"
                         )
                     },
                     value = search,
@@ -108,13 +104,11 @@ fun SearchScreen(navController: NavController, auth: FirebaseAuth) {
                     ),
                 )
 
-                Button(onClick =
-                {
+                Button(onClick = {
 
                     if (search == "") {
                         Toast.makeText(context, "Please enter a name", Toast.LENGTH_SHORT).show()
-                    }
-                    else {
+                    } else {
                         var callback = CallBack<String, MutableList<Celeb>>(search)
                         val searchdb = CelebSearchDB()
                         searchdb.getCelebByName(callback)
@@ -140,48 +134,48 @@ fun SearchScreen(navController: NavController, auth: FirebaseAuth) {
 
 
             }
-           // celebListComp(celebsSearchList = celebsSearchList, navController = navController)
+            // celebListComp(celebsSearchList = celebsSearchList, navController = navController)
 
         }
         itemsIndexed(celebsSearchList) { index, item ->
             if (celebsSearchList.isEmpty()) {
-                     println("no celebs")
+                println("no celebs")
             } else {
-            val celebie = item
-         //   celebsSearchList.forEach { celebie ->
-                    Card(
+                val celebie = item
+                //   celebsSearchList.forEach { celebie ->
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp),
+                    elevation = 8.dp
+                ) {
+                    Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp),
-                        elevation = 8.dp
+                            .clip(MaterialTheme.shapes.medium),
+                        horizontalArrangement = Arrangement.SpaceAround,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .clip(MaterialTheme.shapes.medium)
-                        ,horizontalArrangement = Arrangement.SpaceAround
-                        , verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = celebie.FirstName + " " + celebie.LastName,
-                                style = MaterialTheme.typography.h6
-                            )
-                            Button(onClick = {
+                        Text(
+                            text = celebie.FirstName + " " + celebie.LastName,
+                            style = MaterialTheme.typography.h6
+                        )
+                        Button(
+                            onClick = {
                                 CelebForCelebProfile = celebie
                                 navController.navigate(Screen.CelebProfileScreen.route)
                             }, colors = ButtonDefaults.buttonColors(
-                                    backgroundColor = Color.White, contentColor = Color.Gray
-                                )) {
-                                Text(text = "View Profile")
-                            }
+                                backgroundColor = Color.White, contentColor = Color.Gray
+                            )
+                        ) {
+                            Text(text = "View Profile")
                         }
                     }
-
+                }
 
 
             }
         }
-
 
 
     })

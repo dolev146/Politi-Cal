@@ -134,6 +134,13 @@ fun DrawerTopBar(
             contentDescription = "Go to Logout screen",
             icon = Icons.Default.ExitToApp
         ),
+        MenuItem(
+            id = "user analytics",
+            title = "User Analytics",
+            contentDescription = "Go to User Analytics screen",
+            icon = Icons.Default.MoreVert
+        )
+
 
         )
 
@@ -204,8 +211,8 @@ fun DrawerTopBar(
                     "add celeb" -> {
                         navController.navigate(Screen.AddCelebScreen.route)
                     }
-                    "admin analytics" -> {
-                        navController.navigate(Screen.AdminAnalyticsScreen.route)
+                    "user analytics" -> {
+                        navController.navigate(Screen.UserAnalyticsScreen.route)
                     }
                     "logout" -> {
                         auth.signOut()
@@ -224,9 +231,10 @@ fun DrawerTopBar(
                             // show a message
                             Toast.makeText(context, "You are not an admin", Toast.LENGTH_SHORT)
                                 .show()
-
                         }
-
+                    }
+                    "admin analytics" -> {
+                        navController.navigate(Screen.AdminAnalyticsScreen.route)
                     }
                 }
             })

@@ -77,8 +77,7 @@ fun RegisterScreen(navController: NavController, auth: FirebaseAuth) {
         Icon(
             imageVector = ImageVector.vectorResource(id = R.drawable.app_logo),
             contentDescription = "logo",
-            modifier = Modifier
-                .size(80.dp)
+            modifier = Modifier.size(80.dp)
         )
         Text(
             text = "Register Screen",
@@ -177,8 +176,7 @@ fun RegisterScreen(navController: NavController, auth: FirebaseAuth) {
         TextButton(
             onClick = {
                 navController.navigate(Screen.LoginScreen.route)
-            },
-            modifier = Modifier
+            }, modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
         ) {
@@ -186,16 +184,12 @@ fun RegisterScreen(navController: NavController, auth: FirebaseAuth) {
         }
 
 
-
     }
 
 }
 
 fun RegisterUser(
-    auth: FirebaseAuth,
-    email: String,
-    password: String,
-    navController: NavController
+    auth: FirebaseAuth, email: String, password: String, navController: NavController
 ) {
 
     // register the email and password with firebase auth

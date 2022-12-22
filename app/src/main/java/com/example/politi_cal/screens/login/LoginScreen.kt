@@ -175,7 +175,7 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                 .fillMaxWidth()
                 .padding(8.dp)
         ) {
-            Text(text = "Admin User :" + " admin@admin.com " + " pass: 123456" )
+            Text(text = "Admin User :" + " admin@admin.com " + " pass: 123456")
         }
 
         TextButton(
@@ -186,10 +186,8 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                 .fillMaxWidth()
                 .padding(8.dp)
         ) {
-            Text(text =  "UserEmail : a@a.com " + "password : 123456")
+            Text(text = "UserEmail : a@a.com " + "password : 123456")
         }
-
-
 
 
     }

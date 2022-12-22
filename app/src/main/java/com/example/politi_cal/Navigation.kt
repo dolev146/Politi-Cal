@@ -11,6 +11,7 @@ import com.example.politi_cal.screens.NavDrawer.DrawerTopBar
 import com.example.politi_cal.screens.add_celeb.AddCelebScreen
 import com.example.politi_cal.screens.admin_screen.AdminOnlyScreen
 import com.example.politi_cal.screens.analytics.AdminAnalyticsScreen
+import com.example.politi_cal.screens.analytics.UserAnalyticsScreen
 import com.example.politi_cal.screens.celeb_profile.CelebProfileScreen
 import com.example.politi_cal.screens.login.LoginScreen
 import com.example.politi_cal.screens.preferences.PreferenceScreen1
@@ -151,14 +152,27 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
             })
         }
 
-        composable(route = Screen.AdminAnalyticsScreen.route) {
+        composable(route = Screen.UserAnalyticsScreen.route) {
             DrawerTopBar(navController = navCotroller, screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
-                AdminAnalyticsScreen(navController = navController, auth = auth)
+                UserAnalyticsScreen(navController = navController, auth = auth)
 
             })
         }
+
+        composable(route = Screen.AdminAnalyticsScreen.route){
+            DrawerTopBar(navController = navCotroller, screen = { navController ->
+                // this is the screen that will be drawn after the drawer
+                // swipe screen
+                AdminAnalyticsScreen(navController = navCotroller, auth = auth)
+
+            })
+        }
+
+
+
+
 
         composable(route = Screen.AddNewCompanyScreen.route) {
             AddNewCompanyScreen(navController = navCotroller, auth = auth)

@@ -124,7 +124,7 @@ fun SwipeScreen(navController: NavController, auth: FirebaseAuth) {
         if (celebListParam.size > 1) {
             celebListParam.removeAt(0)
             celeb = celebListParam[0]
-        } else  {
+        } else {
             celebListParam.removeAt(0)
             celeb = Celeb(
                 Company = "no company",

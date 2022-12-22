@@ -16,12 +16,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.politi_cal.*
 import com.example.politi_cal.MainActivity.Companion.TAG
+import com.example.politi_cal.Screen
+import com.example.politi_cal.celebListParam
 import com.example.politi_cal.common.dropDownMenu
 import com.example.politi_cal.models.CallBack
 import com.example.politi_cal.models.Celeb
 import com.example.politi_cal.models.User
+import com.example.politi_cal.retrieveCelebsByUserOfri
+import com.example.politi_cal.userCollectionRef
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.CoroutineScope
@@ -37,6 +40,11 @@ fun PreferenceScreen1(navController: NavController, auth: FirebaseAuth) {
     var age = listOf<String>(
         "18-25", "26-32", "33-40", "41-50", "51-60", "61-70", "71-80", "More then 81"
     )
+
+    // TODO change the age to three inputs that collect DD MM YYYY and then convert
+    // TODO convert them to the format of YYYYMMDD to INT and save this in the DB as birthDate
+    // TODO remove the userAge from the DB
+
     var selectedAge by remember { mutableStateOf("") }
     var party = listOf<String>(
         "Likud",
