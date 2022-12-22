@@ -45,6 +45,9 @@ var CelebForCelebProfile = Celeb(
 
 
 var distribution = ArrayList<PieChartData>()
+var adminDistribution = ArrayList<PieChartData>()
+var adminAnalyticsTitle = ""
+
 
 
 
