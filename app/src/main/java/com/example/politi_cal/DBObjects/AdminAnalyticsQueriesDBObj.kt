@@ -23,9 +23,9 @@ class AdminAnalyticsQueriesDBObj: AdminAnalyticsQueriesInterface {
 
         if(users.documents.isNotEmpty()){
             for(user in users){
+                val age = getAge(Integer.parseInt(user["userAge"].toString()))
                 for (age_group in age_groups_list){
-                    val age = getAge(user["birthDate"] as Int)
-                    if(age > 80){
+                    if(age > 80 && age_group == "More than 81"){
                         age_group_map[age_group] = age_group_map[age_group] !!+ 1
                         break
                     }
@@ -40,7 +40,7 @@ class AdminAnalyticsQueriesDBObj: AdminAnalyticsQueriesInterface {
             }
             var outmap = HashMap<String, Double>()
             for (age_group in age_groups_list){
-                val dist = (age_group_map[age_group] !!/ age_groups_list.size).toDouble()
+                val dist = (age_group_map[age_group]!!.toDouble() !!/ users.size()).toDouble()
                 outmap[age_group] = dist
             }
             callback.setOutput(outmap)
@@ -64,18 +64,21 @@ class AdminAnalyticsQueriesDBObj: AdminAnalyticsQueriesInterface {
         var parties_map = HashMap<String, Int>()
         if(parties.documents.isNotEmpty()){
             for(party in parties){
-                parties_map[party["PartyName"].toString()] = 0
+                parties_map[party.id.toString()] = 0
             }
         }
+        var size = 0
         if(users.documents.isNotEmpty()){
             for (user in users){
                 val favorite = user["favoritePartyID"].toString()
                 parties_map[favorite] = parties_map[favorite] !!+ 1
+                size += 1
             }
             var outmap = HashMap<String, Double>()
             for(party in parties_map.keys){
                 val count = Integer.parseInt(parties_map[party].toString())
-                outmap[party] = (count / parties.size()).toDouble()
+                var value = (count.toDouble() / size.toDouble())
+                outmap[party] = value
             }
             callback.setOutput(outmap)
             callback.Call()
@@ -112,10 +115,10 @@ class AdminAnalyticsQueriesDBObj: AdminAnalyticsQueriesInterface {
             .get().await()
         if(result.documents.isNotEmpty()){
             var users_in_year = 0
+            val wanted_year = Integer.parseInt(callBack.getInput().toString())
             for(user in result){
                 val long_date = user["registerDate"]
-                val year = Integer.parseInt(long_date.toString().substring(0, 3))
-                val wanted_year = callBack.getInput() as Int
+                val year = Integer.parseInt(long_date.toString().substring(0, 4))
                 if(year < wanted_year){
                     continue
                 }
@@ -131,7 +134,7 @@ class AdminAnalyticsQueriesDBObj: AdminAnalyticsQueriesInterface {
         }
     }
 
-    override fun getNumberOfUsersByYear_MonthBasedData(callBack: CallBack<Int, Map<Int, Int>>)
+    override fun getNumberOfUsersByYear_MonthBasedData(callBack: CallBack<Int, Map<Int, Double>>)
             = CoroutineScope(Dispatchers.IO).launch{
         var year = callBack.getInput() !!* 10000
         val result = db.collection("users")
@@ -139,11 +142,12 @@ class AdminAnalyticsQueriesDBObj: AdminAnalyticsQueriesInterface {
             .orderBy("registerDate")
             .get().await()
         if(result.documents.isNotEmpty()){
+            var size = 0
             var map = HashMap<Int, Int>()
             for(user in result){
-                val long_date = user["registerDate"]
-                val register_year = Integer.parseInt(long_date.toString().substring(0, 3))
-                val register_month = Integer.parseInt(long_date.toString().substring(4, 5))
+                val long_date = Integer.parseInt(user["registerDate"].toString())
+                val register_year = Integer.parseInt(long_date.toString().substring(0, 4))
+                val register_month = Integer.parseInt(long_date.toString().substring(4, 6))
                 if(!map.containsKey(register_month)){
                     map[register_month] = 0
                 }
@@ -152,9 +156,16 @@ class AdminAnalyticsQueriesDBObj: AdminAnalyticsQueriesInterface {
                 }
                 if(callBack.getInput() == register_year){
                     map[register_month] = map[register_month] !!+ 1
+                    size += 1
                 }
             }
-            callBack.setOutput(map)
+            var outmap = HashMap<Int, Double>()
+            for(entry in map.entries){
+                val distribution = (entry.value.toDouble() / size.toDouble()).toDouble()
+                var month = entry.key
+                outmap[month] = distribution
+            }
+            callBack.setOutput(outmap)
             callBack.Call()
         }
     }

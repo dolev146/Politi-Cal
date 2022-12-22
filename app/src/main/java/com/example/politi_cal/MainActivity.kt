@@ -56,6 +56,9 @@ var UserForUserProfile = User(
 
 
 var distribution = ArrayList<PieChartData>()
+var adminDistribution = ArrayList<PieChartData>()
+var adminAnalyticsTitle = ""
+
 
 
 class MainActivity : ComponentActivity() {
