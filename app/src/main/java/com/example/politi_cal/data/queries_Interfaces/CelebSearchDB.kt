@@ -16,13 +16,12 @@ class CelebSearchDB {
         if (celebs.documents.isNotEmpty()) {
             val foundCelebs = mutableListOf<Celeb>()
             for (celeb in celebs) {
-                val category = celeb["category"].toString()
+                var category = celeb["category"].toString()
                 val fname = celeb["firstName"].toString()
                 val lname = celeb["lastName"].toString()
                 var fullName = fname + " " + lname
-                fullName = fullName.lowercase()
                 val birthdate = Integer.parseInt(celeb["birthDate"].toString())
-                val company = celeb["company"].toString()
+                var company = celeb["company"].toString()
                 val imgUrl = celeb["imgUrl"].toString()
                 val left = Integer.parseInt(celeb["leftVotes"].toString())
                 val right = Integer.parseInt(celeb["rightVotes"].toString())
@@ -38,7 +37,15 @@ class CelebSearchDB {
                     LeftVotes = left.toLong(),
                     Category = category
                 )
-                if (fullName.contains(callBack.getInput()!!.lowercase())) {
+                fullName = fullName.lowercase()
+                company = company.lowercase()
+                category = category.lowercase()
+                var inputSearchFromUser = callBack.getInput()
+                inputSearchFromUser = inputSearchFromUser!!.lowercase()
+                if (category == inputSearchFromUser || company == inputSearchFromUser) {
+                    foundCelebs.add(celeb)
+                }
+                else if (fullName.contains(inputSearchFromUser)) {
                     foundCelebs.add(celeb)
                 }
             }

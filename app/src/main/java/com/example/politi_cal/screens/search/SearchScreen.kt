@@ -91,8 +91,8 @@ fun SearchScreen(navController: NavController, auth: FirebaseAuth) {
                     keyboardActions = KeyboardActions(onNext = {
                         focusManager.moveFocus(FocusDirection.Down)
                     }),
-                    label = { Text(text = " Search Celeb ") },
-                    placeholder = { Text(text = "Enter Celeb Name") },
+                    label = { Text(text = " Search Celeb / Company / Category ") },
+                    placeholder = { Text(text = "Enter Celeb / Company / Category") },
                     textStyle = MaterialTheme.typography.body1,
                     colors = TextFieldDefaults.textFieldColors(
                         backgroundColor = MaterialTheme.colors.surface,
