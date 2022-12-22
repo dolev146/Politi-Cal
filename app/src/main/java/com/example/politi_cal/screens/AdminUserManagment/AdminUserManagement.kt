@@ -26,6 +26,7 @@ import com.example.politi_cal.Screen
 import com.example.politi_cal.data.queries_Interfaces.CelebSearchDB
 import com.example.politi_cal.models.CallBack
 import com.example.politi_cal.models.Celeb
+import com.example.politi_cal.models.User
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -110,9 +111,10 @@ fun AdminUserManagement(navController: NavController, auth: FirebaseAuth) {
                     if (search == "") {
 
 
+
                         Toast.makeText(context, "Please enter a name", Toast.LENGTH_SHORT).show()
                     } else {
-                        var callback = CallBack<String, MutableList<Celeb>>(search)
+                        var callback = CallBack<String, MutableList<User>>(search)
                         val searchdb = CelebSearchDB()
                         searchdb.getCelebByName(callback)
                         while (!callback.getStatus()) {

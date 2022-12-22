@@ -1,15 +1,16 @@
 package com.example.politi_cal.data.queries_Interfaces
 
-import androidx.compose.runtime.mutableStateListOf
 import com.example.politi_cal.db
 import com.example.politi_cal.models.CallBack
 import com.example.politi_cal.models.Celeb
+import com.example.politi_cal.models.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class CelebSearchDB {
+
     fun getCelebByName(callBack: CallBack<String, MutableList<Celeb>>)
     = CoroutineScope(Dispatchers.IO).launch {
         val celebs = db.collection("celebs").get().await()
@@ -52,30 +53,38 @@ class CelebSearchDB {
             callBack.setOutput(foundCelebs)
             callBack.Call()
         }
-
-
-
-//        val result = db.collection("celebs")
-//            .document(callBack!!.getInput().toString())
-//            .get().await()
-//        if(result.exists()){
-//            val fname = result["firstName"].toString()
-//            val lname = result["lastName"].toString()
-//            val company = result["company"].toString()
-//            val category = result["category"].toString()
-//            val img = result["imgUrl"].toString()
-//            val info = result["celebInfo"].toString()
-//            val birthDate = Integer.parseInt(result["birthDate"].toString())
-//            val left = Integer.parseInt(result["leftVotes"].toString())
-//            val right = Integer.parseInt(result["rightVotes"].toString())
-//            var celeb = Celeb(Company = company, FirstName = fname, LastName = lname, BirthDate = birthDate.toLong(),
-//                ImgUrl = img, CelebInfo = info, Category = category, RightVotes = right.toLong(), LeftVotes = left.toLong())
-//            callBack.setOutput(celeb)
-//            callBack.Call()
-//        }
-//        else{
-//            callBack.setOutput(null)
-//            callBack.Call()
-//        }
     }
+
+
+    fun getUsersByEmail(callBack: CallBack<String, MutableList<User>>)
+    = CoroutineScope(Dispatchers.IO).launch {
+        val users = db.collection("users").get().await()
+        if (users.documents.isNotEmpty()) {
+            val foundCelebs = mutableListOf<Celeb>()
+            for (user in users) {
+                var email = user["email"].toString()
+                var favoritePartyID = user["favoritePartyID"].toString()
+                var registerDate = user["registerDate"].toString()
+                var userAge = user["userAge"].toString()
+                var userGender = user["userGender"].toString()
+                var userPerf = user["userPerf"].toString()
+                var user = User(
+                    email = email,
+                    favoritePartyID = favoritePartyID,
+                    registerDate = registerDate,
+                    userAge = userAge,
+                    userGender = userGender,
+                    userPerf = userPerf
+                )
+
+            }
+            callBack.setOutput()
+            callBack.Call()
+        }
+    }
+
+
+
+
+
 }
