@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 //var piechart: PieChart? = null
 
 @Composable
-fun AdminAnalyticsScreen(navController: NavController, auth: FirebaseAuth) {
+fun AdminAnalyticsMenuScreen(navController: NavController, auth: FirebaseAuth) {
     LazyColumn(content = {
         item {
             Column(modifier =  Modifier.fillMaxSize().padding(10.dp),

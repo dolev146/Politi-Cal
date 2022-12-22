@@ -234,7 +234,7 @@ fun DrawerTopBar(
                         }
                     }
                     "admin analytics" -> {
-                        navController.navigate(Screen.AdminAnalyticsScreen.route)
+                        navController.navigate(Screen.AdminAnalyticsMenuScreen.route)
                     }
                 }
             })

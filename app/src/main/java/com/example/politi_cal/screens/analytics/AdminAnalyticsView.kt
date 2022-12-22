@@ -32,7 +32,7 @@ fun AdminAnalyticsView(navController: NavController, auth: FirebaseAuth) {
 
                 Button(onClick = {
                     /*TODO*/
-                    navController.navigate(Screen.AdminAnalyticsScreen.route)
+                    navController.navigate(Screen.AdminAnalyticsMenuScreen.route)
 
 
                 }) {

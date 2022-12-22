@@ -10,7 +10,7 @@ import com.example.politi_cal.screens.AddNewCompanyScreen
 import com.example.politi_cal.screens.NavDrawer.DrawerTopBar
 import com.example.politi_cal.screens.add_celeb.AddCelebScreen
 import com.example.politi_cal.screens.admin_screen.AdminOnlyScreen
-import com.example.politi_cal.screens.analytics.AdminAnalyticsScreen
+import com.example.politi_cal.screens.analytics.AdminAnalyticsMenuScreen
 import com.example.politi_cal.screens.analytics.AdminAnalyticsView
 import com.example.politi_cal.screens.analytics.UserAnalyticsScreen
 import com.example.politi_cal.screens.celeb_profile.CelebProfileScreen
@@ -162,11 +162,11 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
             })
         }
 
-        composable(route = Screen.AdminAnalyticsScreen.route){
+        composable(route = Screen.AdminAnalyticsMenuScreen.route){
             DrawerTopBar(navController = navCotroller, screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
-                AdminAnalyticsScreen(navController = navCotroller, auth = auth)
+                AdminAnalyticsMenuScreen(navController = navCotroller, auth = auth)
 
             })
         }
