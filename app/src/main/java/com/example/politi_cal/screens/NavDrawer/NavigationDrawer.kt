@@ -178,6 +178,15 @@ fun DrawerTopBar(
             )
         )
 
+        menuContent.add(
+            MenuItem(
+                id = "admin user management",
+                title = "Admin User Management",
+                contentDescription = "Go to Admin User Management screen",
+                icon = Icons.Default.MoreVert
+            )
+        )
+
 
     }
 
@@ -236,6 +245,13 @@ fun DrawerTopBar(
                     "admin analytics" -> {
                         navController.navigate(Screen.AdminAnalyticsMenuScreen.route)
                     }
+                    "admin user management" -> {
+                        navController.navigate(Screen.AdminUserManagementScreen.route)
+                    }
+
+
+
+
                 }
             })
 

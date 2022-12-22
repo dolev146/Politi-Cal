@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.politi_cal.models.CallBack
 import com.example.politi_cal.models.Celeb
 import com.example.politi_cal.screens.AddNewCompanyScreen
+import com.example.politi_cal.screens.AdminUserManagment.AdminUserManagement
 import com.example.politi_cal.screens.NavDrawer.DrawerTopBar
 import com.example.politi_cal.screens.add_celeb.AddCelebScreen
 import com.example.politi_cal.screens.admin_screen.AdminOnlyScreen
@@ -188,6 +189,16 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
         composable(route = Screen.AddNewCompanyScreen.route) {
             AddNewCompanyScreen(navController = navCotroller, auth = auth)
         }
+
+
+        composable(route = Screen.AdminUserManagementScreen.route){
+            DrawerTopBar(navController = navCotroller, screen = { navController ->
+                // this is the screen that will be drawn after the drawer
+                // swipe screen
+                AdminUserManagement(navController = navCotroller, auth = auth)
+            })
+        }
+
 
     }
 }

@@ -16,6 +16,7 @@ sealed class Screen(val route: String) {
     object AddNewCompanyScreen : Screen("add_new_company_screen")
     object SearchScreen : Screen("search_screen")
     object AdminAnalyticsViewScreen : Screen("admin_analytics_view_screen")
+    object AdminUserManagementScreen : Screen("admin_user_managment_screen")
 
 
     fun withArgs(vararg args: String): String {

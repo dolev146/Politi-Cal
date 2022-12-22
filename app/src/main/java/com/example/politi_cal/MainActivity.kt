@@ -43,9 +43,19 @@ var CelebForCelebProfile = Celeb(
     "", "", "", 0, "", "", "", 0, 0
 )
 
+var UserForUserProfile = User(
+    favoritePartyID = "",
+    userName = "",
+    registerDate = 0,
+    userAge = "",
+    email = "",
+    userPref = listOf(""),
+    userGender = "",
+    userID = ""
+)
+
 
 var distribution = ArrayList<PieChartData>()
-
 
 
 class MainActivity : ComponentActivity() {
@@ -212,52 +222,52 @@ fun retrieveCelebsByUserOfri(callBack: CallBack<Boolean, MutableList<Celeb>>) =
     }
 
 
+fun retrieveCompanies(callback: CallBack<Boolean, Boolean>) =
+    CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val querySnapshot = companyCollectionRef.get().await()
+            for (document in querySnapshot.documents) {
+                val companyDocument = document
+                val companyID = companyDocument.id
+                val companyCategory = companyDocument.data?.get("category").toString()
+                val companyObject = Company(companyID, companyCategory)
+                companiesForAddCeleb.add(companyObject)
+                companiesForAddCelebNames.add(companyID)
+            }
+            callback.setOutput(true)
+            callback.Call()
+            withContext(Dispatchers.Main) {
 
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
 
-fun retrieveCompanies(callback: CallBack<Boolean, Boolean>) = CoroutineScope(Dispatchers.IO).launch {
-    try {
-        val querySnapshot = companyCollectionRef.get().await()
-        for (document in querySnapshot.documents) {
-            val companyDocument = document
-            val companyID = companyDocument.id
-            val companyCategory = companyDocument.data?.get("category").toString()
-            val companyObject = Company(companyID, companyCategory)
-            companiesForAddCeleb.add(companyObject)
-            companiesForAddCelebNames.add(companyID)
-        }
-        callback.setOutput(true)
-        callback.Call()
-        withContext(Dispatchers.Main) {
-
-        }
-    } catch (e: Exception) {
-        withContext(Dispatchers.Main) {
-
+            }
         }
     }
-}
 
-fun retrieveCategories(callback: CallBack<Boolean, Boolean>) = CoroutineScope(Dispatchers.IO).launch {
-    try {
-        val querySnapshot = categoriesCollectionRef.get().await()
-        for (document in querySnapshot.documents) {
-            val categoryDocument = document
-            val categoryID = categoryDocument.id
-            val categoryName = categoryDocument.data?.get("categoryName").toString()
-            val categoryObject = Category(categoryID, categoryName)
-            categoriesForAddCeleb.add(categoryObject)
-            categoriesForAddCelebNames.add(categoryName)
-        }
-        callback.setOutput(true)
-        callback.Call()
-        withContext(Dispatchers.Main) {
+fun retrieveCategories(callback: CallBack<Boolean, Boolean>) =
+    CoroutineScope(Dispatchers.IO).launch {
+        try {
+            val querySnapshot = categoriesCollectionRef.get().await()
+            for (document in querySnapshot.documents) {
+                val categoryDocument = document
+                val categoryID = categoryDocument.id
+                val categoryName = categoryDocument.data?.get("categoryName").toString()
+                val categoryObject = Category(categoryID, categoryName)
+                categoriesForAddCeleb.add(categoryObject)
+                categoriesForAddCelebNames.add(categoryName)
+            }
+            callback.setOutput(true)
+            callback.Call()
+            withContext(Dispatchers.Main) {
 
-        }
-        Log.d("Categories", categoriesForAddCeleb.toString())
-    } catch (e: Exception) {
-        withContext(Dispatchers.Main) {
+            }
+            Log.d("Categories", categoriesForAddCeleb.toString())
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
 
+            }
+            Log.d("Categories", "Error")
         }
-        Log.d("Categories", "Error")
     }
-}
