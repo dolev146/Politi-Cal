@@ -115,10 +115,10 @@ class AdminAnalyticsQueriesDBObj: AdminAnalyticsQueriesInterface {
             .get().await()
         if(result.documents.isNotEmpty()){
             var users_in_year = 0
+            val wanted_year = Integer.parseInt(callBack.getInput().toString())
             for(user in result){
                 val long_date = user["registerDate"]
-                val year = Integer.parseInt(long_date.toString().substring(0, 3))
-                val wanted_year = callBack.getInput() as Int
+                val year = Integer.parseInt(long_date.toString().substring(0, 4))
                 if(year < wanted_year){
                     continue
                 }
