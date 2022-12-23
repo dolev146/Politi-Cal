@@ -19,11 +19,8 @@ import kotlinx.coroutines.withContext
 private val UserVoteDB = db.collection("userVotes")
 
 data class UserVoteDBObj(
-    private val map: HashMap<String, UserVote>, private val context: Context
+    private var context: Context
 ) : UserVoteDBInterface {
-
-    constructor(context: Context) : this(map = HashMap(), context = context)
-
     override fun vote(userVote: UserVote) = CoroutineScope(Dispatchers.IO).launch {
         val new_vote = hashMapOf(
             "userEmail" to userVote.UserEmail,
@@ -142,29 +139,29 @@ data class UserVoteDBObj(
             .whereEqualTo("voteDirection", userVote.VoteDirection).get().await()
         if (result.documents.isNotEmpty()) {
             for (document in result) {
+                val celeb = db.collection("celebs")
+                    .document(userVote.CelebFullName).get().await()
+                if(!celeb.exists()){
+                    println("problem")
+                }
+                var left = Integer.parseInt(celeb["leftVotes"].toString())
+                var right = Integer.parseInt(celeb["rightVotes"].toString())
+                if ("left" == userVote.VoteDirection) {
+                    left -= 1
+                } else {
+                    right -= 1
+                }
+                val map = hashMapOf("leftVotes" to left, "rightVotes" to right)
+                db.collection("celebs").document(celeb.id).set(map, SetOptions.merge())
+                    .await()
                 UserVoteDB.document(document.id).delete().await()
                 withContext(Dispatchers.Main) {
                     Toast.makeText(
                         context, "The vote deleted from the db", Toast.LENGTH_LONG
                     ).show()
                 }
-                val celeb = db.collection("celebs").document("celebFullName").get().await()
-                var left = Integer.parseInt(celeb["leftVotes"].toString())
-                var right = Integer.parseInt(celeb["rightVotes"].toString())
-                val votes = db.collection("voteOptions").get().await()
-                for (vote in votes) {
-                    if (vote.id.equals(userVote.VoteDirection)) {
-                        if (vote["voteDesc"].toString().equals("left")) {
-                            left -= 1
-                        } else {
-                            right -= 1
-                        }
-                        val map = hashMapOf("leftVotes" to left, "rightVotes" to right)
-                        db.collection("celebs").document(celeb.id).set(map, SetOptions.merge())
-                            .await()
-                    }
-                }
             }
+
         } else {
             withContext(Dispatchers.Main) {
                 Toast.makeText(
@@ -172,12 +169,10 @@ data class UserVoteDBObj(
                 ).show()
             }
         }
-
     }
 
-    override fun deleteAllVotesByUserID() =
+    override fun deleteAllVotesByUserID(userEmail: String) =
         CoroutineScope(Dispatchers.IO).launch {
-            val userEmail = FirebaseAuth.getInstance().currentUser?.email
             val result = UserVoteDB.whereEqualTo("userEmail", userEmail).get().await()
             var counter = 0
             val userID = userEmail

@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.politi_cal.DBObjects.UserVoteDBObj
+import com.example.politi_cal.MainActivity
 import com.example.politi_cal.models.User
 import com.google.firebase.auth.FirebaseAuth
 
@@ -72,8 +74,8 @@ fun UserProfileScreen(
                     TextButton(
                         onClick = {
                             /*TODO*/
-//                            var DBobj = UserVoteDBObj()
-//                            DBobj.deleteAllVotesByUserID()
+                            var DBobj = UserVoteDBObj(context)
+                            DBobj.deleteAllVotesByUserID(user.email.toString())
 
 
 
