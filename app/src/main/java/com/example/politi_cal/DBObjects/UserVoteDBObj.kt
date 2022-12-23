@@ -7,7 +7,6 @@ import com.example.politi_cal.data.queries_Interfaces.UserVoteDBInterface
 import com.example.politi_cal.db
 import com.example.politi_cal.models.CallBack
 import com.example.politi_cal.models.UserVote
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -157,18 +156,19 @@ data class UserVoteDBObj(
                     .await()
                 UserVoteDB.document(document.id).delete().await()
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        context, "The vote deleted from the db", Toast.LENGTH_LONG
-                    ).show()
+//                    Toast.makeText(
+//                        context, "The vote deleted from the db", Toast.LENGTH_LONG
+//                    ).show()
                 }
             }
 
-        } else {
-            withContext(Dispatchers.Main) {
-                Toast.makeText(
-                    context, "No such vote found", Toast.LENGTH_LONG
-                ).show()
-            }
+        }
+        else {
+//            withContext(Dispatchers.Main) {
+//                Toast.makeText(
+//                    context, "No such vote found", Toast.LENGTH_LONG
+//                ).show()
+//            }
         }
     }
 
@@ -191,15 +191,15 @@ data class UserVoteDBObj(
                         deleteVote(deleted_userVote)
                     }
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                            context, "Deleted $counter votes from the DB", Toast.LENGTH_LONG
-                        ).show()
+//                        Toast.makeText(
+//                            context, "Deleted $counter votes from the DB", Toast.LENGTH_LONG
+//                        ).show()
                     }
                 } else {
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                            context, "Deleted $counter votes from the DB", Toast.LENGTH_LONG
-                        ).show()
+//                        Toast.makeText(
+//                            context, "Deleted $counter votes from the DB", Toast.LENGTH_LONG
+//                        ).show()
                     }
                 }
             }
