@@ -21,6 +21,7 @@ private val UserVoteDB = db.collection("userVotes")
 data class UserVoteDBObj(
     private var context: Context
 ) : UserVoteDBInterface {
+
     override fun vote(userVote: UserVote) = CoroutineScope(Dispatchers.IO).launch {
         val new_vote = hashMapOf(
             "userEmail" to userVote.UserEmail,
