@@ -21,12 +21,13 @@ import com.example.politi_cal.screens.preferences.PreferenceScreen1
 import com.example.politi_cal.screens.preferences.PreferenceScreen2
 import com.example.politi_cal.screens.registration.RegisterScreen
 import com.example.politi_cal.screens.search.SearchScreen
+import com.example.politi_cal.screens.splash_screen.SplashScreen
 import com.example.politi_cal.screens.voting_screen.SwipeScreen
 import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
-fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.route) {
+fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.SplashScreen.route) {
     val navCotroller = rememberNavController()
     NavHost(navController = navCotroller, startDestination = startScreen) {
 //        composable(route = Screen.MainScreen.route) {
@@ -62,14 +63,14 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
         composable(route = Screen.PreferenceScreen1.route) {
 
 
-                PreferenceScreen1(navController = navCotroller, auth = auth)
+            PreferenceScreen1(navController = navCotroller, auth = auth)
 
 
         }
 
         composable(route = Screen.PreferenceScreen2.route) {
             DrawerTopBar(navController = navCotroller, screen = { navController ->
-            PreferenceScreen2(navController = navCotroller, auth = auth)
+                PreferenceScreen2(navController = navCotroller, auth = auth)
             })
 
         }
@@ -152,7 +153,6 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
                 // swipe screen
 
 
-
                 UserAnalyticsScreen(
                     navController = navController,
                     auth = auth
@@ -162,7 +162,7 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
             })
         }
 
-        composable(route = Screen.AdminAnalyticsMenuScreen.route){
+        composable(route = Screen.AdminAnalyticsMenuScreen.route) {
             DrawerTopBar(navController = navCotroller, screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
@@ -171,7 +171,7 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
             })
         }
 
-        composable(route = Screen.AdminAnalyticsViewScreen.route){
+        composable(route = Screen.AdminAnalyticsViewScreen.route) {
             DrawerTopBar(navController = navCotroller, screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
@@ -190,7 +190,7 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
         }
 
 
-        composable(route = Screen.AdminUserManagementScreen.route){
+        composable(route = Screen.AdminUserManagementScreen.route) {
             DrawerTopBar(navController = navCotroller, screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
@@ -198,7 +198,7 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
             })
         }
 
-        composable(route = Screen.UserProfileScreen.route){
+        composable(route = Screen.UserProfileScreen.route) {
             DrawerTopBar(navController = navCotroller, screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
@@ -209,6 +209,10 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
                     UserForUserProfile
                 )
             })
+        }
+
+        composable(route = Screen.SplashScreen.route) {
+            SplashScreen(navController = navCotroller, auth = auth)
         }
 
 

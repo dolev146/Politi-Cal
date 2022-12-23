@@ -17,6 +17,7 @@ sealed class Screen(val route: String) {
     object SearchScreen : Screen("search_screen")
     object AdminAnalyticsViewScreen : Screen("admin_analytics_view_screen")
     object AdminUserManagementScreen : Screen("admin_user_managment_screen")
+    object SplashScreen : Screen("splash_screen")
 
 
 

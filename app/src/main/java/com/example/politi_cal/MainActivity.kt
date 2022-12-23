@@ -77,17 +77,17 @@ class MainActivity : ComponentActivity() {
             PolitiCalTheme {
                 this.window.statusBarColor = Color(0xFFD7C488).toArgb()
                 this.window.navigationBarColor = Color(0xFFD7C488).toArgb()
-                var callback = CallBack<Boolean, Boolean>(false)
-                isAdminCheckNav(callback)
-                while (!callback.getStatus()) {
-//                    Log.d("TAG", "onStart: waiting for callback")
-                }
-
-                if (isAdminState) {
-                    Navigation(auth = auth, Screen.AdminAnalyticsMenuScreen.route)
-                } else {
-                    Navigation(auth = auth)
-                }
+//                var callback = CallBack<Boolean, Boolean>(false)
+//                isAdminCheckNav(callback)
+//                while (!callback.getStatus()) {
+////                    Log.d("TAG", "onStart: waiting for callback")
+//                }
+//
+//                if (isAdminState) {
+//                    Navigation(auth = auth, Screen.AdminAnalyticsMenuScreen.route)
+//                } else {
+//                    Navigation(auth = auth)
+//                }
 
             }
         }
@@ -98,11 +98,11 @@ class MainActivity : ComponentActivity() {
         // use the checkLoggedInState function to check if the user is logged in
         val value = checkLoggedInState(auth)
 //        isAdminState
-        var callback = CallBack<Boolean, Boolean>(false)
-        isAdminCheckNav(callback)
-        while (!callback.getStatus()) {
-//            Log.d("TAG", "onStart: waiting for callback")
-        }
+//        var callback = CallBack<Boolean, Boolean>(false)
+//        isAdminCheckNav(callback)
+//        while (!callback.getStatus()) {
+////            Log.d("TAG", "onStart: waiting for callback")
+//        }
 
 
         //getCelebrities()
@@ -111,16 +111,16 @@ class MainActivity : ComponentActivity() {
                 this.window.statusBarColor = Color(0xFFD7C488).toArgb()
                 this.window.navigationBarColor = Color(0xFFD7C488).toArgb()
 
-                var callback = CallBack<Boolean, Boolean>(false)
-                isAdminCheckNav(callback)
-                while (!callback.getStatus()) {
-//                    Log.d("TAG", "onStart: waiting for callback")
-                }
-                if (isAdminState) {
-                    Navigation(auth = auth, Screen.AdminAnalyticsMenuScreen.route)
-                } else {
-                    Navigation(auth = auth, Screen.SwipeScreen.route)
-                }
+//                var callback = CallBack<Boolean, Boolean>(false)
+//                isAdminCheckNav(callback)
+//                while (!callback.getStatus()) {
+////                    Log.d("TAG", "onStart: waiting for callback")
+//                }
+//                if (isAdminState) {
+//                    Navigation(auth = auth, Screen.AdminAnalyticsMenuScreen.route)
+//                } else {
+//                    Navigation(auth = auth, Screen.SwipeScreen.route)
+//                }
 
             }
         } else {
