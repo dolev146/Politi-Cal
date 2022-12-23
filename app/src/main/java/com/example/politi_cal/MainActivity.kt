@@ -110,6 +110,12 @@ class MainActivity : ComponentActivity() {
             setContent {
                 this.window.statusBarColor = Color(0xFFD7C488).toArgb()
                 this.window.navigationBarColor = Color(0xFFD7C488).toArgb()
+
+                var callback = CallBack<Boolean, Boolean>(false)
+                isAdminCheckNav(callback)
+                while (!callback.getStatus()) {
+//                    Log.d("TAG", "onStart: waiting for callback")
+                }
                 if (isAdminState) {
                     Navigation(auth = auth, Screen.AdminAnalyticsMenuScreen.route)
                 } else {
@@ -299,30 +305,33 @@ fun retrieveCategories(callback: CallBack<Boolean, Boolean>) =
     }
 
 
-//fun isAdminCheckNav(callback: CallBack<Boolean, Boolean>) = CoroutineScope(Dispatchers.IO).launch {
-//    try {
-//        val auth = FirebaseAuth.getInstance()
-//        val userEmail = auth.currentUser?.email.toString()
-//        userCollectionRef.document(userEmail).get().addOnSuccessListener {
-//            println("********************************")
-//            println("role id  = " + it.get("roleID").toString())
-//            if (it.get("roleID").toString() == "0") {
-//                isAdminState = true
-//                callback.setOutput(true)
-//                callback.Call()
-//            } else {
-//                isAdminState = false
-//                callback.setOutput(false)
-//                callback.Call()
-//            }
-//        }
-//
-//
-//    } catch (e: Exception) {
-//        withContext(Dispatchers.Main) {
-////            Toast.makeText(context, "Bad request", UnsignedBytes.toInt(2))
-//        }
-//
-//    }
-//
-//}
+fun isAdminCheckNav(callback: CallBack<Boolean, Boolean>) = CoroutineScope(Dispatchers.IO).launch {
+    try {
+
+        val auth = FirebaseAuth.getInstance()
+        val userId = auth.currentUser?.email.toString()
+        val userData = db.collection("users").document(userId).get().await()
+        if (userData.data != null) {
+            for (document in userData.data?.entries!!) {
+                if (document.key == "roleID") {
+                    if (document.value.toString() == "0") {
+                        isAdminState = true
+                        callback.setOutput(true)
+                        callback.Call()
+                    } else {
+                        isAdminState = false
+                        callback.setOutput(false)
+                        callback.Call()
+                    }
+                }
+            }
+        }
+    } catch (e: Exception) {
+        withContext(Dispatchers.Main) {
+
+        }
+    }
+}
+
+
+

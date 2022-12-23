@@ -14,7 +14,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.politi_cal.DBObjects.UserVoteDBObj
 import com.example.politi_cal.Screen
+import com.example.politi_cal.isAdminState
 import com.example.politi_cal.models.User
+import com.example.politi_cal.screens.NavDrawer.isAdmin
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
@@ -70,33 +72,29 @@ fun UserProfileScreen(
                         text = "User role ID: ${user.roleID}",
                         style = MaterialTheme.typography.body1
                     )
-
-                    TextButton(
-                        onClick = {
-                            /*TODO*/
-                            var DBobj = UserVoteDBObj(context)
-                            DBobj.deleteAllVotesByUserID(user.email.toString())
-                            navController.navigate(Screen.AdminUserManagementScreen.route)
+                    if (!isAdminState) {
 
 
+                        TextButton(
+                            onClick = {
+                                var DBobj = UserVoteDBObj(context)
+                                DBobj.deleteAllVotesByUserID(user.email.toString())
+                                navController.navigate(Screen.AdminUserManagementScreen.route)
 
 
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = MaterialTheme.colors.primary
+                            )
 
 
+                        ) {
+                            Text(text = "Delete User Votes")
 
-
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            backgroundColor = MaterialTheme.colors.primary
-                        )
-
-
-                    ) {
-                        Text(text = "Delete User")
-
+                        }
                     }
                 }
             }
