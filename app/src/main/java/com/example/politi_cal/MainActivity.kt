@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import com.example.politi_cal.models.*
@@ -62,6 +63,8 @@ var adminAnalyticsTitle = ""
 
 class MainActivity : ComponentActivity() {
 
+    private val viewModel: MainViewModel by viewModels()
+
 
     companion object {
         val TAG: String = MainActivity::class.java.simpleName
@@ -73,6 +76,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // run the splash screen before the app is loaded
+
+
         setContent {
             PolitiCalTheme {
                 this.window.statusBarColor = Color(0xFFD7C488).toArgb()
@@ -98,11 +104,11 @@ class MainActivity : ComponentActivity() {
         // use the checkLoggedInState function to check if the user is logged in
         val value = checkLoggedInState(auth)
 //        isAdminState
-        var callback = CallBack<Boolean, Boolean>(false)
-        isAdminCheckNav(callback)
-        while (!callback.getStatus()) {
-//            Log.d("TAG", "onStart: waiting for callback")
-        }
+//        var callback = CallBack<Boolean, Boolean>(false)
+//        isAdminCheckNav(callback)
+//        while (!callback.getStatus()) {
+////            Log.d("TAG", "onStart: waiting for callback")
+//        }
 
 
         //getCelebrities()
