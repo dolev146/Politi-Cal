@@ -19,10 +19,10 @@ import kotlinx.coroutines.withContext
 private val UserVoteDB = db.collection("userVotes")
 
 data class UserVoteDBObj(
-    private val map: HashMap<String, UserVote>, private val context: Context
+    private val context: Context
 ) : UserVoteDBInterface {
 
-    constructor(context: Context) : this(map = HashMap(), context = context)
+    constructor(context: Context) : this(context = context)
 
     override fun vote(userVote: UserVote) = CoroutineScope(Dispatchers.IO).launch {
         val new_vote = hashMapOf(
