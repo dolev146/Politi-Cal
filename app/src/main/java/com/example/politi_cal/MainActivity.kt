@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-
+var isAdminState = false
 val db = Firebase.firestore
 val userCollectionRef = Firebase.firestore.collection("users")
 val celebCollectionRef = Firebase.firestore.collection("celebs")
@@ -60,7 +60,6 @@ var adminDistribution = ArrayList<PieChartData>()
 var adminAnalyticsTitle = ""
 
 
-
 class MainActivity : ComponentActivity() {
 
 
@@ -78,7 +77,18 @@ class MainActivity : ComponentActivity() {
             PolitiCalTheme {
                 this.window.statusBarColor = Color(0xFFD7C488).toArgb()
                 this.window.navigationBarColor = Color(0xFFD7C488).toArgb()
-                Navigation(auth = auth)
+                var callback = CallBack<Boolean, Boolean>(false)
+                isAdminCheckNav(callback)
+                while (!callback.getStatus()) {
+//                    Log.d("TAG", "onStart: waiting for callback")
+                }
+
+                if (isAdminState) {
+                    Navigation(auth = auth, Screen.AdminAnalyticsMenuScreen.route)
+                } else {
+                    Navigation(auth = auth)
+                }
+
             }
         }
     }
@@ -87,12 +97,25 @@ class MainActivity : ComponentActivity() {
         super.onStart()
         // use the checkLoggedInState function to check if the user is logged in
         val value = checkLoggedInState(auth)
+//        isAdminState
+        var callback = CallBack<Boolean, Boolean>(false)
+        isAdminCheckNav(callback)
+        while (!callback.getStatus()) {
+//            Log.d("TAG", "onStart: waiting for callback")
+        }
+
+
         //getCelebrities()
         if (value) {
             setContent {
                 this.window.statusBarColor = Color(0xFFD7C488).toArgb()
                 this.window.navigationBarColor = Color(0xFFD7C488).toArgb()
-                Navigation(auth = auth, Screen.SwipeScreen.route)
+                if (isAdminState) {
+                    Navigation(auth = auth, Screen.AdminAnalyticsMenuScreen.route)
+                } else {
+                    Navigation(auth = auth, Screen.SwipeScreen.route)
+                }
+
             }
         } else {
             setContent {
@@ -274,3 +297,32 @@ fun retrieveCategories(callback: CallBack<Boolean, Boolean>) =
             Log.d("Categories", "Error")
         }
     }
+
+
+//fun isAdminCheckNav(callback: CallBack<Boolean, Boolean>) = CoroutineScope(Dispatchers.IO).launch {
+//    try {
+//        val auth = FirebaseAuth.getInstance()
+//        val userEmail = auth.currentUser?.email.toString()
+//        userCollectionRef.document(userEmail).get().addOnSuccessListener {
+//            println("********************************")
+//            println("role id  = " + it.get("roleID").toString())
+//            if (it.get("roleID").toString() == "0") {
+//                isAdminState = true
+//                callback.setOutput(true)
+//                callback.Call()
+//            } else {
+//                isAdminState = false
+//                callback.setOutput(false)
+//                callback.Call()
+//            }
+//        }
+//
+//
+//    } catch (e: Exception) {
+//        withContext(Dispatchers.Main) {
+////            Toast.makeText(context, "Bad request", UnsignedBytes.toInt(2))
+//        }
+//
+//    }
+//
+//}

@@ -30,6 +30,7 @@ import androidx.navigation.NavController
 import com.example.politi_cal.MainActivity.Companion.TAG
 import com.example.politi_cal.R
 import com.example.politi_cal.Screen
+import com.example.politi_cal.userCollectionRef
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -219,7 +220,31 @@ fun LoginUser(
                     Toast.makeText(
                         context, "Login Success", Toast.LENGTH_SHORT
                     ).show()
-                    navController.navigate(Screen.SwipeScreen.route)
+
+                    // TODO CHECK if the user is admin if
+                    //  so navigate to
+                    //  Screen.AdminAnalyticsMenuScreen.route else navigate to Screen.SwipeScreen.route
+                    // check if the field roleID is 0 if it is 0 it is admin else it is user
+                    val userEmail = auth.currentUser?.email.toString()
+                    userCollectionRef.document(userEmail).get().addOnSuccessListener {
+                        println( "********************************")
+                        println( "role id  = " + it.get("roleID").toString())
+                        if (it.get("roleID").toString() == "0") {
+                            navController.navigate(Screen.AdminAnalyticsMenuScreen.route)
+                        } else {
+                            navController.navigate(Screen.SwipeScreen.route)
+                        }
+                    }
+
+
+
+
+
+
+//                    navController.navigate(Screen.SwipeScreen.route)
+
+
+
                 }
             } catch (e: Exception) {
                 Log.d(TAG, e.message.toString())

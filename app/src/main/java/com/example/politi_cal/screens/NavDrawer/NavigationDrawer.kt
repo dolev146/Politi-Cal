@@ -108,58 +108,48 @@ fun DrawerTopBar(
             contentDescription = "Go to Search screen",
             icon = Icons.Default.Search
         ),
-        MenuItem(
-            id = "swipe",
-            title = "Swipe",
-            contentDescription = "Go to Swipe screen",
-            icon = Icons.Default.Home
-        ),
-        MenuItem(
-            id = "preferences",
-            title = "Preferences",
-            contentDescription = "Go to Preferences screen",
-            icon = Icons.Default.Settings
-        ),
+
 //        MenuItem(
-//            id = "user profile",
-//            title = "User Profile",
-//            contentDescription = "Go to User profile screen",
-//            icon = Icons.Default.AccountBox
+//            id = "swipe",
+//            title = "Swipe",
+//            contentDescription = "Go to Swipe screen",
+//            icon = Icons.Default.Home
 //        ),
+//        MenuItem(
+//            id = "preferences",
+//            title = "Preferences",
+//            contentDescription = "Go to Preferences screen",
+//            icon = Icons.Default.Settings
+//        ),
+//        MenuItem(
+//            id = "logout",
+//            title = "Logout",
+//            contentDescription = "Go to Logout screen",
+//            icon = Icons.Default.ExitToApp
+//        ),
+//        MenuItem(
+//            id = "user analytics",
+//            title = "User Analytics",
+//            contentDescription = "Go to User Analytics screen",
+//            icon = Icons.Default.MoreVert
+//        )
 
 
-        MenuItem(
-            id = "logout",
-            title = "Logout",
-            contentDescription = "Go to Logout screen",
-            icon = Icons.Default.ExitToApp
-        ),
-        MenuItem(
-            id = "user analytics",
-            title = "User Analytics",
-            contentDescription = "Go to User Analytics screen",
-            icon = Icons.Default.MoreVert
-        )
-
-
-        )
+    )
 
     if (isAdminState) {
-        // add the ,
-        // MenuItem(
-        //            id = "admin only",
-        //            title = "Admin only",
-        //            contentDescription = "Go to Admin Only screen",
-        //            icon = Icons.Default.MoreVert,
-        //        )
-//        menuContent.add(
-//            MenuItem(
-//                id = "admin only",
-//                title = "Admin only",
-//                contentDescription = "Go to Admin Only screen",
-//                icon = Icons.Default.MoreVert,
-//            )
-//        )
+
+        menuContent.add(
+            MenuItem(
+                id = "user analytics",
+                title = "Analytics",
+                contentDescription = "Go to User Analytics screen",
+                icon = Icons.Default.MoreVert
+            )
+        )
+
+
+
         menuContent.add(
             MenuItem(
                 id = "add celeb",
@@ -168,7 +158,6 @@ fun DrawerTopBar(
                 icon = Icons.Default.Add
             )
         )
-
         menuContent.add(
             MenuItem(
                 id = "admin analytics",
@@ -177,13 +166,83 @@ fun DrawerTopBar(
                 icon = Icons.Default.MoreVert
             )
         )
-
         menuContent.add(
             MenuItem(
                 id = "admin user management",
-                title = "Admin User Management",
+                title = "User Search",
                 contentDescription = "Go to Admin User Management screen",
                 icon = Icons.Default.MoreVert
+            )
+        )
+
+
+
+
+
+
+
+
+
+
+
+        menuContent.add(
+            MenuItem(
+                id = "logout",
+                title = "Logout",
+                contentDescription = "Go to Logout screen",
+                icon = Icons.Default.ExitToApp
+            )
+        )
+
+
+    } else {
+        // this is user menu
+        menuContent.add(
+            MenuItem(
+                id = "swipe",
+                title = "Swipe",
+                contentDescription = "Go to Swipe screen",
+                icon = Icons.Default.Home
+            )
+        )
+
+        menuContent.add(
+            MenuItem(
+                id = "user analytics",
+                title = "Analytics",
+                contentDescription = "Go to User Analytics screen",
+                icon = Icons.Default.MoreVert
+            )
+        )
+
+        menuContent.add(
+            MenuItem(
+                id = "preferences",
+                title = "Preferences",
+                contentDescription = "Go to Preferences screen",
+                icon = Icons.Default.Settings
+            )
+        )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        menuContent.add(
+            MenuItem(
+                id = "logout",
+                title = "Logout",
+                contentDescription = "Go to Logout screen",
+                icon = Icons.Default.ExitToApp
             )
         )
 
@@ -248,8 +307,6 @@ fun DrawerTopBar(
                     "admin user management" -> {
                         navController.navigate(Screen.AdminUserManagementScreen.route)
                     }
-
-
 
 
                 }
