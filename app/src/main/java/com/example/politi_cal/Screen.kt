@@ -19,6 +19,7 @@ sealed class Screen(val route: String) {
     object AdminUserManagementScreen : Screen("admin_user_managment_screen")
 
 
+
     fun withArgs(vararg args: String): String {
         return buildString {
             append(route)

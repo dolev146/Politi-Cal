@@ -9,6 +9,7 @@ import com.example.politi_cal.models.Celeb
 import com.example.politi_cal.screens.AddNewCompanyScreen
 import com.example.politi_cal.screens.AdminUserManagment.AdminUserManagement
 import com.example.politi_cal.screens.NavDrawer.DrawerTopBar
+import com.example.politi_cal.screens.UserProfileScreen
 import com.example.politi_cal.screens.add_celeb.AddCelebScreen
 import com.example.politi_cal.screens.admin_screen.AdminOnlyScreen
 import com.example.politi_cal.screens.analytics.AdminAnalyticsMenuScreen
@@ -20,7 +21,6 @@ import com.example.politi_cal.screens.preferences.PreferenceScreen1
 import com.example.politi_cal.screens.preferences.PreferenceScreen2
 import com.example.politi_cal.screens.registration.RegisterScreen
 import com.example.politi_cal.screens.search.SearchScreen
-import com.example.politi_cal.screens.user_profile.UserProfileScreen
 import com.example.politi_cal.screens.voting_screen.SwipeScreen
 import com.google.firebase.auth.FirebaseAuth
 
@@ -120,14 +120,6 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
             })
         }
 
-        composable(route = Screen.UserProfileScreen.route) {
-            DrawerTopBar(navController = navCotroller, screen = { navController ->
-                // this is the screen that will be drawn after the drawer
-                // swipe screen
-                UserProfileScreen(navController = navController, auth = auth)
-
-            })
-        }
 
         composable(route = Screen.AddCelebScreen.route) {
             DrawerTopBar(navController = navCotroller, screen = { navController ->
@@ -196,6 +188,14 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
                 AdminUserManagement(navController = navCotroller, auth = auth)
+            })
+        }
+
+        composable(route = Screen.UserProfileScreen.route){
+            DrawerTopBar(navController = navCotroller, screen = { navController ->
+                // this is the screen that will be drawn after the drawer
+                // swipe screen
+                UserProfileScreen(navController = navCotroller, auth = auth)
             })
         }
 

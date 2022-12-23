@@ -21,11 +21,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.politi_cal.CelebForCelebProfile
 import com.example.politi_cal.Screen
+import com.example.politi_cal.UserForUserProfile
 import com.example.politi_cal.data.queries_Interfaces.CelebSearchDB
 import com.example.politi_cal.models.CallBack
-import com.example.politi_cal.models.Celeb
+import com.example.politi_cal.models.User
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -39,25 +39,8 @@ fun AdminUserManagement(navController: NavController, auth: FirebaseAuth) {
 
     // list of celebs
     var usersearchList by remember {
-        mutableStateOf(mutableStateListOf<Celeb>())
+        mutableStateOf(mutableStateListOf<User>())
     }
-
-
-    var celebExample = Celeb(
-        Company = "no company",
-        FirstName = "no more swipes",
-        LastName = "finished",
-        BirthDate = 0,
-        ImgUrl = "https://user-images.githubusercontent.com/62290677/208495339-a1f0a482-878f-4f88-ad88-1eef3bfe36c4.png",
-        CelebInfo = "text",
-        Category = "text",
-        RightVotes = 0,
-        LeftVotes = 0
-    )
-
-
-
-
 
 
     LazyColumn(content = {
@@ -106,37 +89,32 @@ fun AdminUserManagement(navController: NavController, auth: FirebaseAuth) {
                 )
 
                 Button(onClick = {
-
-                    if (search == "") {
-
-
-                        Toast.makeText(context, "Please enter a name", Toast.LENGTH_SHORT).show()
-                    } else {
-                        var callback = CallBack<String, MutableList<Celeb>>(search)
-                        val searchdb = CelebSearchDB()
-                        searchdb.getCelebByName(callback)
-                        while (!callback.getStatus()) {
-                            continue
-                        }
-                        if (callback.getOutput() != null) {
-                            with(usersearchList) {
-                                clear()
-                                addAll(callback.getOutput()!!)
-                            }
-                        } else {
-                            Toast.makeText(context, "Celeb not found", Toast.LENGTH_LONG).show()
-                        }
+                    var callback = CallBack<String, MutableList<User>>(search)
+                    val searchdb = CelebSearchDB()
+                    searchdb.getUsersByEmail(callback)
+                    while (!callback.getStatus()) {
+                        continue
                     }
+                    if (callback.getOutput() != null) {
+                        with(usersearchList) {
+                            clear()
+                            addAll(callback.getOutput()!!)
+                        }
+                    } else {
+                        Toast.makeText(context, "User not found", Toast.LENGTH_LONG).show()
+                    }
+
                 }) {
                     Text(text = "Search")
                 }
             }
         }
+
         itemsIndexed(usersearchList) { index, item ->
             if (usersearchList.isEmpty()) {
-                println("no celebs")
+                println("no search results")
             } else {
-                val celebie = item
+                val userie = item
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -151,13 +129,13 @@ fun AdminUserManagement(navController: NavController, auth: FirebaseAuth) {
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = celebie.FirstName + " " + celebie.LastName,
+                            text = userie.email,
                             style = MaterialTheme.typography.h6
                         )
                         Button(
                             onClick = {
-                                CelebForCelebProfile = celebie
-                                navController.navigate(Screen.CelebProfileScreen.route)
+                                UserForUserProfile = userie
+                                navController.navigate(Screen.UserProfileScreen.route)
                             }, colors = ButtonDefaults.buttonColors(
                                 backgroundColor = Color.White, contentColor = Color.Gray
                             )
@@ -172,4 +150,6 @@ fun AdminUserManagement(navController: NavController, auth: FirebaseAuth) {
         }
     })
 }
+
+
 
