@@ -325,6 +325,19 @@ fun isAdminCheckNav(callback: CallBack<Boolean, Boolean>) = CoroutineScope(Dispa
                     }
                 }
             }
+
+            UserForUserProfile = User(
+                email = userData["email"].toString(),
+                userID = userData["userID"].toString(),
+                favoritePartyID = userData["favoritePartyID"].toString(),
+                userName = userData["userName"].toString(),
+                registerDate = userData["registerDate"].toString().toLong(),
+                userPref = userData["userPref"] as List<String>,
+                userGender = userData["userGender"].toString(),
+                userAge = userData["userAge"].toString().toLong(),
+                roleID = userData["roleID"].toString().toInt()
+            )
+
         }
     } catch (e: Exception) {
         withContext(Dispatchers.Main) {

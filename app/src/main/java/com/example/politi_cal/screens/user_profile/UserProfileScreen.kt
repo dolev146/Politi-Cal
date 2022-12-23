@@ -16,7 +16,6 @@ import com.example.politi_cal.DBObjects.UserVoteDBObj
 import com.example.politi_cal.Screen
 import com.example.politi_cal.isAdminState
 import com.example.politi_cal.models.User
-import com.example.politi_cal.screens.NavDrawer.isAdmin
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
@@ -92,8 +91,7 @@ fun UserProfileScreen(
 
 
                         ) {
-                            Text(text = "Delete User Votes")
-
+                            Text(text = "Delete My Votes")
                         }
                     }
                 }

@@ -224,6 +224,15 @@ fun DrawerTopBar(
             )
         )
 
+        menuContent.add(
+            MenuItem(
+                id = "my profile",
+                title = "My Profile",
+                contentDescription = "Go to User profile screen",
+                icon = Icons.Default.Person
+            )
+        )
+
 
 
 
@@ -289,6 +298,12 @@ fun DrawerTopBar(
                     "search" -> {
                         navController.navigate(Screen.SearchScreen.route)
                     }
+                    "my profile" ->{
+
+                        navController.navigate(Screen.UserProfileScreen.route)
+                    }
+
+
                     "admin only" -> {
                         // check that the user is admin
                         // if not, show a message
