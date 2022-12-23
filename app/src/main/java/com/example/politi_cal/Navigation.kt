@@ -150,7 +150,14 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
             DrawerTopBar(navController = navCotroller, screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
-                UserAnalyticsScreen(navController = navController, auth = auth)
+
+
+
+                UserAnalyticsScreen(
+                    navController = navController,
+                    auth = auth
+
+                )
 
             })
         }
@@ -195,7 +202,12 @@ fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.rout
             DrawerTopBar(navController = navCotroller, screen = { navController ->
                 // this is the screen that will be drawn after the drawer
                 // swipe screen
-                UserProfileScreen(navController = navCotroller, auth = auth)
+
+                UserProfileScreen(
+                    navController = navCotroller,
+                    auth = auth,
+                    UserForUserProfile
+                )
             })
         }
 

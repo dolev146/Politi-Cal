@@ -54,7 +54,7 @@ interface UserVoteDBInterface {
      * This function removes all of the votes of specific user
      */
 
-    fun deleteAllVotesByUserID(userVote: UserVote):Job
+    fun deleteAllVotesByUserID():Job
 
     /**
      * This function removes all of the votes of specific company

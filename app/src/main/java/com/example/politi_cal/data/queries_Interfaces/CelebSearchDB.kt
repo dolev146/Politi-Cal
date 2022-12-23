@@ -78,10 +78,15 @@ class CelebSearchDB {
                         userID = "",
                         userName = "",
                     )
-                    allUsers.add(user)
-                    if (email == callBack.getInput()) {
+                    email = email.lowercase()
+                    var inputFromUser = callBack.getInput()
+                    inputFromUser = inputFromUser!!.lowercase()
+                    if (email.contains(inputFromUser)) {
                         foundUsers.add(user)
                     }
+
+                    allUsers.add(user)
+
                 }
                 if (callBack.getInput() == "") {
                     callBack.setOutput(allUsers)

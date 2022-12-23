@@ -7,6 +7,7 @@ import com.example.politi_cal.data.queries_Interfaces.UserVoteDBInterface
 import com.example.politi_cal.db
 import com.example.politi_cal.models.CallBack
 import com.example.politi_cal.models.UserVote
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -154,9 +155,9 @@ data class UserVoteDBObj(
                 for (vote in votes) {
                     if (vote.id.equals(userVote.VoteDirection)) {
                         if (vote["voteDesc"].toString().equals("left")) {
-                            left += 1
+                            left -= 1
                         } else {
-                            right += 1
+                            right -= 1
                         }
                         val map = hashMapOf("leftVotes" to left, "rightVotes" to right)
                         db.collection("celebs").document(celeb.id).set(map, SetOptions.merge())
@@ -174,32 +175,36 @@ data class UserVoteDBObj(
 
     }
 
-    override fun deleteAllVotesByUserID(userVote: UserVote) =
+    override fun deleteAllVotesByUserID() =
         CoroutineScope(Dispatchers.IO).launch {
-            val result = UserVoteDB.whereEqualTo("userEmail", userVote.UserEmail).get().await()
+            val userEmail = FirebaseAuth.getInstance().currentUser?.email
+            val result = UserVoteDB.whereEqualTo("userEmail", userEmail).get().await()
             var counter = 0
-            val userID = userVote.UserEmail
-            if (result.documents.isNotEmpty()) {
-                for (document in result) {
-                    val celebID = document["celebFullName"].toString()
-                    val companyID = document["companyName"].toString()
-                    val categoryID = document["categoryName"].toString()
-                    val voteID = document["voteDirection"].toString()
-                    val deleted_userVote = UserVote(
-                        userID, celebID, categoryID, companyID, voteID
-                    )
-                    deleteVote(deleted_userVote)
-                }
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        context, "Deleted $counter votes from the DB", Toast.LENGTH_LONG
-                    ).show()
-                }
-            } else {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        context, "Deleted $counter votes from the DB", Toast.LENGTH_LONG
-                    ).show()
+            val userID = userEmail
+            // convert userID from String? to String
+            if (userID != null) {
+                if (result.documents.isNotEmpty()) {
+                    for (document in result) {
+                        val celebID = document["celebFullName"].toString()
+                        val companyID = document["companyName"].toString()
+                        val categoryID = document["categoryName"].toString()
+                        val voteID = document["voteDirection"].toString()
+                        val deleted_userVote = UserVote(
+                            userEmail, celebID, categoryID, companyID, voteID
+                        )
+                        deleteVote(deleted_userVote)
+                    }
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            context, "Deleted $counter votes from the DB", Toast.LENGTH_LONG
+                        ).show()
+                    }
+                } else {
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(
+                            context, "Deleted $counter votes from the DB", Toast.LENGTH_LONG
+                        ).show()
+                    }
                 }
             }
         }
@@ -234,7 +239,8 @@ data class UserVoteDBObj(
 
     override fun deleteAllVotesByCategoryID(userVote: UserVote) =
         CoroutineScope(Dispatchers.IO).launch {
-            val result = UserVoteDB.whereEqualTo("categoryName", userVote.CategoryName).get().await()
+            val result =
+                UserVoteDB.whereEqualTo("categoryName", userVote.CategoryName).get().await()
             val categoryID = userVote.CategoryName
             if (result.documents.isNotEmpty()) {
                 for (document in result) {
@@ -264,7 +270,8 @@ data class UserVoteDBObj(
 
     override fun deleteAllVotesByVoteID(userVote: UserVote) =
         CoroutineScope(Dispatchers.IO).launch {
-            val result = UserVoteDB.whereEqualTo("voteDirection", userVote.VoteDirection).get().await()
+            val result =
+                UserVoteDB.whereEqualTo("voteDirection", userVote.VoteDirection).get().await()
             val voteID = userVote.VoteDirection
             if (result.documents.isNotEmpty()) {
                 for (document in result) {
