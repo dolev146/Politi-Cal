@@ -27,7 +27,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 
 @Composable
-fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.SplashScreen.route) {
+fun Navigation(auth: FirebaseAuth, startScreen: String = Screen.LoginScreen.route) {
     val navCotroller = rememberNavController()
     NavHost(navController = navCotroller, startDestination = startScreen) {
 //        composable(route = Screen.MainScreen.route) {
