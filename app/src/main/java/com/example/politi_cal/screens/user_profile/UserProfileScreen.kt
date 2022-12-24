@@ -78,7 +78,7 @@ fun UserProfileScreen(
                             onClick = {
                                 var DBobj = UserVoteDBObj(context)
                                 DBobj.deleteAllVotesByUserID(user.email.toString())
-                                navController.navigate(Screen.AdminUserManagementScreen.route)
+                                navController.navigate(Screen.SwipeScreen.route)
 
 
                             },
