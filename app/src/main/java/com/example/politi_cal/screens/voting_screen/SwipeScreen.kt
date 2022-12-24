@@ -129,7 +129,7 @@ fun SwipeScreen(navController: NavController, auth: FirebaseAuth) {
                 celebListParam.remove(celeb)
             }
 //            celebListParam.removeAt(0)
-            celebListParam.shuffle()
+//            celebListParam.shuffle()
             celeb = celebListParam[0]
         } else {
             celebListParam.removeAt(0)
