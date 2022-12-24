@@ -12,7 +12,7 @@ import org.threeten.bp.LocalDate
 class AdminAnalyticsQueriesDBObj: AdminAnalyticsQueriesInterface {
     override fun getAgeDistribution(callback: CallBack<Boolean, Map<String, Double>>)
             = CoroutineScope(Dispatchers.IO).launch{
-        val age_groups_list = listOf("18-25", "26-32", "33-40", "41-50", "51-60", "61-70",
+        val age_groups_list = listOf("Less than 18", "18-25", "26-32", "33-40", "41-50", "51-60", "61-70",
             "71-80", "More than 81")
         var age_group_map = HashMap<String, Int>() //change to long
         for(age_group in age_groups_list){
@@ -25,9 +25,16 @@ class AdminAnalyticsQueriesDBObj: AdminAnalyticsQueriesInterface {
             for(user in users){
                 val age = getAge(Integer.parseInt(user["userAge"].toString()))
                 for (age_group in age_groups_list){
-                    if(age > 80 && age_group == "More than 81"){
-                        age_group_map[age_group] = age_group_map[age_group] !!+ 1
+                    if(age > 80){
+                        age_group_map["More than 81"] = age_group_map["More than 81"] !!+ 1
                         break
+                    }
+                    if(age < 18){
+                        age_group_map["Less than 18"] = age_group_map["Less than 18"] !!+ 1
+                        break
+                    }
+                    if(age_group == "More than 81" || age_group == "Less than 18"){
+                        continue
                     }
                     val group_split = age_group.split("-")
                     val min = Integer.parseInt(group_split[0])

@@ -87,6 +87,8 @@ fun UserAnalyticsScreen(navController: NavController, auth: FirebaseAuth) {
             }
             var callback_category = CallBack<Boolean, Boolean>(false)
             var callback_company = CallBack<Boolean, Boolean>(false)
+            categoriesForAddCelebNames.clear()
+            companiesForAddCeleb.clear()
             retrieveCategories(callback_category)
             retrieveCompanies(callback_company)
             var flag = 0
