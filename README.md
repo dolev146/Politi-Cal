@@ -40,7 +40,7 @@ Stay up to date on the latest celebrity news and politics with politi-cal! This 
 | ------------- | ------------- | ------------- |
 | <img src="https://user-images.githubusercontent.com/62290677/209437819-ae04a442-a9bb-4945-98f2-0b5d863c37bb.png" alt="drawing" width="200"/>  | <img src="https://user-images.githubusercontent.com/62290677/209437754-f4758410-76eb-47de-a769-d6dbe99272a3.png" alt="drawing" width="200"/>        | <img src="https://user-images.githubusercontent.com/62290677/209437779-4f7cd7e8-e815-4af0-8550-300b19fc6ef3.png" alt="drawing" width="200"/>      |
 
-| Voting Screen      | Analytics  | Celeb Profile Screen      |
+| Voting Screen      | Analytics  | Distribution     |
 | ------------- | ------------- | ------------- |
 | <img src="https://user-images.githubusercontent.com/62290677/209437734-1aef6abc-64fc-415f-81a6-84bd0b31f269.png" alt="drawing" width="200"/>  | <img src="https://user-images.githubusercontent.com/62290677/209438012-d8d39c0d-9e5b-47fc-bf62-4515181ad333.png" alt="drawing" width="200"/>        | <img src="https://user-images.githubusercontent.com/62290677/209438079-fc4deb8e-1137-4c2a-a42b-f99cc7fde1a2.png" alt="drawing" width="200"/>      |
 
