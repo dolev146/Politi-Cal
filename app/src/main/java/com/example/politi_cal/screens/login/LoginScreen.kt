@@ -30,6 +30,8 @@ import androidx.navigation.NavController
 import com.example.politi_cal.MainActivity.Companion.TAG
 import com.example.politi_cal.R
 import com.example.politi_cal.Screen
+import com.example.politi_cal.isAdminCheckNav
+import com.example.politi_cal.models.CallBack
 import com.example.politi_cal.userCollectionRef
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
@@ -138,6 +140,8 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
                 Button(
                     onClick = {
                         LoginUser(email, password, auth, navController, context)
+
+
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -226,6 +230,11 @@ fun LoginUser(
                     //  Screen.AdminAnalyticsMenuScreen.route else navigate to Screen.SwipeScreen.route
                     // check if the field roleID is 0 if it is 0 it is admin else it is user
                     val userEmail = auth.currentUser?.email.toString()
+                    var callback = CallBack<Boolean, Boolean>(false)
+                    isAdminCheckNav(callback)
+                    while (!callback.getStatus()) {
+//                    Log.d("TAG", "onStart: waiting for callback")
+                    }
                     userCollectionRef.document(userEmail).get().addOnSuccessListener {
                         println( "********************************")
                         println( "role id  = " + it.get("roleID").toString())

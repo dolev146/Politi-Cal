@@ -81,6 +81,8 @@ class MainActivity : ComponentActivity() {
 
                 if (value) {
 
+
+
                     var callback = CallBack<Boolean, Boolean>(false)
                     isAdminCheckNav(callback)
                     while (!callback.getStatus()) {

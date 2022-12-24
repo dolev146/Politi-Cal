@@ -13,15 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.politi_cal.*
 import com.example.politi_cal.MainActivity.Companion.TAG
-import com.example.politi_cal.Screen
-import com.example.politi_cal.celebListParam
 import com.example.politi_cal.common.dropDownMenu
 import com.example.politi_cal.models.CallBack
 import com.example.politi_cal.models.Celeb
 import com.example.politi_cal.models.User
-import com.example.politi_cal.retrieveCelebsByUserOfri
-import com.example.politi_cal.userCollectionRef
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.CoroutineScope
@@ -217,6 +214,7 @@ fun PreferenceScreen2(navController: NavController, auth: FirebaseAuth) {
                         userAge = birthDate.toLong(),
                         userGender = selectedGender,
                     )
+                    UserForUserProfile = userClass
 
                     // add the user to the database
                     editUser(auth, userClass, context, navController)
