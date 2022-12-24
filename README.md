@@ -40,9 +40,23 @@ Stay up to date on the latest celebrity news and politics with politi-cal! This 
 | ------------- | ------------- | ------------- |
 | <img src="https://user-images.githubusercontent.com/62290677/209437819-ae04a442-a9bb-4945-98f2-0b5d863c37bb.png" alt="drawing" width="200"/>  | <img src="https://user-images.githubusercontent.com/62290677/209437754-f4758410-76eb-47de-a769-d6dbe99272a3.png" alt="drawing" width="200"/>        | <img src="https://user-images.githubusercontent.com/62290677/209437779-4f7cd7e8-e815-4af0-8550-300b19fc6ef3.png" alt="drawing" width="200"/>      |
 
-| Voting Screen      | Analytics  | Distribution     |
+| Voting Screen      | Splash screen  | Distribution     |
 | ------------- | ------------- | ------------- |
-| <img src="https://user-images.githubusercontent.com/62290677/209437734-1aef6abc-64fc-415f-81a6-84bd0b31f269.png" alt="drawing" width="200"/>  | <img src="https://user-images.githubusercontent.com/62290677/209438012-d8d39c0d-9e5b-47fc-bf62-4515181ad333.png" alt="drawing" width="200"/>        | <img src="https://user-images.githubusercontent.com/62290677/209438079-fc4deb8e-1137-4c2a-a42b-f99cc7fde1a2.png" alt="drawing" width="200"/>      |
+| <img src="https://user-images.githubusercontent.com/62290677/209437734-1aef6abc-64fc-415f-81a6-84bd0b31f269.png" alt="drawing" width="200"/>  | <img src="https://user-images.githubusercontent.com/62290677/209450269-422b3d13-0358-41cb-aa0d-e0181be0bbe2.png" alt="drawing" width="200"/>        | <img src="https://user-images.githubusercontent.com/62290677/209450668-d157997a-2e83-48bd-8ea6-b91ef3ac3324.png" alt="drawing" width="200"/>      |
+
+
+| Admin Screen      | Parties Distribution  | Age Distribution   |
+| ------------- | ------------- | ------------- |
+| <img src="https://user-images.githubusercontent.com/62290677/209450340-7d613130-a9f8-47a9-8c52-ff5720631e03.png" alt="drawing" width="200"/>  | <img src="https://user-images.githubusercontent.com/62290677/209450412-4695d1d4-cccf-4868-b257-9374ba125497.png" alt="drawing" width="200"/>        | <img src="https://user-images.githubusercontent.com/62290677/209450482-e21b1f0f-1736-4b85-9791-a05f545b1a28.png" alt="drawing" width="200"/>      |
+
+
+| Search User   | User Profile As Admin  |
+| ------------- |  ------------- |
+| <img src="https://user-images.githubusercontent.com/62290677/209450495-498b5095-2ce5-4588-a42c-3bf26e7ae8ec.png" alt="drawing" width="200"/>  | <img src="https://user-images.githubusercontent.com/62290677/209450508-d29c64f4-957f-45ce-9aba-a02d1f30761e.png" alt="drawing" width="200"/>        | 
+
+
+
+
 
 
 | Firestore screenshots | Description    |
@@ -51,6 +65,9 @@ Stay up to date on the latest celebrity news and politics with politi-cal! This 
 | <img src="https://user-images.githubusercontent.com/62290677/209438685-9c5d7d03-66af-4957-b98d-3fcad8f0cc8e.png" width="500"/>            | Celebs Collection |
 | <img src="https://user-images.githubusercontent.com/62290677/209438834-581d1617-b2db-4730-8d37-9a597560839d.png" alt="drawing" width="500"/>       | Authentication |
 | <img src="https://user-images.githubusercontent.com/62290677/209438992-afe62e4c-3d8d-4eb2-978d-13615b81ee5d.png" alt="drawing" width="500"/>         | FireStore Rulse |
+
+
+
 
 
 # Development Proccess
@@ -112,6 +129,11 @@ incase of a problem finding a dependecy go to gradle.setting page and press sync
 - [View Vision document in github pdf](https://github.com/dolev146/Politi-Cal/blob/main/%D7%9E%D7%A1%D7%9E%D7%9A%20%D7%99%D7%96%D7%95%D7%9D.pdf)
 - [Requirements document in google docs](https://docs.google.com/document/d/1-CgVG_MFVoUmy1jjsHod2SINEPRSSuuJ/edit?usp=sharing&ouid=106073873938908076067&rtpof=true&sd=true)
 - [Requirements document in github pdf](https://github.com/dolev146/Politi-Cal/blob/main/requirements%20document.pdf)
+
+# Links and information
+
+- https://www.youtube.com/watch?v=4gUeyNkGE3g&t=920s&ab_channel=PhilippLackner
+- https://developer.android.com/jetpack/compose
 
 
 
