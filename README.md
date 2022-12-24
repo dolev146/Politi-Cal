@@ -84,6 +84,12 @@ Overall, we, had a well thought-out plan in place for the development of our app
 
 ![jsoncrackpng](https://user-images.githubusercontent.com/62290677/209435845-234db44f-afbf-4f2b-85e4-686463cc799c.png)
 
+### We used the kanband board and Issues to track our goals using github projects
+![image](https://user-images.githubusercontent.com/62290677/209451168-ec9fbdfe-3afa-46e1-b48f-8d36852bbe14.png)
+![image](https://user-images.githubusercontent.com/62290677/209451324-5ddeb668-8843-4a1c-9779-eee8a4e43b73.png)
+
+
+
 
 # How to Use
 
