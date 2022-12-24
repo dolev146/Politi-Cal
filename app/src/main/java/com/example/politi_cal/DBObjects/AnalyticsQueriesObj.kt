@@ -104,6 +104,9 @@ class AnalyticsQueriesObj : AnalyticsQueriesInterface {
 
                 for(call in callback_set){
                     val map = call.getOutput()
+                    if(map == null){
+                        continue
+                    }
                     if(map!!["Left"]!! > map["Right"]!!){
                         left_counter +=1
                     }
@@ -155,9 +158,9 @@ class AnalyticsQueriesObj : AnalyticsQueriesInterface {
             }
             val total = left_precent + right_precent
             left_precent = left_precent / total
-            left_precent *= 100
+//            left_precent *= 100
             right_precent = right_precent / total
-            right_precent *= 100
+//            right_precent *= 100
             val map = hashMapOf("Left" to left_precent, "Right" to right_precent)
             callBack.setOutput(map)
             callBack.Call()

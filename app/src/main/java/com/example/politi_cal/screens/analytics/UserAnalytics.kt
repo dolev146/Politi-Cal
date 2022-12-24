@@ -7,6 +7,7 @@ import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -41,76 +42,80 @@ var piechart: PieChart? = null
 
 @Composable
 fun UserAnalyticsScreen(navController: NavController, auth: FirebaseAuth) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = "Distribution",
-                style = androidx.compose.ui.text.TextStyle.Default,
-                fontFamily = FontFamily.Default,
-                fontStyle = FontStyle.Normal,
-                fontSize = 36.sp
-            )
-            Column(
-                modifier = Modifier
-                    .padding(18.dp)
-                    .size(320.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
+    distribution.clear()
+    LazyColumn(content = {
+        item {
+            Column(modifier = Modifier.fillMaxSize()) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Distribution",
+                        style = androidx.compose.ui.text.TextStyle.Default,
+                        fontFamily = FontFamily.Default,
+                        fontStyle = FontStyle.Normal,
+                        fontSize = 36.sp
+                    )
+                }
+                Column(
+                    modifier = Modifier
+                        .padding(18.dp)
+                        .size(320.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
 //                createAndUpdatePieChart()
-                Crossfade(targetState = distribution) { pieChartData ->
-                    AndroidView(factory = { context ->
-                        PieChart(context).apply {
-                            layoutParams = LinearLayout.LayoutParams(
-                                ViewGroup.LayoutParams.MATCH_PARENT,
-                                ViewGroup.LayoutParams.MATCH_PARENT,
-                            )
-                            this.description.isEnabled = false
-                            this.isDrawHoleEnabled = false
-                            this.legend.isEnabled = true
-                            this.legend.textSize = 40F
-                            this.legend.horizontalAlignment =
-                                Legend.LegendHorizontalAlignment.CENTER
-                            this.setEntryLabelColor((resources.getColor(R.color.white)))
-                        }
-                    },
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(5.dp), update = {
-                            updatePieChartWithData(it, pieChartData)
-                        })
+                    Crossfade(targetState = distribution) { pieChartData ->
+                        AndroidView(factory = { context ->
+                            PieChart(context).apply {
+                                layoutParams = LinearLayout.LayoutParams(
+                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                    ViewGroup.LayoutParams.MATCH_PARENT,
+                                )
+                                this.description.isEnabled = false
+                                this.isDrawHoleEnabled = false
+                                this.legend.isEnabled = true
+                                this.legend.textSize = 40F
+                                this.legend.horizontalAlignment =
+                                    Legend.LegendHorizontalAlignment.CENTER
+                                this.setEntryLabelColor((resources.getColor(R.color.white)))
+                            }
+                        },
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(5.dp), update = {
+                                updatePieChartWithData(it, pieChartData)
+                            })
+                    }
                 }
-            }
-            var callback_category = CallBack<Boolean, Boolean>(false)
-            var callback_company = CallBack<Boolean, Boolean>(false)
-            categoriesForAddCelebNames.clear()
-            companiesForAddCeleb.clear()
-            retrieveCategories(callback_category)
-            retrieveCompanies(callback_company)
-            var flag = 0
-            while (true) {
-                if (callback_category.getStatus()) {
-                    flag += 1
+                var callback_category = CallBack<Boolean, Boolean>(false)
+                var callback_company = CallBack<Boolean, Boolean>(false)
+                categoriesForAddCelebNames.clear()
+                companiesForAddCeleb.clear()
+                retrieveCategories(callback_category)
+                retrieveCompanies(callback_company)
+                var flag = 0
+                while (true) {
+                    if (callback_category.getStatus()) {
+                        flag += 1
+                    }
+                    if (callback_company.getStatus()) {
+                        flag += 1
+                    }
+                    if (flag == 2) {
+                        break
+                    } else {
+                        flag = 0
+                    }
                 }
-                if (callback_company.getStatus()) {
-                    flag += 1
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    createDropMenus()
                 }
-                if (flag == 2) {
-                    break
-                } else {
-                    flag = 0
-                }
-            }
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                createDropMenus()
             }
         }
-    }
-
+    })
 }
 
 
@@ -185,6 +190,12 @@ fun createDropMenus() {
                                     .filter { it.category.equals(selection) }
                                     .map { it.companyID }
                                     .toList() as ArrayList<String>
+                                if(companies.isEmpty()){
+                                    selectioncompany = ""
+                                }
+                                else{
+                                    selectioncompany = companies[0]
+                                }
                                 category_expanded = false
                             })
                             {
@@ -254,11 +265,13 @@ fun createDropMenus() {
                         continue
                     }
                     val data = callback!!.getOutput()
-                    val left_distribution = data!!["Left"] !!* 100
-                    val right_distribution = data!!["Right"] !!* 100
-                    distribution.clear()
-                    distribution.add(PieChartData("Left", left_distribution!!.toFloat()))
-                    distribution.add(PieChartData("Right", right_distribution!!.toFloat()))
+                    if(data!=null) {
+                        val left_distribution = data!!["Left"]!! * 100
+                        val right_distribution = data!!["Right"]!! * 100
+                        distribution.clear()
+                        distribution.add(PieChartData("Left", left_distribution!!.toFloat()))
+                        distribution.add(PieChartData("Right", right_distribution!!.toFloat()))
+                    }
                 }
                 // category distribution
                 else if(cat_enabled && !comp_enabled){
@@ -268,12 +281,14 @@ fun createDropMenus() {
                     while (!callback.getStatus()){
                         continue
                     }
-                    val data = callback!!.getOutput()
-                    val left_distribution = data!!["Left"] !!* 100
-                    val right_distribution = data!!["Right"] !!* 100
-                    distribution.clear()
-                    distribution.add(PieChartData("Left", left_distribution!!.toFloat()))
-                    distribution.add(PieChartData("Right", right_distribution!!.toFloat()))
+                    val data = callback.getOutput()
+                    if(data!=null) {
+                        val left_distribution = data!!["Left"]!! * 100
+                        val right_distribution = data!!["Right"]!! * 100
+                        distribution.clear()
+                        distribution.add(PieChartData("Left", left_distribution!!.toFloat()))
+                        distribution.add(PieChartData("Right", right_distribution!!.toFloat()))
+                    }
                 }
                 //total distribution
                 else{
@@ -283,11 +298,13 @@ fun createDropMenus() {
                         continue
                     }
                     val data = callback!!.getOutput()
-                    val left_distribution = data!!["Left"] !!* 100
-                    val right_distribution = data!!["Right"] !!* 100
-                    distribution.clear()
-                    distribution.add(PieChartData("Left", left_distribution!!.toFloat()))
-                    distribution.add(PieChartData("Right", right_distribution!!.toFloat()))
+                    if(data!=null) {
+                        val left_distribution = data!!["Left"]!! * 100
+                        val right_distribution = data!!["Right"]!! * 100
+                        distribution.clear()
+                        distribution.add(PieChartData("Left", left_distribution!!.toFloat()))
+                        distribution.add(PieChartData("Right", right_distribution!!.toFloat()))
+                    }
                 }
 
                 CoroutineScope(Dispatchers.IO).launch {
@@ -310,9 +327,7 @@ fun updatePieChartWithData(
     chart: PieChart,
     data: List<PieChartData>
 ) {
-    if(piechart == null){
-        piechart = chart
-    }
+    piechart = chart
     val entries = ArrayList<PieEntry>()
     for (i in data.indices) {
         val item = data[i]
