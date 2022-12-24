@@ -41,6 +41,22 @@ Stay up to date on the latest celebrity news and politics with politi-cal! This 
 | <img src="https://user-images.githubusercontent.com/62290677/209437734-1aef6abc-64fc-415f-81a6-84bd0b31f269.png" alt="drawing" width="200"/>  | <img src="https://user-images.githubusercontent.com/62290677/209438012-d8d39c0d-9e5b-47fc-bf62-4515181ad333.png" alt="drawing" width="200"/>        | <img src="https://user-images.githubusercontent.com/62290677/209438079-fc4deb8e-1137-4c2a-a42b-f99cc7fde1a2.png" alt="drawing" width="200"/>      |
 
 
+| Users Collection      | Celebs Collection  | Authentication      |
+| ------------- | ------------- | ------------- |
+| <img src="https://user-images.githubusercontent.com/62290677/209438648-7ced2507-62c0-49de-9c5d-0fd3d2ac4e00.png" alt="drawing" width="200"/>  | <img src="https://user-images.githubusercontent.com/62290677/209438685-9c5d7d03-66af-4957-b98d-3fcad8f0cc8e.png" width="200"/>        | <img src="https://user-images.githubusercontent.com/62290677/209438834-581d1617-b2db-4730-8d37-9a597560839d.png" alt="drawing" width="200"/>      |
+
+
+
+| Firestore screenshots | Description    |
+| --------------------- | ---------------|
+| <img src="https://user-images.githubusercontent.com/62290677/209438648-7ced2507-62c0-49de-9c5d-0fd3d2ac4e00.png" alt="drawing" width="500"/>           | Users Collection |
+| <img src="https://user-images.githubusercontent.com/62290677/209438685-9c5d7d03-66af-4957-b98d-3fcad8f0cc8e.png" width="500"/>            | Celebs Collection |
+| <img src="https://user-images.githubusercontent.com/62290677/209438834-581d1617-b2db-4730-8d37-9a597560839d.png" alt="drawing" width="500"/>       | Authentication |
+| <img src="https://user-images.githubusercontent.com/62290677/209438992-afe62e4c-3d8d-4eb2-978d-13615b81ee5d.png" alt="drawing" width="500"/>         | FireStore Rulse |
+
+
+
+
 
 # Development Proccess
 
