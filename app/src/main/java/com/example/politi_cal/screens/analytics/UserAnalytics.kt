@@ -336,8 +336,8 @@ fun updatePieChartWithData(
 
     val ds = PieDataSet(entries, "")
 
-    val redColor = Color(0xFFF44336)
-    val blueColor = Color(0xFF3291F3)
+    val redColor = Color(0xFF03588c)
+    val blueColor = Color(0xFFa60321)
 
     ds.colors = arrayListOf(
         redColor.toArgb(),

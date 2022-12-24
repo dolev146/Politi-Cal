@@ -1,17 +1,12 @@
 package com.example.politi_cal.screens.analytics
 
+//import java.util.ArrayList
 import android.graphics.Typeface
-import android.icu.number.IntegerWidth
 import android.os.Build
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -22,23 +17,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.graphics.toColor
 import androidx.navigation.NavController
 import com.example.politi_cal.R
 import com.example.politi_cal.Screen
 import com.example.politi_cal.adminAnalyticsTitle
 import com.example.politi_cal.adminDistribution
-import com.example.politi_cal.distribution
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.google.firebase.auth.FirebaseAuth
-//import java.util.ArrayList
-import kotlin.collections.ArrayList
 import kotlin.streams.toList
 
 var admin_pieChart : PieChart? = null
@@ -125,7 +115,7 @@ fun updateAdminPieChartWithData(
     val ds = PieDataSet(entries, "")
 
 
-    val redColor = Color(0xFFF44336)
+    val redColor = Color(0xFF03588c)
 
     var color_list = getNColors(entries.size)
     var list = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
