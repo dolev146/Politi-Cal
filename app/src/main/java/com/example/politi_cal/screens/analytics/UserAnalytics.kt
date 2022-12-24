@@ -45,7 +45,13 @@ fun UserAnalyticsScreen(navController: NavController, auth: FirebaseAuth) {
     distribution.clear()
     LazyColumn(content = {
         item {
-            Column(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(10.dp),
+
+
+            ) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -58,7 +64,7 @@ fun UserAnalyticsScreen(navController: NavController, auth: FirebaseAuth) {
                         fontStyle = FontStyle.Normal,
                         fontSize = 36.sp
                     )
-                }
+
                 Column(
                     modifier = Modifier
                         .padding(18.dp)
@@ -90,6 +96,7 @@ fun UserAnalyticsScreen(navController: NavController, auth: FirebaseAuth) {
                             })
                     }
                 }
+
                 var callback_category = CallBack<Boolean, Boolean>(false)
                 var callback_company = CallBack<Boolean, Boolean>(false)
                 categoriesForAddCelebNames.clear()
@@ -112,6 +119,7 @@ fun UserAnalyticsScreen(navController: NavController, auth: FirebaseAuth) {
                 }
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     createDropMenus()
+                }
                 }
             }
         }

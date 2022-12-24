@@ -84,7 +84,7 @@ fun AdminAnalyticsMenuScreen(navController: NavController, auth: FirebaseAuth) {
                             val precent = entry.value.toFloat() * 100
                             adminDistribution.add(PieChartData(partyName, precent))
                         }
-                        adminAnalyticsTitle = "Favorite parties distribution"
+                        adminAnalyticsTitle = "Parties distribution"
                         navController.navigate(Screen.AdminAnalyticsViewScreen.route)
                     }
                 ) {
@@ -109,7 +109,7 @@ fun AdminAnalyticsMenuScreen(navController: NavController, auth: FirebaseAuth) {
                             val precent = entry.value.toFloat() * 100
                             adminDistribution.add(PieChartData(partyName, precent))
                         }
-                        adminAnalyticsTitle = "Age group distribution"
+                        adminAnalyticsTitle = "Age distribution"
                         navController.navigate(Screen.AdminAnalyticsViewScreen.route)
 
                     }

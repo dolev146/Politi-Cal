@@ -45,8 +45,8 @@ fun AdminAnalyticsView(navController: NavController, auth: FirebaseAuth) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceAround,
             ) {
-                Text(text = adminAnalyticsTitle, style = MaterialTheme.typography.h3)
-            }
+                Text(text = adminAnalyticsTitle, style = MaterialTheme.typography.h4)
+
 
             Button(onClick = {
                 /*TODO*/
@@ -56,6 +56,7 @@ fun AdminAnalyticsView(navController: NavController, auth: FirebaseAuth) {
             }) {
                 Text(text = "Go Back to Admin Analytics")
 
+            }
             }
         }
         item {
