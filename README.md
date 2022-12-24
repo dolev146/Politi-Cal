@@ -90,17 +90,17 @@ include screenshot of tests.
 
 This process will allow you to access and modify the code for the POLITI-CAL project within the Android Studio environment.
 
-### Install dependencies
+## Install dependencies
 
 incase of a problem finding a dependecy go to gradle.setting page and press sync.
 
 
 ### Relevant Documents
 
-[View Vision document in google docs](https://docs.google.com/document/d/16WcBhOieA0lwCKdZRIVnoUz73j6iwF5fDjzzGPcxH98/edit?usp=sharing)
-[View Vision document in github pdf](https://docs.google.com/document/d/16WcBhOieA0lwCKdZRIVnoUz73j6iwF5fDjzzGPcxH98/edit?usp=sharing)
-[View Vision document in google docs](https://docs.google.com/document/d/1-CgVG_MFVoUmy1jjsHod2SINEPRSSuuJ/edit?usp=sharing&ouid=106073873938908076067&rtpof=true&sd=true)
-[View Vision document in github pdf](https://docs.google.com/document/d/16WcBhOieA0lwCKdZRIVnoUz73j6iwF5fDjzzGPcxH98/edit?usp=sharing)
+- [View Vision document in google docs](https://docs.google.com/document/d/16WcBhOieA0lwCKdZRIVnoUz73j6iwF5fDjzzGPcxH98/edit?usp=sharing)
+- [View Vision document in github pdf](https://docs.google.com/document/d/16WcBhOieA0lwCKdZRIVnoUz73j6iwF5fDjzzGPcxH98/edit?usp=sharing)
+- [View Vision document in google docs](https://docs.google.com/document/d/1-CgVG_MFVoUmy1jjsHod2SINEPRSSuuJ/edit?usp=sharing&ouid=106073873938908076067&rtpof=true&sd=true)
+- [View Vision document in github pdf](https://docs.google.com/document/d/16WcBhOieA0lwCKdZRIVnoUz73j6iwF5fDjzzGPcxH98/edit?usp=sharing)
 
 
 
