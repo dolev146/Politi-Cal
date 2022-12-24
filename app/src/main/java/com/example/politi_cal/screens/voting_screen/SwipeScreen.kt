@@ -109,6 +109,8 @@ fun SwipeScreen(navController: NavController, auth: FirebaseAuth) {
         )
     }
 
+
+
     if (celebListParam.isEmpty()) {
         Text(
             text = "Loading...", modifier = Modifier
@@ -122,7 +124,12 @@ fun SwipeScreen(navController: NavController, auth: FirebaseAuth) {
     SwipeScreenAlternate(celeb) {
         // check if the list is empty before removing the first element
         if (celebListParam.size > 1) {
-            celebListParam.removeAt(0)
+            // check if celebListParam contains celeb if so remove it
+            if (celebListParam.contains(celeb)) {
+                celebListParam.remove(celeb)
+            }
+//            celebListParam.removeAt(0)
+            celebListParam.shuffle()
             celeb = celebListParam[0]
         } else {
             celebListParam.removeAt(0)
@@ -155,7 +162,7 @@ fun SwipeScreenAlternate(
                 worksAt = "Works at " + celeb.Company,
                 painter = celeb.ImgUrl
             )
-            if (celebListParam.size != 0) {
+            if (celebListParam.size > 0) {
                 LeftRightButtonsRow(mycustomfun, celeb)
             }
 
