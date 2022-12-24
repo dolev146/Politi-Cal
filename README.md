@@ -50,11 +50,6 @@ Stay up to date on the latest celebrity news and politics with politi-cal! This 
 | <img src="https://user-images.githubusercontent.com/62290677/209450340-7d613130-a9f8-47a9-8c52-ff5720631e03.png" alt="drawing" width="200"/>  | <img src="https://user-images.githubusercontent.com/62290677/209450412-4695d1d4-cccf-4868-b257-9374ba125497.png" alt="drawing" width="200"/>        | <img src="https://user-images.githubusercontent.com/62290677/209450482-e21b1f0f-1736-4b85-9791-a05f545b1a28.png" alt="drawing" width="200"/>      |
 
 
-
-| Admin Screen      | Parties Distribution  | Age Distribution   |
-| ------------- | ------------- | ------------- |
-| <img src="https://user-images.githubusercontent.com/62290677/209450340-7d613130-a9f8-47a9-8c52-ff5720631e03.png" alt="drawing" width="200"/>  | <img src="https://user-images.githubusercontent.com/62290677/209450412-4695d1d4-cccf-4868-b257-9374ba125497.png" alt="drawing" width="200"/>        | <img src="https://user-images.githubusercontent.com/62290677/209450482-e21b1f0f-1736-4b85-9791-a05f545b1a28.png" alt="drawing" width="200"/>      |
-
 | Search User   | User Profile As Admin  |
 | ------------- |  ------------- |
 | <img src="https://user-images.githubusercontent.com/62290677/209450495-498b5095-2ce5-4588-a42c-3bf26e7ae8ec.png" alt="drawing" width="200"/>  | <img src="https://user-images.githubusercontent.com/62290677/209450508-d29c64f4-957f-45ce-9aba-a02d1f30761e.png" alt="drawing" width="200"/>        | 
