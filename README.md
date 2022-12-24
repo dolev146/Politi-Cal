@@ -130,6 +130,11 @@ incase of a problem finding a dependecy go to gradle.setting page and press sync
 - [Requirements document in google docs](https://docs.google.com/document/d/1-CgVG_MFVoUmy1jjsHod2SINEPRSSuuJ/edit?usp=sharing&ouid=106073873938908076067&rtpof=true&sd=true)
 - [Requirements document in github pdf](https://github.com/dolev146/Politi-Cal/blob/main/requirements%20document.pdf)
 
+# Links and information
+
+- https://www.youtube.com/watch?v=4gUeyNkGE3g&t=920s&ab_channel=PhilippLackner
+- https://developer.android.com/jetpack/compose
+
 
 
 
