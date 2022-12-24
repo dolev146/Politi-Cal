@@ -2,6 +2,10 @@
 # Politi-Cal      <img src="https://user-images.githubusercontent.com/62290677/209436414-6ad069e4-3806-4f9e-8b98-0dfd08d944b7.png" alt="drawing" width="70" style="" />
 <!-- ![image](https://user-images.githubusercontent.com/62290677/209436414-6ad069e4-3806-4f9e-8b98-0dfd08d944b7.png) -->
 
+to install the app on your android device just download the apk
+[Politi-Cal v1.1 APK](https://github.com/dolev146/Politi-Cal/releases/download/v1.1/app-debug.apk)
+
+
 ## Authors
 
 - [@ Dolev Dublon](https://github.com/dolev146)
