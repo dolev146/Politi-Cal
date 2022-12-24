@@ -1,27 +1,40 @@
 package com.example.politi_cal.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.politi_cal.DBObjects.UserVoteDBObj
 import com.example.politi_cal.Screen
 import com.example.politi_cal.isAdminState
 import com.example.politi_cal.models.User
+import com.example.politi_cal.userCollectionRef
+import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 @Composable
 fun UserProfileScreen(
     navController: NavController, auth: FirebaseAuth, user: User
 ) {
+    var password by remember { mutableStateOf("") }
+    var isPasswordVisiable by remember {
+        mutableStateOf(false)
+    }
+
     LazyColumn(content = {
 
         item {
@@ -78,7 +91,12 @@ fun UserProfileScreen(
                             onClick = {
                                 var DBobj = UserVoteDBObj(context)
                                 DBobj.deleteAllVotesByUserID(user.email.toString())
-                                navController.navigate(Screen.SwipeScreen.route)
+                                // toast all votes deleted
+                                Toast.makeText(
+                                    context,
+                                    "All votes deleted",
+                                    Toast.LENGTH_SHORT
+                                ).show()
 
 
                             },
@@ -93,6 +111,71 @@ fun UserProfileScreen(
                         ) {
                             Text(text = "Delete My Votes")
                         }
+                        OutlinedTextField(
+                            value = password,
+                            onValueChange = {
+                                password = it
+                            },
+                            label = { Text(text = "Enter Password") },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            singleLine = true,
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Password, imeAction = ImeAction.Done
+                            ),
+                            visualTransformation = if (isPasswordVisiable) VisualTransformation.None else PasswordVisualTransformation()
+                        )
+                        // delete user button and write on him "delete user "  and navigate to login screen
+                        TextButton(
+                            onClick = {
+                                val userToDeleteNow = Firebase.auth.currentUser!!
+                                // get email user
+                                val credential = EmailAuthProvider
+                                    .getCredential(userToDeleteNow.email.toString(), password)
+                                userToDeleteNow.reauthenticate(credential)
+                                    .addOnCompleteListener {
+                                        if (it.isSuccessful) {
+                                            var DBobj = UserVoteDBObj(context)
+                                            DBobj.deleteAllVotesByUserID(user.email.toString())
+                                            userCollectionRef.document(userToDeleteNow.email.toString())
+                                                .delete()
+                                                .addOnSuccessListener {
+                                                    userToDeleteNow.delete()
+                                                        .addOnSuccessListener {
+                                                            navController.navigate(Screen.LoginScreen.route)
+                                                        }
+                                                        .addOnFailureListener {
+                                                            // An error happened.
+                                                        }
+                                                }
+                                                .addOnFailureListener {
+                                                    // An error happened.
+                                                }
+
+
+
+                                            userToDeleteNow.delete()
+                                                .addOnCompleteListener { task ->
+                                                    if (task.isSuccessful) {
+                                                        navController.navigate(Screen.LoginScreen.route)
+                                                    }
+                                                }
+                                        }
+                                    }
+
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                backgroundColor = MaterialTheme.colors.primary
+                            )) {
+                            Text(text = "Delete User")
+                        }
+
+
+
                     }
                 }
             }
