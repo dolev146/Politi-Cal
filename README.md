@@ -27,6 +27,18 @@ Stay up to date on the latest celebrity news and politics with politi-cal! This 
 
 # ScreenShots
 
+| Login Screen       | Register Screen      | Preferences      |
+| ------------- | ------------- | ------------- |
+| <img src="https://user-images.githubusercontent.com/62290677/209437509-e02bde39-af07-4b33-9d75-bc3d376d510e.png" alt="drawing" width="200"/>  | <img src="https://user-images.githubusercontent.com/62290677/209437643-4fc9763e-9cd1-4f36-a638-65042b30df61.png" alt="drawing" width="200"/>        | <img src="https://user-images.githubusercontent.com/62290677/209437690-f958635a-f994-44fd-9376-7064a1910c84.png" alt="drawing" width="200"/>      |
+
+
+| User Profile Screen With Delete      | Search Screen     | Celeb Profile Screen      |
+| ------------- | ------------- | ------------- |
+| <img src="https://user-images.githubusercontent.com/62290677/209437819-ae04a442-a9bb-4945-98f2-0b5d863c37bb.png" alt="drawing" width="200"/>  | <img src="https://user-images.githubusercontent.com/62290677/209437754-f4758410-76eb-47de-a769-d6dbe99272a3.png" alt="drawing" width="200"/>        | <img src="https://user-images.githubusercontent.com/62290677/209437779-4f7cd7e8-e815-4af0-8550-300b19fc6ef3.png" alt="drawing" width="200"/>      |
+
+| Voting Screen      | Analytics  | Celeb Profile Screen      |
+| ------------- | ------------- | ------------- |
+| <img src="https://user-images.githubusercontent.com/62290677/209437734-1aef6abc-64fc-415f-81a6-84bd0b31f269.png" alt="drawing" width="200"/>  | <img src="https://user-images.githubusercontent.com/62290677/209438012-d8d39c0d-9e5b-47fc-bf62-4515181ad333.png" alt="drawing" width="200"/>        | <img src="https://user-images.githubusercontent.com/62290677/209438079-fc4deb8e-1137-4c2a-a42b-f99cc7fde1a2.png" alt="drawing" width="200"/>      |
 
 
 
@@ -81,6 +93,17 @@ This process will allow you to access and modify the code for the POLITI-CAL pro
 ### Install dependencies
 
 incase of a problem finding a dependecy go to gradle.setting page and press sync.
+
+
+### Relevant Documents
+
+[View Vision document in google docs](https://docs.google.com/document/d/16WcBhOieA0lwCKdZRIVnoUz73j6iwF5fDjzzGPcxH98/edit?usp=sharing)
+[View Vision document in github pdf](https://docs.google.com/document/d/16WcBhOieA0lwCKdZRIVnoUz73j6iwF5fDjzzGPcxH98/edit?usp=sharing)
+[View Vision document in google docs](https://docs.google.com/document/d/1-CgVG_MFVoUmy1jjsHod2SINEPRSSuuJ/edit?usp=sharing&ouid=106073873938908076067&rtpof=true&sd=true)
+[View Vision document in github pdf](https://docs.google.com/document/d/16WcBhOieA0lwCKdZRIVnoUz73j6iwF5fDjzzGPcxH98/edit?usp=sharing)
+
+
+
 
 
 
