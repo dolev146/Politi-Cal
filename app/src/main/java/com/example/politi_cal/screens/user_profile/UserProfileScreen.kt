@@ -73,7 +73,7 @@ fun UserProfileScreen(
                     )
                     if (!isAdminState) {
 
-//
+
                         TextButton(
                             onClick = {
                                 var DBobj = UserVoteDBObj(context)
