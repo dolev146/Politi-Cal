@@ -47,15 +47,6 @@ Stay up to date on the latest celebrity news and politics with politi-cal! This 
 
 
 
-| Firestore screenshots | Description    |
-| --------------------- | ---------------|
-| <img src="https://user-images.githubusercontent.com/62290677/209438648-7ced2507-62c0-49de-9c5d-0fd3d2ac4e00.png" alt="drawing" width="500"/>           | Users Collection |
-| <img src="https://user-images.githubusercontent.com/62290677/209438685-9c5d7d03-66af-4957-b98d-3fcad8f0cc8e.png" width="500"/>            | Celebs Collection |
-| <img src="https://user-images.githubusercontent.com/62290677/209438834-581d1617-b2db-4730-8d37-9a597560839d.png" alt="drawing" width="500"/>       | Authentication |
-| <img src="https://user-images.githubusercontent.com/62290677/209438992-afe62e4c-3d8d-4eb2-978d-13615b81ee5d.png" alt="drawing" width="500"/>         | FireStore Rulse |
-
-
-
 
 
 # Development Proccess
