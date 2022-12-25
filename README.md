@@ -98,7 +98,11 @@ Overall, we, had a well thought-out plan in place for the development of our app
 ![image](https://user-images.githubusercontent.com/62290677/209451168-ec9fbdfe-3afa-46e1-b48f-8d36852bbe14.png)
 ![image](https://user-images.githubusercontent.com/62290677/209451324-5ddeb668-8843-4a1c-9779-eee8a4e43b73.png)
 
+# Code Structure 
 
+![image](https://user-images.githubusercontent.com/62290677/209466091-a86eeb2e-a675-4998-8f06-d7480aa5ea42.png)
+
+In a computer system, every directory is designed to store and organize files related to the topic or concern indicated by its name. This approach, known as separation of concerns (SOC), helps to organize and manage the various components of a system in a logical and coherent manner.
 
 
 # How to Use
