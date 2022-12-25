@@ -235,38 +235,53 @@ fun AdminAnalyticsMenuScreen(navController: NavController, auth: FirebaseAuth) {
                                     onClick = {
                                         dialoginput1 = selected_year
                                         val analyticsCreator = AdminAnalyticsQueriesDBObj()
-                                        val year = Integer.parseInt(dialoginput1)
-                                        if(!monthDistribution) {
-                                            var callback = CallBack<Int, Int>(year)
-                                            analyticsCreator.getNumberOfUsersByYear(callback)
-                                            while (!callback.getStatus()) {
-                                                continue
+                                        if (dialoginput1 != "") {
+                                            val year = Integer.parseInt(dialoginput1)
+                                            if (!monthDistribution) {
+                                                var callback = CallBack<Int, Int>(year)
+                                                analyticsCreator.getNumberOfUsersByYear(callback)
+                                                while (!callback.getStatus()) {
+                                                    continue
+                                                }
+                                                var numberOfUsers = callback!!.getOutput()
+                                                dialoginputtext =
+                                                    "There are $numberOfUsers users who register in year $year"
+                                                userNumber = true
+                                                userNumberByYear = false
+                                                openDialog = true
+                                            } else {
+                                                var callback = CallBack<Int, Map<Int, Double>>(year)
+                                                analyticsCreator.getNumberOfUsersByYear_MonthBasedData(
+                                                    callback
+                                                )
+                                                while (!callback.getStatus()) {
+                                                    continue
+                                                }
+                                                adminDistribution.clear()
+                                                val output = callback!!.getOutput()
+                                                for (entry in output!!.entries) {
+                                                    adminDistribution
+                                                        .add(
+                                                            PieChartData(
+                                                                getMonthName(entry.key),
+                                                                entry.value.toFloat() * 100
+                                                            )
+                                                        )
+                                                }
+                                                monthDistribution = false
+                                                userNumber = false
+                                                userNumberByYear = false
+                                                openDialog = false
+                                                adminAnalyticsTitle =
+                                                    "User registration in $year distribution"
+                                                navController.navigate(Screen.AdminAnalyticsViewScreen.route)
                                             }
-                                            var numberOfUsers = callback!!.getOutput()
-                                            dialoginputtext =
-                                                "There are $numberOfUsers users who register in year $year"
-                                            userNumber = true
-                                            userNumberByYear = false
-                                            openDialog = true
                                         }
                                         else{
-                                            var callback = CallBack<Int, Map<Int, Double>>(year)
-                                            analyticsCreator.getNumberOfUsersByYear_MonthBasedData(callback)
-                                            while(!callback.getStatus()){
-                                                continue
-                                            }
-                                            adminDistribution.clear()
-                                            val output = callback!!.getOutput()
-                                            for(entry in output!!.entries){
-                                                adminDistribution
-                                                    .add(PieChartData(getMonthName(entry.key), entry.value.toFloat() * 100))
-                                            }
                                             monthDistribution = false
                                             userNumber = false
                                             userNumberByYear = false
                                             openDialog = false
-                                            adminAnalyticsTitle = "User registration in $year distribution"
-                                            navController.navigate(Screen.AdminAnalyticsViewScreen.route)
                                         }
                                     }
                                 ) {
