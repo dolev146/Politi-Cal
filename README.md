@@ -1,4 +1,3 @@
-
 # Politi-Cal     
 <!-- ![image](https://user-images.githubusercontent.com/62290677/209436414-6ad069e4-3806-4f9e-8b98-0dfd08d944b7.png) -->
 
@@ -10,14 +9,28 @@ built with FireBase and JetPack Compose
 <img src="https://raw.githubusercontent.com/yurijserrano/Github-Profile-Readme-Logos/f994c418a134b58c4aec11152f6a4a33fa89da26/cloud/firebase.svg" width="70" alt="Firebase logo"> <img src="https://raw.githubusercontent.com/yurijserrano/Github-Profile-Readme-Logos/f994c418a134b58c4aec11152f6a4a33fa89da26/ides/android-studio.svg" width="70" alt="Firebase logo">   ---->  <img src="https://user-images.githubusercontent.com/62290677/209436414-6ad069e4-3806-4f9e-8b98-0dfd08d944b7.png" alt="drawing" width="70" style="" />
 
 
+## Table Of Contents 
+
+  * [Authors](#authors)
+  * [Description](#description)
+- [Features](#features)
+- [ScreenShots](#screenshots)
+- [Development Proccess](#development-proccess)
+- [Code Structure](#code-structure)
+- [How to Use](#how-to-use)
+  * [Demo](#demo)
+  * [Running Tests](#running-tests)
+  * [Run Locally](#run-locally)
+  * [Install dependencies](#install-dependencies)
+    + [Relevant Documents](#relevant-documents)
+- [Links and information](#links-and-information)
+- [Figma design](#figma-design)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
 
 
-## Authors
 
-- [@ Dolev Dublon](https://github.com/dolev146)
-- [@ Yakov Khodorkovski](https://github.com/yakov103)
-- [@ Ofri Tavor](https://github.com/Unusual55)
 
 
 
@@ -166,6 +179,13 @@ incase of a problem finding a dependecy go to gradle.setting page and press sync
 ![image](https://user-images.githubusercontent.com/62290677/209464710-1dfe3e17-ae0b-49ef-ab63-b6c80a2215ea.png)
 ![image](https://user-images.githubusercontent.com/62290677/209464718-09b5bf05-6bb0-427d-9842-6c8d2b379c4d.png)
 
+
+
+## Authors
+
+- [@ Dolev Dublon](https://github.com/dolev146)
+- [@ Yakov Khodorkovski](https://github.com/yakov103)
+- [@ Ofri Tavor](https://github.com/Unusual55)
 
 
 
