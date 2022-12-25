@@ -83,6 +83,9 @@ We have engaged in a thorough planning process in order to successfully develop 
 
 We have outlined the permissions for the app, with users being able to select their preferred categories of celebrities, vote for celebrities, and view vote data for a given celebrity. The administrator, or admin, of the app will have the ability to add celebrities, view statistics for the site, and access data about users and app usage.
 
+![image](https://user-images.githubusercontent.com/62290677/209464678-e6e72d18-78ac-4378-a04c-8acc127e3aa8.png)
+
+
 We have described the significant processes that will be included in the app, such as a login screen, registration screen, preferences selection screen, voting screen, main menu, celebrity profiles, and screens for analytics and adding celebrities. We have also identified potential problems that may arise during the development process and have proposed solutions, including the use of a KANBAN board and the separation of concerns in the code.
 
 In terms of technology, we have chosen to use JETPACK COMPOSE for the development of the app due to its ease of use and fewer reported bugs. We plan to build the app from the front end to the back end.
@@ -147,6 +150,17 @@ incase of a problem finding a dependecy go to gradle.setting page and press sync
 
 - https://www.youtube.com/watch?v=4gUeyNkGE3g&t=920s&ab_channel=PhilippLackner
 - https://developer.android.com/jetpack/compose
+
+
+# Figma design
+
+[Figma Design Link](https://www.figma.com/file/rtfz2c3IBF9cDMMmx3gQHI/Mobile-UI-kit-(Community)?node-id=0%3A1&t=471uiBqvXrpqlvzK-1)
+
+![image](https://user-images.githubusercontent.com/62290677/209464755-a8baa93e-9259-40c1-8bc9-a5dbf9b9a245.png)
+![image](https://user-images.githubusercontent.com/62290677/209464693-449cec6e-c617-4b14-b3bb-2cfde5d73580.png)
+![image](https://user-images.githubusercontent.com/62290677/209464700-ff578757-5f7f-4786-b0e2-e53c0d2f6851.png)
+![image](https://user-images.githubusercontent.com/62290677/209464710-1dfe3e17-ae0b-49ef-ab63-b6c80a2215ea.png)
+![image](https://user-images.githubusercontent.com/62290677/209464718-09b5bf05-6bb0-427d-9842-6c8d2b379c4d.png)
 
 
 
