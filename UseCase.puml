@@ -1,0 +1,114 @@
+@startuml
+'https://plantuml.com/use-case-diagram
+
+:User:
+:Admin:
+' give more space to the diagram
+scale 1.5
+' make the arrows more visible
+skinparam linetype ortho
+' make the actors more visible
+skinparam actor {
+    BackgroundColor FloralWhite
+    BorderColor Black
+    ArrowColor Black
+}
+' make the use cases less messy and more readable
+skinparam usecase {
+    BackgroundColor FloralWhite
+    BorderColor Black
+    ArrowColor Black
+    FontSize 14
+    FontStyle bold
+}
+left to right direction
+skinparam packageStyle rectangle
+rectangle userOnly as "User only permissions"{
+'User management processes'
+    (Log into the application) as (Login)
+    (Register to the application) as (Register)
+    (Update user preferences) as (UpdatePref)
+    (Delete user Account) as (DeleteUser)
+
+'Application features for user only'
+    (Swipe left or right) as (Swipe)
+}
+
+rectangle adminOnly as "Admin only permissions"{
+'    top to bottom direction
+'Application features for admin only'
+    (View admin analytics) as (AdminAnalyticsMenu)
+    (View Party distribution) as (PartyDistribution)
+    (View age group distribution) as (AgeGroupDistribution)
+    (View Popularity) as (Popularity)
+'    (View the number of user) as (UserCount)
+'    (View users by registration year) as (RegistrationYearCount)
+'    (View users by registration year distributed by month) as (RegistrationYearCountDistribution)
+    (Add new Celeb) as (AddCeleb)
+}
+
+
+rectangle bothPermissions as "Permission for both user and admin"{
+'    top to bottom direction
+'Application features for both admin and user'
+    (Delete all Votes) as (DeleteVotes)
+    (View analytics) as (Analytics)
+    (View celeb Profile) as (ViewCelebProfile)
+    (Celeb Search) as (Search)
+'    (View company analytics) as (CompanyAnalytics)
+'    (View category analytics) as (CategoryAnalytics)
+    (View user profile) as (ViewProfile)
+}
+
+'User only'
+User --> (Login)
+User --> (Register)
+User --> (UpdatePref)
+User --> (DeleteUser)
+User --> (Swipe)
+User --> (DeleteVotes)
+User --> (Analytics)
+User --> (ViewCelebProfile)
+User --> (Search)
+User --> (ViewProfile)
+
+
+
+'Admin Only'
+(Login) <-- Admin
+(AdminAnalyticsMenu) <-- Admin
+(PartyDistribution) <-- Admin
+(AgeGroupDistribution)<-- Admin
+(Popularity)<-- Admin
+'(Popularity) .> (UserCount):extends
+'(Popularity) .> (RegistrationYearCount):extends
+'(Popularity) .> (RegistrationYearCountDistribution):extends
+(AddCeleb)<-- Admin
+'Admin and user'
+(DeleteVotes)<-- Admin
+(Analytics)<-- Admin
+'(Analytics) .> (CompanyAnalytics): extends
+'(Analytics) .> (CategoryAnalytics): extends
+(ViewCelebProfile)<-- Admin
+(Search)<-- Admin
+(ViewProfile)<-- Admin
+
+
+
+
+
+'User --> (Use)
+'
+'Admin ---> (Use)
+'
+'note right of Admin : This is an example.
+'
+'note right of (Use)
+'A note can also
+'be on several lines
+'end note
+'
+'note "This note is connected\nto several objects." as N2
+'(Start) .. N2
+'N2 .. (Use)
+@enduml

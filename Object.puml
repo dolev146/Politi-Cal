@@ -1,0 +1,48 @@
+@startuml
+'https://plantuml.com/object-diagram
+entity UserVote
+
+entity User
+User : UserID = "a@a.com"
+User : RoleID = 1
+User : email = "a@a.com"
+User : favoritePartyID = "Likud"
+User : UserName = "a@a"
+User : registrationDate = 20221226
+User : Gender = "Male"
+User : userAge = 19970421
+
+
+entity Celeb
+Celeb : Company = "Independant"
+Celeb : FirstName = Omer
+Celeb : LastName = Adam
+Celeb : BirthDate = 20221216
+Celeb : ImgUrl = "not relevant"
+Celeb : CelebInfo = "not relevant"
+Celeb : Category = "Famous"
+Celeb : RightVotes = 150
+Celeb : LeftVotes = 10
+
+entity Company
+Company : CompanyID = "Independant"
+Company : CategoryID = "Famous""
+
+entity Category
+Category : CategoryID = "Famous"
+Category : CategoryName = "Famous"
+
+entity VoteOption
+VoteOption : VoteID = "left"
+VoteOption : VoteDescription = "left"
+
+
+map UserVote {
+ a@a.com *--> User
+  left *--> VoteOption
+   "Famous" *--> Category
+     "Independant" *--> Company
+ Omer Adam *--> Celeb
+}
+
+@enduml
