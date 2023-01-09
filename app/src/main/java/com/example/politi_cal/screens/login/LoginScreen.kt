@@ -30,8 +30,12 @@ import androidx.navigation.NavController
 import com.example.politi_cal.MainActivity.Companion.TAG
 import com.example.politi_cal.R
 import com.example.politi_cal.Screen
+import com.example.politi_cal.SendUpdateNotification
+import com.example.politi_cal.deleteUser
 import com.example.politi_cal.isAdminCheckNav
 import com.example.politi_cal.models.CallBack
+import com.example.politi_cal.notificationMap
+import com.example.politi_cal.setNotificationMap
 import com.example.politi_cal.userCollectionRef
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
@@ -42,7 +46,13 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
-
+    setNotificationMap()
+    if(deleteUser){
+        deleteUser = false
+        if(notificationMap[3] != null){
+            SendUpdateNotification(notification = notificationMap[3]!!)
+        }
+    }
     // find the onstart
 
     val focusManager = LocalFocusManager.current

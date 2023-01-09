@@ -21,11 +21,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.example.politi_cal.MainActivity
 import com.example.politi_cal.R
+import com.example.politi_cal.SendUpdateNotification
+import com.example.politi_cal.SendWelcomeNotification
 import com.example.politi_cal.celebCollectionRef
 import com.example.politi_cal.celebListParam
 import com.example.politi_cal.models.Celeb
 import com.example.politi_cal.models.UserVote
+import com.example.politi_cal.notificationMap
+import com.example.politi_cal.updatePref
 import com.example.politi_cal.userVotesCollectionRef
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions
@@ -92,7 +97,15 @@ private fun rightVote(celeb: Celeb, context: Context) {
 
 @Composable
 fun SwipeScreen(navController: NavController, auth: FirebaseAuth) {
-
+    if(notificationMap[0] != null){
+        SendWelcomeNotification(notification = notificationMap[0]!!)
+    }
+    if(updatePref){
+        updatePref = false
+        if(notificationMap[2] != null){
+            SendUpdateNotification(notification = notificationMap[2]!!)
+        }
+    }
     var celeb by remember {
         mutableStateOf<Celeb>(
             Celeb(

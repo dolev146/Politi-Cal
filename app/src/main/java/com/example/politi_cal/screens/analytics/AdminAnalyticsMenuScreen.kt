@@ -20,10 +20,14 @@ import androidx.navigation.NavController
 import com.example.politi_cal.DBObjects.AdminAnalyticsQueriesDBObj
 import com.example.politi_cal.DBObjects.AnalyticsQueriesObj
 import com.example.politi_cal.Screen
+import com.example.politi_cal.SendWelcomeNotification
 import com.example.politi_cal.adminAnalyticsTitle
 import com.example.politi_cal.adminDistribution
 import com.example.politi_cal.models.CallBack
+import com.example.politi_cal.notificationMap
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import androidx.compose.material.AlertDialog as AlertDialog1
 
 var dialogtext = ""
@@ -46,6 +50,9 @@ fun AdminAnalyticsMenuScreen(navController: NavController, auth: FirebaseAuth) {
     var userNumber by remember { mutableStateOf(userNumber) }
     var userNumberByYear by remember { mutableStateOf(userNumberByYear) }
     var monthDistribution by remember { mutableStateOf(monthDistribution) }
+    if (notificationMap[1] != null) {
+        SendWelcomeNotification(notification = notificationMap[1]!!)
+    }
     LazyColumn(content = {
         item {
             Column(
@@ -218,7 +225,7 @@ fun AdminAnalyticsMenuScreen(navController: NavController, auth: FirebaseAuth) {
                                 TextField(
                                     value = selected_year,
                                     onValueChange = {
-                                        if(it.isDigitsOnly()) {
+                                        if (it.isDigitsOnly()) {
                                             selected_year = it
                                         }
                                     }
@@ -276,8 +283,7 @@ fun AdminAnalyticsMenuScreen(navController: NavController, auth: FirebaseAuth) {
                                                     "User registration in $year distribution"
                                                 navController.navigate(Screen.AdminAnalyticsViewScreen.route)
                                             }
-                                        }
-                                        else{
+                                        } else {
                                             monthDistribution = false
                                             userNumber = false
                                             userNumberByYear = false
