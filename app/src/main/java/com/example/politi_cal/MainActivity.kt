@@ -33,8 +33,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.politi_cal.models.*
 import com.example.politi_cal.screens.analytics.PieChartData
-import com.example.politi_cal.screens.preferences.notification.UpdateApp
-import com.example.politi_cal.screens.preferences.notification.UpdateNotificationService
 import com.example.politi_cal.ui.theme.PolitiCalTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore

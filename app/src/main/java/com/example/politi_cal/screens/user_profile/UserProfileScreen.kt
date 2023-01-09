@@ -134,44 +134,50 @@ fun UserProfileScreen(
                         // delete user button and write on him "delete user "  and navigate to login screen
                         TextButton(
                             onClick = {
-                                val userToDeleteNow = Firebase.auth.currentUser!!
-                                // get email user
-                                val credential = EmailAuthProvider
-                                    .getCredential(userToDeleteNow.email.toString(), password)
-                                userToDeleteNow.reauthenticate(credential)
-                                    .addOnCompleteListener {
-                                        if (it.isSuccessful) {
-                                            var DBobj = UserVoteDBObj(context)
-                                            DBobj.deleteAllVotesByUserID(user.email.toString())
-                                            userCollectionRef.document(userToDeleteNow.email.toString())
-                                                .delete()
-                                                .addOnSuccessListener {
-                                                    userToDeleteNow.delete()
-                                                        .addOnSuccessListener {
-                                                            if (notificationMap[3] != null) {
-                                                                deleteUser = true
+                                if (!password.equals("")) {
+                                    val userToDeleteNow = Firebase.auth.currentUser!!
+                                    // get email user
+
+                                    val credential = EmailAuthProvider
+                                        .getCredential(
+                                            userToDeleteNow.email.toString(),
+                                            password.toString()
+                                        )
+                                    userToDeleteNow.reauthenticate(credential)
+                                        .addOnCompleteListener {
+                                            if (it.isSuccessful) {
+                                                var DBobj = UserVoteDBObj(context)
+                                                DBobj.deleteAllVotesByUserID(user.email.toString())
+                                                userCollectionRef.document(userToDeleteNow.email.toString())
+                                                    .delete()
+                                                    .addOnSuccessListener {
+                                                        userToDeleteNow.delete()
+                                                            .addOnSuccessListener {
+                                                                if (notificationMap[3] != null) {
+                                                                    deleteUser = true
+                                                                }
+                                                                navController.navigate(Screen.LoginScreen.route)
                                                             }
+                                                            .addOnFailureListener {
+                                                                // An error happened.
+                                                            }
+                                                    }
+                                                    .addOnFailureListener {
+                                                        // An error happened.
+                                                    }
+
+
+
+                                                userToDeleteNow.delete()
+                                                    .addOnCompleteListener { task ->
+                                                        if (task.isSuccessful) {
                                                             navController.navigate(Screen.LoginScreen.route)
                                                         }
-                                                        .addOnFailureListener {
-                                                            // An error happened.
-                                                        }
-                                                }
-                                                .addOnFailureListener {
-                                                    // An error happened.
-                                                }
-
-
-
-                                            userToDeleteNow.delete()
-                                                .addOnCompleteListener { task ->
-                                                    if (task.isSuccessful) {
-                                                        navController.navigate(Screen.LoginScreen.route)
                                                     }
-                                                }
+                                            }
                                         }
-                                    }
 
+                                }
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -183,13 +189,13 @@ fun UserProfileScreen(
                             Text(text = "Delete User")
                         }
 
-
                     }
                 }
             }
         }
     })
 }
+
 
 
 //fun deleteUser(
