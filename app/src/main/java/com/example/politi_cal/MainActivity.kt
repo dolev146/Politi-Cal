@@ -1,11 +1,36 @@
 package com.example.politi_cal
 
+import android.annotation.SuppressLint
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.example.politi_cal.models.*
 import com.example.politi_cal.screens.analytics.PieChartData
 import com.example.politi_cal.ui.theme.PolitiCalTheme
@@ -58,6 +83,13 @@ var UserForUserProfile = User(
 var distribution = ArrayList<PieChartData>()
 var adminDistribution = ArrayList<PieChartData>()
 var adminAnalyticsTitle = ""
+var updateChannelID = "update_channel"
+var welcomeChannelID = "welcome_channel"
+var welcomeChannelStatus = false
+var updateChannelStatus = false
+var notificationMap = HashMap<Int, Notification>()
+var updatePref = false
+var deleteUser = false
 
 
 class MainActivity : ComponentActivity() {
@@ -80,7 +112,6 @@ class MainActivity : ComponentActivity() {
                 val value = checkLoggedInState(auth)
 
                 if (value) {
-
 
 
                     var callback = CallBack<Boolean, Boolean>(false)
@@ -106,7 +137,7 @@ class MainActivity : ComponentActivity() {
         super.onStart()
         // use the checkLoggedInState function to check if the user is logged in
         val value = checkLoggedInState(auth)
-
+        setNotificationMap()
 
         //getCelebrities()
         if (value) {
@@ -349,5 +380,161 @@ fun isAdminCheckNav(callback: CallBack<Boolean, Boolean>) = CoroutineScope(Dispa
     }
 }
 
+@Composable
+private fun SendWelcomeNotification(notificationId: Int, titleText: String, notificationText: String){
+    if(!welcomeChannelStatus) {
+        createNotificationChannel(welcomeChannelID, LocalContext.current)
+        welcomeChannelStatus = true
+    }
+    val myBitmap = BitmapFactory.decodeResource(LocalContext.current.resources, R.drawable.app_logo)
+    showSimpleNotificationWithTapAction(
+        LocalContext.current,
+        welcomeChannelID,
+        notificationId,
+        titleText,
+        notificationText
+    )
+}
+
+@Composable
+private fun SendUpdateNotification(notificationId: Int, titleText: String, notificationText: String){
+    if(!updateChannelStatus) {
+        createNotificationChannel(welcomeChannelID, LocalContext.current)
+        updateChannelStatus = true
+    }
+    val myBitmap = BitmapFactory.decodeResource(LocalContext.current.resources, R.drawable.app_logo)
+    showSimpleNotificationWithTapAction(
+        LocalContext.current,
+        updateChannelID,
+        notificationId,
+        titleText,
+        notificationText
+    )
+}
+
+@Composable
+fun SendWelcomeNotification(notification: Notification){
+    if(!welcomeChannelStatus) {
+        createNotificationChannel(welcomeChannelID, LocalContext.current)
+        welcomeChannelStatus = true
+    }
+    val once = notification.getOnce()
+    val times = notification.getTimes()
+    if(once){
+        if(times == 1){
+            notification.setTimes(0)
+        }
+        else{
+            return
+        }
+    }
+    SendWelcomeNotification(
+        notificationId = notification.getID(),
+        titleText = notification.getTitle(),
+        notificationText = notification.getText()
+    )
+}
+
+@Composable
+fun SendUpdateNotification(notification: Notification){
+    if(!updateChannelStatus) {
+        createNotificationChannel(updateChannelID, LocalContext.current)
+        updateChannelStatus = true
+    }
+    val once = notification.getOnce()
+    val times = notification.getTimes()
+    if(once){
+        if(times == 1){
+            notification.setTimes(0)
+        }
+        else{
+            return
+        }
+    }
+    val myBitmap = BitmapFactory.decodeResource(LocalContext.current.resources, R.drawable.app_logo)
+    SendUpdateNotification(
+        notificationId = notification.getID(),
+        titleText = notification.getTitle(),
+        notificationText=notification.getText()
+    )
+}
 
 
+fun createNotificationChannel(channelId: String, context: Context) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val name = channelId
+        val importance = NotificationManager.IMPORTANCE_DEFAULT
+        val channel = NotificationChannel(channelId, name, importance)
+        val notificationManager: NotificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.createNotificationChannel(channel)
+    }
+}
+
+
+// shows a simple notification with a tap action to show an activity
+@SuppressLint("MissingPermission")
+fun showSimpleNotificationWithTapAction(
+    context: Context,
+    channelId: String,
+    notificationId: Int,
+    textTitle: String,
+    textContent: String,
+    priority: Int = NotificationCompat.PRIORITY_DEFAULT
+) {
+    val intent = Intent(context, MainActivity::class.java).apply {
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+    }
+
+    val pendingIntent: PendingIntent =PendingIntent.getActivity(
+        context, 1, intent,
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            PendingIntent.FLAG_IMMUTABLE
+        } else {
+            0
+        }
+    )
+
+    val builder = NotificationCompat.Builder(context, channelId)
+        .setSmallIcon(R.drawable.app_logo)
+        .setContentTitle(textTitle)
+        .setContentText(textContent)
+        .setPriority(priority)
+        .setContentIntent(pendingIntent)
+        .setAutoCancel(true)
+
+    with(NotificationManagerCompat.from(context)) {
+        notify(notificationId, builder.build())
+    }
+}
+
+fun setNotificationMap(){
+    var welcome = Notification(true,
+        1,
+        "Welcome to Politi-Cal!",
+        "Tap here to enter the app!",
+        welcomeChannelID,
+        0)
+    var welcomeAdmin = Notification(true,
+    1,
+    "Welcome Admin!",
+    "Tap here to enter the admin zone",
+    welcomeChannelID,
+    1)
+    var updatePref = Notification(false,
+        1,
+        "Preferences update",
+        "You updated your preferences successfully",
+        updateChannelID,
+        2)
+    var deleteUser = Notification(false,
+        1,
+        "Goodbye",
+        "You deleted your user :( Come again later to check out new updates",
+        updateChannelID,
+        3)
+    notificationMap[0] = welcome
+    notificationMap[1] = welcomeAdmin
+    notificationMap[2] = updatePref
+    notificationMap[3] = deleteUser
+}

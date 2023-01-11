@@ -18,13 +18,18 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.politi_cal.DBObjects.UserVoteDBObj
 import com.example.politi_cal.Screen
+import com.example.politi_cal.SendWelcomeNotification
+import com.example.politi_cal.deleteUser
 import com.example.politi_cal.isAdminState
 import com.example.politi_cal.models.User
+import com.example.politi_cal.notificationMap
 import com.example.politi_cal.userCollectionRef
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 @Composable
 fun UserProfileScreen(
@@ -129,52 +134,60 @@ fun UserProfileScreen(
                         // delete user button and write on him "delete user "  and navigate to login screen
                         TextButton(
                             onClick = {
-                                val userToDeleteNow = Firebase.auth.currentUser!!
-                                // get email user
-                                val credential = EmailAuthProvider
-                                    .getCredential(userToDeleteNow.email.toString(), password)
-                                userToDeleteNow.reauthenticate(credential)
-                                    .addOnCompleteListener {
-                                        if (it.isSuccessful) {
-                                            var DBobj = UserVoteDBObj(context)
-                                            DBobj.deleteAllVotesByUserID(user.email.toString())
-                                            userCollectionRef.document(userToDeleteNow.email.toString())
-                                                .delete()
-                                                .addOnSuccessListener {
-                                                    userToDeleteNow.delete()
-                                                        .addOnSuccessListener {
+                                if (!password.equals("")) {
+                                    val userToDeleteNow = Firebase.auth.currentUser!!
+                                    // get email user
+
+                                    val credential = EmailAuthProvider
+                                        .getCredential(
+                                            userToDeleteNow.email.toString(),
+                                            password.toString()
+                                        )
+                                    userToDeleteNow.reauthenticate(credential)
+                                        .addOnCompleteListener {
+                                            if (it.isSuccessful) {
+                                                var DBobj = UserVoteDBObj(context)
+                                                DBobj.deleteAllVotesByUserID(user.email.toString())
+                                                userCollectionRef.document(userToDeleteNow.email.toString())
+                                                    .delete()
+                                                    .addOnSuccessListener {
+                                                        userToDeleteNow.delete()
+                                                            .addOnSuccessListener {
+                                                                if (notificationMap[3] != null) {
+                                                                    deleteUser = true
+                                                                }
+                                                                navController.navigate(Screen.LoginScreen.route)
+                                                            }
+                                                            .addOnFailureListener {
+                                                                // An error happened.
+                                                            }
+                                                    }
+                                                    .addOnFailureListener {
+                                                        // An error happened.
+                                                    }
+
+
+
+                                                userToDeleteNow.delete()
+                                                    .addOnCompleteListener { task ->
+                                                        if (task.isSuccessful) {
                                                             navController.navigate(Screen.LoginScreen.route)
                                                         }
-                                                        .addOnFailureListener {
-                                                            // An error happened.
-                                                        }
-                                                }
-                                                .addOnFailureListener {
-                                                    // An error happened.
-                                                }
-
-
-
-                                            userToDeleteNow.delete()
-                                                .addOnCompleteListener { task ->
-                                                    if (task.isSuccessful) {
-                                                        navController.navigate(Screen.LoginScreen.route)
                                                     }
-                                                }
+                                            }
                                         }
-                                    }
 
+                                }
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(8.dp),
                             colors = ButtonDefaults.buttonColors(
                                 backgroundColor = MaterialTheme.colors.primary
-                            )) {
+                            )
+                        ) {
                             Text(text = "Delete User")
                         }
-
-
 
                     }
                 }

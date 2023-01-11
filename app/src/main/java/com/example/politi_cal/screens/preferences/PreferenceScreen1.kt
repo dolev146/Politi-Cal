@@ -272,6 +272,11 @@ private  fun editUser(auth : FirebaseAuth, userClass : User, context : Context, 
                 celebListParam = working
                 celebListParam.shuffle()
             }
+            withContext(Dispatchers.Main) {
+                if (notificationMap[2] != null) {
+                    updatePref = true
+                }
+            }
             navController.navigate(Screen.SwipeScreen.route)
         }
     } catch (e: Exception) {

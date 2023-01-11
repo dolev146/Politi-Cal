@@ -15,12 +15,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.politi_cal.MainActivity.Companion.TAG
 import com.example.politi_cal.Screen
+import com.example.politi_cal.SendWelcomeNotification
 import com.example.politi_cal.celebListParam
 import com.example.politi_cal.common.dropDownMenu
 import com.example.politi_cal.models.CallBack
 import com.example.politi_cal.models.Celeb
 import com.example.politi_cal.models.User
+import com.example.politi_cal.notificationMap
 import com.example.politi_cal.retrieveCelebsByUserOfri
+import com.example.politi_cal.updatePref
 import com.example.politi_cal.userCollectionRef
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions
@@ -69,11 +72,6 @@ fun PreferenceScreen(navController: NavController, auth: FirebaseAuth) {
     val checkStatePolitics = remember { mutableStateOf(false) }
     val checkStateFamous = remember { mutableStateOf(false) }
     val checkStateAcademic = remember { mutableStateOf(false) }
-
-
-
-
-
 
     LazyColumn(content = {
         item {
@@ -268,6 +266,9 @@ private  fun editUser(auth : FirebaseAuth, userClass : User, context : Context, 
             if (working != null) {
                 celebListParam = working
                 celebListParam.shuffle()
+            }
+            withContext(Dispatchers.Main) {
+                updatePref = true
             }
             navController.navigate(Screen.SwipeScreen.route)
         }
