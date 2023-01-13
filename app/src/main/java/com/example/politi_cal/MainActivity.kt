@@ -22,6 +22,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,6 +32,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.example.politi_cal.data.dto.PostResponse
+import com.example.politi_cal.data.dto.PostService
 import com.example.politi_cal.models.*
 import com.example.politi_cal.screens.analytics.PieChartData
 import com.example.politi_cal.ui.theme.PolitiCalTheme
@@ -92,7 +95,11 @@ var updatePref = false
 var deleteUser = false
 
 
+
+
 class MainActivity : ComponentActivity() {
+
+    private val service = PostService.create()
 
 
     companion object {
@@ -107,6 +114,18 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PolitiCalTheme {
+                val users = produceState<List<PostResponse>>(
+                    initialValue = emptyList() ,
+                    producer = {
+                        value = service.getUsers()
+                    }
+                )
+                println(users.value)
+                println("users.value@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+
+
+
+
                 this.window.statusBarColor = Color(0xFFD7C488).toArgb()
                 this.window.navigationBarColor = Color(0xFFD7C488).toArgb()
                 val value = checkLoggedInState(auth)
@@ -135,13 +154,27 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
+
         // use the checkLoggedInState function to check if the user is logged in
-        val value = checkLoggedInState(auth)
+        val value2 = checkLoggedInState(auth)
         setNotificationMap()
 
+
+        println("users.value@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+//        val shit = service.getUsers()
+//        println(shit)
+
+
         //getCelebrities()
-        if (value) {
+        if (value2) {
             setContent {
+                val users = produceState<List<PostResponse>>(
+                    initialValue = emptyList() ,
+                    producer = {
+                        value = service.getUsers()
+                    }
+                )
+
                 this.window.statusBarColor = Color(0xFFD7C488).toArgb()
                 this.window.navigationBarColor = Color(0xFFD7C488).toArgb()
 

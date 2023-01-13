@@ -56,6 +56,8 @@ private fun leftVote(celeb: Celeb, context: Context) {
             celeb.LeftVotes += 1
             celebCollectionRef.document(celeb.FirstName + " " + celeb.LastName)
                 .set(celeb, SetOptions.merge()).await()
+
+
             withContext(Dispatchers.Main) {
                 Toast.makeText(context, "Left Vote Added", Toast.LENGTH_SHORT).show()
             }
