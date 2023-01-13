@@ -45,7 +45,7 @@ private  fun addCeleb(context : Context, celeb:Celeb , navController: NavControl
         celebCollectionRef.document(celebFullName).set(celeb).await()
         withContext(Dispatchers.Main) {
             Toast.makeText(context, "Celeb Added Successfully", Toast.LENGTH_SHORT).show()
-            navController.navigate(Screen.SwipeScreen.route)
+            navController.navigate(Screen.AdminAnalyticsMenuScreen.route)
         }
     } catch (e: Exception) {
         Log.d(MainActivity.TAG, "Error adding user to database: $e")

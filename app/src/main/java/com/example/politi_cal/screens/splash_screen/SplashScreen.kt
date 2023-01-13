@@ -40,6 +40,7 @@ fun SplashScreen(navController: NavController, auth: FirebaseAuth) {
             )
         )
         delay(3000L)
+        auth.signOut()
         navController.navigate(Screen.LoginScreen.route)
     }
 

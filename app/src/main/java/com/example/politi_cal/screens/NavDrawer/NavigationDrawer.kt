@@ -292,8 +292,8 @@ fun DrawerTopBar(
                         navController.navigate(Screen.UserAnalyticsScreen.route)
                     }
                     "logout" -> {
-                        auth.signOut()
-                        navController.navigate(Screen.LoginScreen.route)
+//                        auth.signOut()
+                        navController.navigate(Screen.SplashScreen.route)
                     }
                     "search" -> {
                         navController.navigate(Screen.SearchScreen.route)
