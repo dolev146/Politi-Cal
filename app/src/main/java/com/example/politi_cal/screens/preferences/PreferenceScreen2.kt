@@ -214,6 +214,7 @@ fun PreferenceScreen2(navController: NavController, auth: FirebaseAuth) {
                         userAge = birthDate.toLong(),
                         userGender = selectedGender,
                     )
+                    isAdminState = false
                     UserForUserProfile = userClass
 
                     // add the user to the database

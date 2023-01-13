@@ -132,9 +132,8 @@ fun UserProfileScreen(
                             visualTransformation = if (isPasswordVisiable) VisualTransformation.None else PasswordVisualTransformation()
                         )
                         // delete user button and write on him "delete user "  and navigate to login screen
-                        TextButton(
+                        TextButton(enabled = password.isNotEmpty(),
                             onClick = {
-                                if (!password.equals("")) {
                                     val userToDeleteNow = Firebase.auth.currentUser!!
                                     // get email user
 
@@ -177,7 +176,7 @@ fun UserProfileScreen(
                                             }
                                         }
 
-                                }
+
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
