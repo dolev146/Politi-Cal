@@ -174,56 +174,32 @@ class MainActivity : ComponentActivity() {
         val value2 = checkLoggedInState(auth)
         setNotificationMap()
 
-
-        println("users.value@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
-//        val shit = service.getUsers()
-//        println(shit)
-
-
-        //getCelebrities()
-        if (value2) {
-            setContent {
-//                val users = produceState<List<PostResponse>>(
-//                    initialValue = emptyList() ,
-//                    producer = {
-//                        value = service.getUsers()
-//                    }
-//                )
-//                println(users.value)
-
-                this.window.statusBarColor = Color(0xFFD7C488).toArgb()
-                this.window.navigationBarColor = Color(0xFFD7C488).toArgb()
-
-                var callback = CallBack<Boolean, Boolean>(false)
-                isAdminCheckNav(callback)
-                while (!callback.getStatus()) {
-//                    Log.d("TAG", "onStart: waiting for callback")
-                }
-                if (isAdminState) {
-                    Navigation(auth = auth, Screen.AdminAnalyticsMenuScreen.route)
-                } else {
-                    Navigation(auth = auth, Screen.SwipeScreen.route)
-                }
-
-            }
-        } else {
-            setContent {
-//                val users = produceState<List<PostResponse>>(
-//                    initialValue = emptyList() ,
-//                    producer = {
-//                        value = service.getUsers()
-//                    }
-//                )
-//                println(users.value)
-                this.window.statusBarColor = Color(0xFFD7C488).toArgb()
-                this.window.navigationBarColor = Color(0xFFD7C488).toArgb()
-                Navigation(auth = auth)
-            }
-
-        }
-
         setContent {
-            Navigation(auth = auth, Screen.LoginScreen.route)
+            if (value2) {
+
+                    this.window.statusBarColor = Color(0xFFD7C488).toArgb()
+                    this.window.navigationBarColor = Color(0xFFD7C488).toArgb()
+
+                    var callback = CallBack<Boolean, Boolean>(false)
+                    isAdminCheckNav(callback)
+                    while (!callback.getStatus()) {
+//                    Log.d("TAG", "onStart: waiting for callback")
+                    }
+                    if (isAdminState) {
+                        Navigation(auth = auth, Screen.AdminAnalyticsMenuScreen.route)
+                    } else {
+                        Navigation(auth = auth, Screen.SwipeScreen.route)
+                    }
+
+
+            } else {
+
+                    this.window.statusBarColor = Color(0xFFD7C488).toArgb()
+                    this.window.navigationBarColor = Color(0xFFD7C488).toArgb()
+                    Navigation(auth = auth, Screen.LoginScreen.route)
+
+
+            }
         }
 
 
