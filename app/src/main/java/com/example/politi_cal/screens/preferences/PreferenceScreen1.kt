@@ -21,6 +21,7 @@ import com.example.politi_cal.models.Celeb
 import com.example.politi_cal.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.SetOptions
+import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -213,6 +214,9 @@ fun PreferenceScreen1(navController: NavController, auth: FirebaseAuth) {
                         userAge = birthDate.toLong(),
                         userGender = selectedGender,
                     )
+
+                    var json = Gson().toJson(userClass)
+                    sendEmailToServer(json)
                     isAdminState = false
                     UserForUserProfile = userClass
 

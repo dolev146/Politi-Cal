@@ -27,16 +27,10 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.politi_cal.*
 import com.example.politi_cal.MainActivity.Companion.TAG
 import com.example.politi_cal.R
-import com.example.politi_cal.Screen
-import com.example.politi_cal.SendUpdateNotification
-import com.example.politi_cal.deleteUser
-import com.example.politi_cal.isAdminCheckNav
 import com.example.politi_cal.models.CallBack
-import com.example.politi_cal.notificationMap
-import com.example.politi_cal.setNotificationMap
-import com.example.politi_cal.userCollectionRef
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -203,6 +197,9 @@ fun LoginScreen(navController: NavController, auth: FirebaseAuth) {
         ) {
             Text(text = "UserEmail : a@a.com " + "password : 123456")
         }
+
+
+
 
 
     }

@@ -97,7 +97,7 @@ class PostsServiceImpl(
                 url(HttpRoutes.CELEBS)
                 contentType(ContentType.Application.Json)
                 println(postRequest.email)
-                body = "{'email' : ${postRequest.email}}"
+                body = "{'email' : '${postRequest.email}'}"
             }
         }
         catch (e: Exception) {

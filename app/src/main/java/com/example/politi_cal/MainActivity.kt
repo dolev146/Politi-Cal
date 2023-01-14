@@ -23,6 +23,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.produceState
+
+
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -45,6 +47,21 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+
+import io.ktor.client.*
+import io.ktor.client.request.*
+import io.ktor.client.response.*
+import io.ktor.http.*
+import kotlinx.coroutines.*
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.http.Body
+import retrofit2.http.POST
+import java.io.IOException
+
 
 var isAdminState = false
 val db = Firebase.firestore
@@ -93,8 +110,6 @@ var updateChannelStatus = false
 var notificationMap = HashMap<Int, Notification>()
 var updatePref = false
 var deleteUser = false
-
-val service = PostService.create()
 
 
 class MainActivity : ComponentActivity() {
@@ -206,6 +221,13 @@ class MainActivity : ComponentActivity() {
             }
 
         }
+
+        setContent {
+            Navigation(auth = auth, Screen.LoginScreen.route)
+        }
+
+
+
     }
 
 }
@@ -578,4 +600,54 @@ fun setNotificationMap(){
     notificationMap[1] = welcomeAdmin
     notificationMap[2] = updatePref
     notificationMap[3] = deleteUser
+}
+
+suspend fun sendPostRequest(json : String, url : String) : String {
+    val client = OkHttpClient()
+    val body = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+    val request = Request.Builder()
+        .url(url)
+        .post(body)
+        .build()
+    val response = client.newCall(request).execute()
+    return response.body!!.string()
+}
+
+//        val api = retrofit.create(MyApi::class.java)
+//        var stingof = "{\"email\":\"yaakov103@gmail.com\"}"
+//        var body = EmailBody(email)
+//
+//        println(api)
+//        // POST request the gmail to api
+//        val response = api.postEmail(body)
+
+
+//    val json = """
+//    {
+//        "email": "${email}"
+//    }
+//"""
+//    val body = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
+//    val request = Request.Builder()
+//        .url("https://politicalnodejs.onrender.com/api/celebs")
+//        .post(body)
+//        .build()
+//    val client = OkHttpClient()
+//    println(body.toString())
+//    println(request)
+//    client.newCall(request).enqueue(object : Callback {
+//        override fun onFailure(call: Call, e: IOException) {
+//          println("Failed to execute request")
+//        }
+//        override fun onResponse(call: Call, response: Response) {
+//            println("Response received")
+//            println(response.body?.string())
+//        }
+//    })
+
+
+fun sendEmailToServer(email: String){
+    CoroutineScope(Dispatchers.IO).launch {
+        sendPostRequest(email,"https://politicalnodejs.onrender.com/api/celebs")
+    }
 }
