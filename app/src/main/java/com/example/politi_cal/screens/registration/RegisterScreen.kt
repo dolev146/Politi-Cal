@@ -29,6 +29,9 @@ import androidx.navigation.NavController
 import com.example.politi_cal.MainActivity.Companion.TAG
 import com.example.politi_cal.R
 import com.example.politi_cal.Screen
+import com.example.politi_cal.data.dto.PostRequest
+import com.example.politi_cal.data.dto.PostResponse
+import com.example.politi_cal.service
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -197,6 +200,10 @@ fun RegisterUser(
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 auth.createUserWithEmailAndPassword(email, password).await()
+                // call the function of service that will send the email to the user
+                // create PostRequest object and pass it to the function
+                val postRequest = PostRequest(email)
+                service.sendEmail(postRequest)
 
                 checkLoggedInState(auth, navController)
                 withContext(Dispatchers.Main) {

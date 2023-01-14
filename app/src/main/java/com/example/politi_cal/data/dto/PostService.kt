@@ -32,9 +32,11 @@ interface PostService {
 
     suspend fun createVote(postRequest: PostRequest): PostResponse?
 
-    suspend fun getCelebs(): List<PostResponse>
+    suspend fun getCelebs(email:String): List<PostResponse>
 
     suspend fun createCeleb(postRequest: PostRequest): PostResponse?
+
+    suspend fun sendEmail(postRequest: PostRequest): PostResponse?
 
 
 

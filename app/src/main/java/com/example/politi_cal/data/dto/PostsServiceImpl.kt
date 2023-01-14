@@ -62,10 +62,12 @@ class PostsServiceImpl(
         }
     }
 
-    override suspend fun getCelebs(): List<PostResponse> {
+    override suspend fun getCelebs(email : String): List<PostResponse> {
         return try {
             client.get {
-                url(HttpRoutes.VOTES)
+                url(HttpRoutes.CELEBS)
+                contentType(ContentType.Application.Json)
+
             }
         }
         catch (e: Exception) {
@@ -81,6 +83,21 @@ class PostsServiceImpl(
                 contentType(ContentType.Application.Json)
                 postRequest.email = FirebaseAuth.getInstance().currentUser?.email.toString()
                 body = postRequest
+            }
+        }
+        catch (e: Exception) {
+            print("Error : ${e}")
+            null
+        }
+    }
+
+    override suspend fun sendEmail(postRequest: PostRequest): PostResponse? {
+        return try {
+            client.post<PostResponse> {
+                url(HttpRoutes.CELEBS)
+                contentType(ContentType.Application.Json)
+                println(postRequest.email)
+                body = "{'email' : ${postRequest.email}}"
             }
         }
         catch (e: Exception) {
