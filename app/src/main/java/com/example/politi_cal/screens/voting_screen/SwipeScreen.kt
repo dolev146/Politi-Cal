@@ -59,7 +59,6 @@ private fun leftVote(celeb: Celeb, context: Context) {
 
 
             withContext(Dispatchers.Main) {
-                Toast.makeText(context, "Left Vote Added", Toast.LENGTH_SHORT).show()
             }
 
         } catch (e: Exception) {
@@ -86,7 +85,6 @@ private fun rightVote(celeb: Celeb, context: Context) {
             celebCollectionRef.document(celeb.FirstName + " " + celeb.LastName)
                 .set(celeb, SetOptions.merge()).await()
             withContext(Dispatchers.Main) {
-                Toast.makeText(context, "Right Vote Added", Toast.LENGTH_SHORT).show()
             }
 
         } catch (e: Exception) {
