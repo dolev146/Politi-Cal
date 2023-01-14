@@ -94,12 +94,12 @@ var notificationMap = HashMap<Int, Notification>()
 var updatePref = false
 var deleteUser = false
 
-
+val service = PostService.create()
 
 
 class MainActivity : ComponentActivity() {
 
-    private val service = PostService.create()
+
 
 
     companion object {
@@ -114,14 +114,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             PolitiCalTheme {
-                val users = produceState<List<PostResponse>>(
-                    initialValue = emptyList() ,
-                    producer = {
-                        value = service.getUsers()
-                    }
-                )
-                println(users.value)
-                println("users.value@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+//                val users = produceState<List<PostResponse>>(
+//                    initialValue = emptyList() ,
+//                    producer = {
+//                        value = service.getUsers()
+//                    }
+//                )
+//                println(users.value)
+//                println("users.value@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
 
 
 
@@ -168,12 +168,13 @@ class MainActivity : ComponentActivity() {
         //getCelebrities()
         if (value2) {
             setContent {
-                val users = produceState<List<PostResponse>>(
-                    initialValue = emptyList() ,
-                    producer = {
-                        value = service.getUsers()
-                    }
-                )
+//                val users = produceState<List<PostResponse>>(
+//                    initialValue = emptyList() ,
+//                    producer = {
+//                        value = service.getUsers()
+//                    }
+//                )
+//                println(users.value)
 
                 this.window.statusBarColor = Color(0xFFD7C488).toArgb()
                 this.window.navigationBarColor = Color(0xFFD7C488).toArgb()
@@ -192,6 +193,13 @@ class MainActivity : ComponentActivity() {
             }
         } else {
             setContent {
+//                val users = produceState<List<PostResponse>>(
+//                    initialValue = emptyList() ,
+//                    producer = {
+//                        value = service.getUsers()
+//                    }
+//                )
+//                println(users.value)
                 this.window.statusBarColor = Color(0xFFD7C488).toArgb()
                 this.window.navigationBarColor = Color(0xFFD7C488).toArgb()
                 Navigation(auth = auth)

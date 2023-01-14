@@ -1,5 +1,6 @@
 package com.example.politi_cal.data.dto
 
+import com.google.firebase.auth.FirebaseAuth
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -76,8 +77,9 @@ class PostsServiceImpl(
     override suspend fun createCeleb(postRequest: PostRequest): PostResponse? {
         return try {
             client.post<PostResponse> {
-                url(HttpRoutes.VOTES)
+                url(HttpRoutes.CELEBS)
                 contentType(ContentType.Application.Json)
+                postRequest.email = FirebaseAuth.getInstance().currentUser?.email.toString()
                 body = postRequest
             }
         }

@@ -197,6 +197,7 @@ fun RegisterUser(
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 auth.createUserWithEmailAndPassword(email, password).await()
+
                 checkLoggedInState(auth, navController)
                 withContext(Dispatchers.Main) {
                     navController.navigate(Screen.PreferenceScreen1.route)
