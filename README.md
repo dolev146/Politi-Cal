@@ -2,11 +2,11 @@
 <!-- ![image](https://user-images.githubusercontent.com/62290677/209436414-6ad069e4-3806-4f9e-8b98-0dfd08d944b7.png) -->
 
 to install the app on your android device just download the apk
-[Politi-Cal v1.1 APK](https://github.com/dolev146/Politi-Cal/releases/download/v1.1/app-debug.apk)
+[Politi-Cal v1.1 APK](https://github.com/dolev146/Politi-Cal/releases/download/v2.0/app-debug.apk)
 
 built with FireBase and JetPack Compose 
 
-<img src="https://raw.githubusercontent.com/yurijserrano/Github-Profile-Readme-Logos/f994c418a134b58c4aec11152f6a4a33fa89da26/cloud/firebase.svg" width="70" alt="Firebase logo"> <img src="https://raw.githubusercontent.com/yurijserrano/Github-Profile-Readme-Logos/f994c418a134b58c4aec11152f6a4a33fa89da26/ides/android-studio.svg" width="70" alt="Firebase logo">   ---->  <img src="https://user-images.githubusercontent.com/62290677/209436414-6ad069e4-3806-4f9e-8b98-0dfd08d944b7.png" alt="drawing" width="70" style="" />
+<img src="https://raw.githubusercontent.com/yurijserrano/Github-Profile-Readme-Logos/f994c418a134b58c4aec11152f6a4a33fa89da26/cloud/firebase.svg" width="70" alt="Firebase logo"> <img src="https://raw.githubusercontent.com/yurijserrano/Github-Profile-Readme-Logos/f994c418a134b58c4aec11152f6a4a33fa89da26/ides/android-studio.svg" width="70" alt="Firebase logo"> <img height=48 src="https://raw.githubusercontent.com/caiogondim/javascript-server-side-logos/master/node.js/standard/454x128.png"/> ---->  <img src="https://user-images.githubusercontent.com/62290677/209436414-6ad069e4-3806-4f9e-8b98-0dfd08d944b7.png" alt="drawing" width="70" style="" />
 
 
 ## Table Of Contents 
@@ -111,11 +111,40 @@ Overall, we, had a well thought-out plan in place for the development of our app
 ![image](https://user-images.githubusercontent.com/62290677/209451168-ec9fbdfe-3afa-46e1-b48f-8d36852bbe14.png)
 ![image](https://user-images.githubusercontent.com/62290677/209451324-5ddeb668-8843-4a1c-9779-eee8a4e43b73.png)
 
-# Code Structure 
+# Code Structure MVVM Design Pattern Model View View Model
 
 ![image](https://user-images.githubusercontent.com/62290677/209466091-a86eeb2e-a675-4998-8f06-d7480aa5ea42.png)
 
 In a computer system, every directory is designed to store and organize files related to the topic or concern indicated by its name. This approach, known as separation of concerns (SOC), helps to organize and manage the various components of a system in a logical and coherent manner.
+
+#  3 Tier Architecture
+![image](https://user-images.githubusercontent.com/62290677/212500063-e3f26860-860d-4d39-9133-311ac825f371.png)
+
+| Presentation Layer | Business Logic Layer | Data Access Layer |
+| ------------------ | -------------------- | ----------------- |
+| Android            | NodeJs               | FireBase          |
+|<img src="https://raw.githubusercontent.com/yurijserrano/Github-Profile-Readme-Logos/f994c418a134b58c4aec11152f6a4a33fa89da26/ides/android-studio.svg" width="70" alt="Firebase logo">                    |    <img height=48 src="https://raw.githubusercontent.com/caiogondim/javascript-server-side-logos/master/node.js/standard/454x128.png"/>                  | <img src="https://raw.githubusercontent.com/yurijserrano/Github-Profile-Readme-Logos/f994c418a134b58c4aec11152f6a4a33fa89da26/cloud/firebase.svg" width="70" alt="Firebase logo">                  |
+
+# NodeJs Server Setup
+repo
+[NodeJs Server](https://github.com/dolev146/nodejsserver)
+
+the server is hosted on render.com
+
+![image](https://user-images.githubusercontent.com/62290677/212500345-de1f6048-5393-4cc1-8895-0b84d8f1bfff.png)
+
+it contain routes for every get post put delete request and also contain the logic of the app and the email sending mechanism.
+
+we used ionos smtp mail server
+![image](https://user-images.githubusercontent.com/62290677/212500405-2862d6c9-f812-4814-965b-2e88ad98d6da.png)
+
+in order to run the server locally you will need the to include a file called .env with the secrets.
+```
+ADMIN_EMAIL = $$$$
+ADMIN_PASSWORD = $$$$
+```
+
+
 
 
 # How to Use
