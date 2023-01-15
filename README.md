@@ -164,7 +164,39 @@ Insert gif or link to demo
 
 ## Running Tests
 
-include screenshot of tests.
+To test our distribution calculation methods we use Junit Tests.
+In order to run them properly, follow the next video instruction:
+https://www.youtube.com/watch?v=IhPPDzNzJBQ
+
+### Pre Testing
+We created a list of celebrities that we will use to test the distribution calculation methods.
+
+We tested the  4 main distribution functions in our project:
+
+### Celebrity distribution:
+
+
+![image](https://user-images.githubusercontent.com/73499329/212530534-94a5f8c6-ccab-41bf-a388-e40d386edf99.png)
+
+![image](https://user-images.githubusercontent.com/73499329/212530595-3bc4429d-7add-4db2-9deb-da4057245857.png)
+
+
+### Company distribution
+
+![image](https://user-images.githubusercontent.com/73499329/212530653-cbe1a605-3772-4b1e-81c7-72363077ea07.png)
+
+![image](https://user-images.githubusercontent.com/73499329/212530667-71103926-3c82-4364-8ea7-84b7cf0ad8ca.png)
+
+### Category distribution
+
+![image](https://user-images.githubusercontent.com/73499329/212530679-4842e4fa-9021-4957-9187-a062fb69e980.png)
+
+![image](https://user-images.githubusercontent.com/73499329/212530724-8d0c5874-8948-4eb8-972e-86f48205899f.png)
+
+
+### Total distribution
+
+![image](https://user-images.githubusercontent.com/73499329/212530830-582e2de0-9942-43ed-bddd-47796e1e60f6.png)
 
 
 ## Run Locally
