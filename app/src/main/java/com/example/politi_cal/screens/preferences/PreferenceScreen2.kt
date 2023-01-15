@@ -194,15 +194,7 @@ fun PreferenceScreen2(navController: NavController, auth: FirebaseAuth) {
                     // convert the date to the format of YYYYMMDD
                     val birthDate = yyyy + mm + dd
 
-
-
-                    // select the current year
-                    val currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR)
-                    val currentMonth =
-                        java.util.Calendar.getInstance().get(java.util.Calendar.MONTH)
-                    val currentDay =
-                        java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_MONTH)
-                    val stringDate = "$currentYear$currentMonth$currentDay"
+                    val stringDate = getRegisterDate()
 
                     val userClass = User(
                         email = auth.currentUser?.email.toString(),
@@ -302,3 +294,21 @@ private  fun editUser(auth : FirebaseAuth, userClass : User, context : Context, 
     }
 }
 
+private fun getRegisterDate(): String{
+    val currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR).toString()
+    var currentMonth =
+        (java.util.Calendar.getInstance().get(java.util.Calendar.MONTH)+1).toString()
+    var currentDay =
+        java.util.Calendar.getInstance().get(java.util.Calendar.DAY_OF_MONTH).toString()
+
+    if(currentMonth.length==1){
+        currentMonth = "0$currentMonth"
+    }
+
+    if(currentDay.length==1){
+        currentDay = "0$currentDay"
+    }
+    val registeDate = "$currentYear$currentMonth$currentDay"
+    return registeDate
+
+}

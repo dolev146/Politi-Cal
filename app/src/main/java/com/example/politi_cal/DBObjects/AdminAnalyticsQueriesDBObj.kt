@@ -3,6 +3,7 @@ package com.example.politi_cal.DBObjects
 import com.example.politi_cal.data.queries_Interfaces.AdminAnalyticsQueriesInterface
 import com.example.politi_cal.db
 import com.example.politi_cal.models.CallBack
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -117,7 +118,9 @@ class AdminAnalyticsQueriesDBObj: AdminAnalyticsQueriesInterface {
 
     override fun getNumberOfUsersByYear(callBack: CallBack<Int, Int>)
             = CoroutineScope(Dispatchers.IO).launch{
+        val input = callBack.getInput()!! * 10000
         val result = db.collection("users")
+            .whereGreaterThanOrEqualTo("registerDate", input)
             .orderBy("registerDate")
             .get().await()
         if(result.documents.isNotEmpty()){
