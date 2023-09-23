@@ -228,7 +228,9 @@ incase of a problem finding a dependecy go to gradle.setting page and press sync
 
 - https://www.youtube.com/watch?v=4gUeyNkGE3g&t=920s&ab_channel=PhilippLackner
 - https://developer.android.com/jetpack/compose
-
+- https://www.youtube.com/watch?v=F3VOyTbbE7U&ab_channel=HanotzTv
+- https://www.youtube.com/watch?v=rOLVE_LWDYk&t=20s&ab_channel=HanotzTv
+- https://www.youtube.com/watch?v=6_b-tbL7diM&ab_channel=HanotzTv
 
 # Figma design
 
